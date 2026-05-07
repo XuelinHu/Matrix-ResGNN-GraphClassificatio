@@ -2,7 +2,7 @@
 
 ## Abstract
 
-Residual connectivity is a standard tool for stabilizing deep graph neural networks, but residual design is usually treated as a one-dimensional depth-wise choice. This paper studies residual reuse as a structured design problem over a two-dimensional branch-by-layer grid. Under a shared graph-classification protocol, we compare plain message passing, vertical residual reuse, horizontal branch-wise reuse, local matrix residual reuse, and a sparse/gated matrix variant. Across PROTEINS, DD, and ENZYMES with GCNConv backbones and five-fold evaluation, no single residual topology dominates all datasets: horizontal reuse is strongest on PROTEINS at the default branch count, vertical reuse is strongest on DD, and sparse/gated matrix reuse is strongest on ENZYMES. Branch-count ablations further show a consistent rise-then-fall pattern. Additional branches help when they create useful branch diversity, but too many branches increase residual traffic, preserve redundant branch similarity, and weaken optimization. First-batch sensitivity scans indicate dataset-specific operating regions for controlled matrix reuse: PROTEINS benefits from mild sparsification, while DD favors smaller and more conservative settings. These results suggest that residual topology, branch budget, and residual control should be treated jointly rather than as independent architectural choices.
+Residual connectivity is a standard tool for stabilizing deep graph neural networks, but residual design is usually treated as a one-dimensional depth-wise choice. This paper studies residual reuse as a structured design problem over a two-dimensional branch-by-layer grid. Under a shared graph-classification protocol, we compare plain message passing, vertical residual reuse, horizontal branch-wise reuse, local matrix residual reuse, and a sparse/gated matrix variant. Across PROTEINS, DD, and ENZYMES with GCNConv backbones and five-fold evaluation, no single residual topology dominates all datasets: horizontal reuse is strongest on PROTEINS at the default branch count, vertical reuse is strongest on DD, and sparse/gated matrix reuse is strongest on ENZYMES. Branch-count ablations further show a consistent rise-then-fall pattern. Additional branches help when they create useful branch diversity, but too many branches increase residual traffic, preserve redundant branch similarity, and weaken optimization. First-batch sensitivity scans indicate dataset-specific operating regions for controlled matrix reuse: PROTEINS benefits from mild sparsification, while DD favors smaller and more conservative settings. A follow-up five-fold check of selected MatrixResGated settings confirms that the smaller DD configuration improves over the default gated matrix model, while the PROTEINS sparsity candidate remains more variable. These results suggest that residual topology, branch budget, and residual control should be treated jointly rather than as independent architectural choices.
 
 ## 1. Introduction
 
@@ -122,7 +122,7 @@ We evaluate graph classification on PROTEINS, DD, and ENZYMES from TUDataset [@m
 
 The main benchmark uses five folds for each dataset and model. We report mean best test accuracy and standard deviation across folds. We also record test loss, best epoch, runtime, parameter count, and residual diagnostics. The main benchmark uses the same branch count, hidden configuration, optimizer settings, and fold protocol across model families.
 
-The branch-count ablation evaluates HorizontalRes, MatrixRes, and MatrixResGated on PROTEINS and DD for \(B=1,\ldots,8\). The sensitivity scan evaluates MatrixRes and MatrixResGated on fold 0 at \(B=3\), varying learning rate, dropout, hidden dimension, sparsity strength, and gate initialization where applicable. Because this sensitivity scan uses a single fold, it is interpreted as a search over promising operating regions rather than as final hyperparameter evidence.
+The branch-count ablation evaluates HorizontalRes, MatrixRes, and MatrixResGated on PROTEINS and DD for \(B=1,\ldots,8\). The sensitivity scan evaluates MatrixRes and MatrixResGated on fold 0 at \(B=3\), varying learning rate, dropout, hidden dimension, sparsity strength, and gate initialization where applicable. Because this sensitivity scan uses a single fold, it is interpreted as a search over promising operating regions rather than as final hyperparameter evidence. We therefore additionally rerun selected MatrixResGated candidates across all five folds: `sparse_lambda=0.02` on PROTEINS, and `lr=0.001`, `dim=32`, and `gate_init=0.2` on DD.
 
 ### 4.3 Mechanism metrics
 
@@ -193,7 +193,26 @@ On DD, the baseline MatrixResGated score is \(0.7300\). More conservative settin
 
 Figure 3 summarizes these sensitivity slices.
 
-### 5.4 Mechanism analysis
+### 5.4 Five-fold check of tuned MatrixResGated candidates
+
+The fold-0 sensitivity scan identifies promising settings, but it can overstate improvements if a setting matches one fold particularly well. To separate candidate discovery from evaluation, we reran the strongest MatrixResGated candidates across all five folds. Table 4 reports these follow-up checks.
+
+On DD, the smaller hidden dimension is the most useful tuned candidate. `dim=32` reaches \(0.7215 \pm 0.0330\), improving over the default MatrixResGated main benchmark result of \(0.7181 \pm 0.0259\) while using fewer parameters. The lower learning rate candidate is essentially tied with the default at \(0.7181 \pm 0.0336\), and `gate_init=0.2` is lower at \(0.7131 \pm 0.0213\). Thus, the full-fold evidence supports the conservative-capacity interpretation for DD, but does not support all fold-0 improvements equally.
+
+On PROTEINS, `sparse_lambda=0.02` reaches \(0.6909 \pm 0.0447\), below the default MatrixResGated main benchmark result of \(0.7026 \pm 0.0238\). This does not contradict the fold-0 sensitivity result; rather, it shows that the mild-sparsity gain was not stable across folds in the current run. The conservative conclusion is that sparsification remains a plausible control mechanism, but the current PROTEINS evidence is not strong enough to claim a five-fold improvement.
+
+**Table 4. Five-fold checks of selected MatrixResGated candidates.**
+
+| Candidate | Dataset | Accuracy | Mean loss | Parameters |
+|---|---|---:|---:|---:|
+| `PROTEINS_sparse_lambda_0.02` | PROTEINS | 0.6909 +/- 0.0447 | 0.6104 | 38,339 |
+| `DD_lr_0.001` | DD | 0.7181 +/- 0.0336 | 0.5737 | 42,371 |
+| `DD_dim_32` | DD | **0.7215 +/- 0.0330** | 0.5717 | 15,043 |
+| `DD_gate_init_0.2` | DD | 0.7131 +/- 0.0213 | 0.5820 | 42,371 |
+
+These results sharpen the role of the sensitivity scan. Single-fold scans are useful for identifying operating regions, but full-fold reruns are necessary before turning a candidate into a performance claim.
+
+### 5.5 Mechanism analysis
 
 The mechanism summaries support a common explanation for the rise-then-fall trend. Increasing branch count initially creates useful diversity: branches become less identical and can cover complementary feature subspaces. Past the useful regime, however, diversity alone is not sufficient. Residual traffic grows quickly, branch similarity may remain high, and gradient norms can weaken. The model becomes larger but not proportionally more useful.
 
@@ -221,9 +240,9 @@ This distinction matters for multi-branch GNN design. A larger branch budget sho
 
 ### 6.3 Controlled residual reuse is useful but not universal
 
-The MatrixResGated sensitivity scan suggests that residual control has value, but the best form of control differs across datasets. PROTEINS benefits from mild sparsification, while DD benefits from conservative optimization, smaller hidden dimension, and lower initial gate. A single default controlled-matrix configuration is therefore unlikely to be optimal across datasets.
+The MatrixResGated sensitivity scan suggests that residual control has value, but the best form of control differs across datasets. PROTEINS shows a fold-0 benefit from mild sparsification, while DD shows fold-0 benefits from conservative optimization, smaller hidden dimension, and lower initial gate. The five-fold tuned-candidate reruns refine this picture: on DD, the smaller hidden dimension remains beneficial and parameter-efficient, whereas the other conservative settings do not consistently improve over the default. On PROTEINS, mild sparsification does not hold its fold-0 advantage across all folds.
 
-The conservative interpretation is that controlled matrix reuse defines a tunable family rather than a plug-and-play winner. Before making a final performance claim, the strongest fold-0 settings should be rerun across all folds. The current evidence is still useful because it identifies where those follow-up runs should focus.
+The conservative interpretation is that controlled matrix reuse defines a tunable family rather than a plug-and-play winner. Candidate settings should be discovered with sensitivity scans and then validated across folds before being treated as improvements. The current evidence supports a smaller controlled matrix model on DD, while leaving PROTEINS sparsification as a promising but not yet stable direction.
 
 ### 6.4 Practical recommendations
 
@@ -231,7 +250,7 @@ For small or redundancy-prone graph-classification settings, start with a small 
 
 ## 7. Limitations
 
-The current main benchmark uses GCNConv only. This keeps the comparison controlled but leaves open whether the same residual-topology trends hold for other propagation operators such as GINConv or GraphSAGE. The sensitivity scan is first-batch and fold-0 only, so it should be treated as evidence about promising operating regions rather than final hyperparameter selection. ENZYMES results are also variable and should be strengthened before making strong dataset-specific claims.
+The current main benchmark uses GCNConv only. This keeps the comparison controlled but leaves open whether the same residual-topology trends hold for other propagation operators such as GINConv or GraphSAGE. The sensitivity scan is first-batch and fold-0 only, so it should be treated as evidence about promising operating regions rather than final hyperparameter selection. Although selected candidates were rerun across five folds, that follow-up is still limited to MatrixResGated on PROTEINS and DD. ENZYMES results are also variable and should be strengthened before making strong dataset-specific claims.
 
 The experiments focus on three TUDataset benchmarks. This is appropriate for an initial graph-classification study, but broader datasets are needed to understand whether the same branch-count dynamics hold on larger or more diverse graph collections. Finally, the current mechanism analysis is correlational. It supports a coherent explanation, but it does not by itself prove that branch diversity, cosine similarity, or gradient norms causally determine the observed accuracy changes.
 
@@ -239,7 +258,7 @@ The experiments focus on three TUDataset benchmarks. This is appropriate for an 
 
 This paper studies residual connectivity in graph classification as a structured branch-by-layer design problem. The experiments show that residual topology matters, but its value depends on branch budget and dataset characteristics. Branch expansion helps when it creates useful representational diversity, then saturates or declines when residual complexity and redundancy dominate. Matrix-style residual reuse is most useful when paired with appropriate control, and its best settings differ across datasets.
 
-The main implication is that residual design should be evaluated jointly with branch count and residual filtering. Future work should extend the comparison to additional graph operators, rerun the strongest sensitivity settings across all folds, evaluate larger graph-classification datasets, and test whether adaptive residual-neighborhood selection can replace manually chosen vertical, horizontal, or matrix stencils.
+The main implication is that residual design should be evaluated jointly with branch count and residual filtering. Future work should extend the comparison to additional graph operators, expand tuned-candidate validation beyond the current MatrixResGated checks, evaluate larger graph-classification datasets, and test whether adaptive residual-neighborhood selection can replace manually chosen vertical, horizontal, or matrix stencils.
 
 ## Figure Captions
 
@@ -258,6 +277,7 @@ The manuscript uses the following summary files as the source of truth:
 - `records/LATEST/summaries/benchmark_summary.csv`
 - `records/LATEST/summaries/branch_ablation_summary.csv`
 - `records/LATEST/summaries/parameter_sensitivity_summary.csv`
+- `records/LATEST/summaries/tuned_candidate_summary.csv`
 - `records/LATEST/summaries/mechanism_compact_summary.csv`
 
 The figure files are:
@@ -280,4 +300,3 @@ The following diagnostics should be moved into supplementary tables or figures w
 ## References
 
 The citation keys in this Markdown draft are defined in `paper/references.bib`.
-
