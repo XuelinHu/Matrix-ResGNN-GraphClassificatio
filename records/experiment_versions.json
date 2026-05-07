@@ -1,0 +1,12 @@
+{
+  "default_version": "LATEST",
+  "versions": {
+    "LATEST": {
+      "records_dir": "records/LATEST",
+      "logs_dir": "records/LATEST/logs",
+      "runs_dir": "records/LATEST/runs",
+      "checkpoints_dir": "records/LATEST/checkpoints",
+      "analysis_dir": "records/LATEST/analysis"
+    }
+  }
+}

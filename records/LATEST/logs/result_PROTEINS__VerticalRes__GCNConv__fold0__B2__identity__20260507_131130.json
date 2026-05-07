@@ -1,0 +1,63 @@
+{
+  "config": {
+    "dataset": "PROTEINS",
+    "model": "VerticalRes",
+    "operator": "GCNConv",
+    "version": "LATEST",
+    "fold": 0,
+    "seed": 1024,
+    "ep": 200,
+    "lr": 0.005,
+    "weight_decay": 0.0001,
+    "drop": 0.5,
+    "dim": 64,
+    "h_layer": 4,
+    "num_branches": 2,
+    "batch_size": 256,
+    "val_ratio": 0.1,
+    "patience": 60,
+    "min_delta": 0.0,
+    "grad_clip": 2.0,
+    "lr_factor": 0.5,
+    "lr_patience": 15,
+    "min_lr": 1e-05,
+    "gate_init": 0.8,
+    "gate_mode": "learnable",
+    "fixed_gate_value": 0.8,
+    "residual_mode": "identity",
+    "topk_ratio": 0.5,
+    "sparse_lambda": 0.05
+  },
+  "version": "LATEST",
+  "dataset_stats": {
+    "dataset": "PROTEINS",
+    "dataset_family": "tu",
+    "graphs": 1113,
+    "classes": 2,
+    "num_features": 3,
+    "avg_nodes": 39.05750224618149,
+    "avg_edges": 72.8158131176999,
+    "avg_degree": 3.734642171150555,
+    "class_hist": {
+      "0": 663,
+      "1": 450
+    }
+  },
+  "split_context": {
+    "dataset_family": "tu",
+    "split_protocol": "stratified_5fold_cv",
+    "repeat_id": 0,
+    "official_split": false
+  },
+  "parameter_stats": {
+    "total_params": 25603,
+    "trainable_params": 25603,
+    "frozen_params": 0
+  },
+  "best_epoch": 74,
+  "best_val_loss": 0.5809571743011475,
+  "best_val_acc": 0.7415730337078652,
+  "best_test_acc": 0.6591928251121076,
+  "test_loss": 0.6241793036460876,
+  "runtime_seconds": 23.738827228546143
+}

@@ -1,0 +1,42 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+
+# Environments
+.venv/
+venv/
+
+# Editors
+.DS_Store
+.idea/
+.vscode/
+
+# Experiment outputs
+records/tmp/
+records/cache/
+records/**/analysis/
+
+# Generated data/model artifacts
+data/**/processed/
+*.pt
+*.pth
+*.ckpt
+
+# LaTeX
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.run.xml
+*.synctex.gz
+*.toc
+*.xdv
+
+# Figures
+figures/tmp/
