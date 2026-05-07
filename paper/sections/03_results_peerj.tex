@@ -1,0 +1,130 @@
+\section{Results}
+\label{sec:results}
+
+All results are reported as five-fold mean best test accuracy \(\pm\) fold-level standard deviation unless otherwise stated.
+
+\subsection{Overall benchmark performance}
+
+Table~\ref{tab:main_benchmark} reports the default \(B=3\) comparison. Residual topology changes the ranking, but the ranking is dataset-dependent. On PROTEINS, HorizontalRes gives the strongest mean accuracy at \(0.7062\pm0.0323\). On DD, VerticalRes performs best at \(0.7249\pm0.0247\). On ENZYMES, MatrixResGated obtains the best mean accuracy at \(0.2933\pm0.0470\), although the low absolute accuracy and higher variance make this dataset better interpreted as a difficult supporting benchmark.
+
+\begin{table}[h]
+\centering
+\small
+\caption{Main benchmark results with GCNConv and default branch count \(B=3\).}
+\label{tab:main_benchmark}
+\begin{tabular}{l c c c c c}
+\toprule
+Dataset & Plain & VerticalRes & HorizontalRes & MatrixRes & MatrixResGated \\
+\midrule
+PROTEINS & \(0.7044\pm0.0387\) & \(0.6981\pm0.0402\) & \(\mathbf{0.7062\pm0.0323}\) & \(0.7035\pm0.0247\) & \(0.7026\pm0.0238\) \\
+DD & \(0.7053\pm0.0517\) & \(\mathbf{0.7249\pm0.0247}\) & \(0.7113\pm0.0409\) & \(0.7122\pm0.0362\) & \(0.7181\pm0.0259\) \\
+ENZYMES & \(0.2683\pm0.0343\) & \(0.2550\pm0.0455\) & \(0.2633\pm0.0584\) & \(0.2750\pm0.0577\) & \(\mathbf{0.2933\pm0.0470}\) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.92\linewidth]{figures/exp/fig_main_benchmark_gcnconv.pdf}
+\caption{Main GCNConv benchmark at \(B=3\). Bars show five-fold mean best test accuracy with fold-level standard-deviation error bars.}
+\label{fig:main_benchmark}
+\end{figure}
+
+Figure~\ref{fig:main_benchmark} makes the split regime visually explicit. The default setting does not support a universal residual winner; instead, each dataset favors a different residual neighborhood.
+
+\subsection{Branch-count ablation}
+
+Branch count has a non-monotonic effect. Table~\ref{tab:branch_best} reports the best branch count for each topology in the ablation. On PROTEINS, HorizontalRes peaks at \(B=4\), MatrixRes peaks at \(B=6\), and MatrixResGated peaks at \(B=3\). On DD, the preferred branch budget is smaller: HorizontalRes and MatrixRes peak at \(B=2\), while MatrixResGated is strongest at \(B=1\).
+
+\begin{table}[h]
+\centering
+\small
+\caption{Best branch-count setting for each topology in the ablation.}
+\label{tab:branch_best}
+\begin{tabular}{l l c c}
+\toprule
+Dataset & Model & Best \(B\) & Accuracy \\
+\midrule
+PROTEINS & HorizontalRes & 4 & \(0.7125\pm0.0286\) \\
+PROTEINS & MatrixRes & 6 & \(0.7062\pm0.0210\) \\
+PROTEINS & MatrixResGated & 3 & \(0.7098\pm0.0219\) \\
+DD & HorizontalRes & 2 & \(0.7275\pm0.0304\) \\
+DD & MatrixRes & 2 & \(0.7206\pm0.0411\) \\
+DD & MatrixResGated & 1 & \(0.7283\pm0.0244\) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.92\linewidth]{figures/exp/fig_branch_count_ablation.pdf}
+\caption{Branch-count ablation for HorizontalRes, MatrixRes, and MatrixResGated on PROTEINS and DD. Accuracy improves only within a useful operating region and then saturates or declines.}
+\label{fig:branch_ablation}
+\end{figure}
+
+The ablation shows that branch count should not be read as a simple capacity knob. Increasing \(B\) changes the residual graph itself: it adds branches, residual paths, residual traffic, and optimization interactions. PROTEINS tolerates a moderate branch budget, while DD is more sensitive to redundant branch expansion.
+
+\subsection{MatrixResGated sensitivity}
+
+The fold-0 sensitivity scan shows that MatrixResGated is tunable, but its preferred region differs between datasets. On PROTEINS, the baseline MatrixResGated configuration reaches \(0.6726\), and mild sparsification with \(\lambda=0.02\) improves fold-0 accuracy to \(0.6951\). Stronger sparsification with \(\lambda=0.1\) reduces accuracy to \(0.6278\). On DD, the baseline fold-0 score is \(0.7300\), while \(lr=0.001\), \(dim=32\), and \(gate\_init=0.2\) each reach \(0.7511\).
+
+\begin{table}[h]
+\centering
+\small
+\caption{Strongest MatrixResGated fold-0 sensitivity settings.}
+\label{tab:sensitivity}
+\begin{tabular}{l l c l}
+\toprule
+Dataset & Setting & Accuracy & Interpretation \\
+\midrule
+PROTEINS & baseline & 0.6726 & default controlled matrix reuse \\
+PROTEINS & \(\lambda=0.02\) & 0.6951 & mild sparsification improves fold 0 \\
+PROTEINS & \(\lambda=0.1\) & 0.6278 & strong sparsification is harmful \\
+DD & baseline & 0.7300 & default controlled matrix reuse \\
+DD & \(lr=0.001\) & 0.7511 & conservative optimization helps \\
+DD & \(dim=32\) & 0.7511 & smaller hidden dimension helps \\
+DD & \(gate\_init=0.2\) & 0.7511 & lower initial gate helps \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.92\linewidth]{figures/exp/fig_matrixresgated_sensitivity.pdf}
+\caption{Fold-0 MatrixResGated sensitivity scan at \(B=3\). The scan identifies candidate operating regions but is not treated as final hyperparameter evidence.}
+\label{fig:sensitivity}
+\end{figure}
+
+\subsection{Five-fold check of tuned MatrixResGated candidates}
+
+To distinguish candidate discovery from evaluation, selected MatrixResGated settings were rerun across all five folds. Table~\ref{tab:tuned_candidates} reports these follow-up checks. On DD, the smaller hidden dimension is the strongest tuned candidate, reaching \(0.7215\pm0.0330\) while reducing parameters from 42,371 to 15,043. The lower learning rate is essentially tied with the default MatrixResGated benchmark, and the lower gate initialization is weaker. On PROTEINS, \(\lambda=0.02\) reaches \(0.6909\pm0.0447\), below the default MatrixResGated result, showing that the fold-0 sparsity gain is not stable across all folds in the current run.
+
+\begin{table}[h]
+\centering
+\small
+\caption{Five-fold checks of selected MatrixResGated candidates.}
+\label{tab:tuned_candidates}
+\begin{tabular}{l l c c c}
+\toprule
+Candidate & Dataset & Accuracy & Mean loss & Parameters \\
+\midrule
+\texttt{PROTEINS\_sparse\_lambda\_0.02} & PROTEINS & \(0.6909\pm0.0447\) & 0.6104 & 38,339 \\
+\texttt{DD\_lr\_0.001} & DD & \(0.7181\pm0.0336\) & 0.5737 & 42,371 \\
+\texttt{DD\_dim\_32} & DD & \(\mathbf{0.7215\pm0.0330}\) & 0.5717 & 15,043 \\
+\texttt{DD\_gate\_init\_0.2} & DD & \(0.7131\pm0.0213\) & 0.5820 & 42,371 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Mechanism analysis}
+
+The mechanism summaries support a common explanation for the rise-then-fall trend. Increasing branch count initially creates useful diversity: branches become less identical and can cover complementary feature subspaces. Past the useful regime, diversity alone is not sufficient. Residual traffic grows quickly, branch similarity may remain high, and gradient norms can weaken.
+
+For HorizontalRes on PROTEINS, moving from \(B=1\) to \(B=4\) increases branch diversity from 0.0000 to 1.1450, while branch cosine decreases from 1.0000 to 0.8417. This corresponds to the accuracy improvement. Beyond \(B=4\), diversity continues increasing, reaching 1.5441 at \(B=8\), but accuracy declines to 0.6881. MatrixRes shows a similar trend at a larger branch budget, peaking at \(B=6\). DD is more conservative: branch expansion beyond \(B=2\) often adds residual complexity without enough functional separation.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.92\linewidth]{figures/exp/fig_mechanism_branch_dynamics.pdf}
+\caption{Mechanism summary linking branch-count accuracy to branch diversity, branch cosine similarity, and mean gradient norm.}
+\label{fig:mechanism}
+\end{figure}

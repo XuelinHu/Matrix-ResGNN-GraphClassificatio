@@ -1,0 +1,8 @@
+\section{Conclusions}
+\label{sec:conclusion}
+
+This paper studies residual connectivity for graph classification as a structured branch-by-layer design problem. Under a shared GCNConv benchmark, residual topology matters, but its value depends on the dataset and branch budget. HorizontalRes is strongest on PROTEINS at the default branch count, VerticalRes is strongest on DD, and MatrixResGated is strongest on ENZYMES. The branch-count ablations further show that adding branches is useful only within a limited operating region.
+
+The mechanism analysis explains why branch expansion is not automatically beneficial. Additional branches can increase representational diversity, but they also increase residual traffic and may preserve redundant branch similarity or weaken optimization. Matrix-style reuse is therefore best viewed as a controlled residual family whose effectiveness depends on the branch budget and residual filtering strategy.
+
+The practical implication is that residual topology, branch count, and residual control should be evaluated jointly. Before treating a sensitivity result as a performance claim, candidate settings should be rerun across folds. In the current experiments, this validation supports a smaller MatrixResGated model on DD, while the PROTEINS sparsity candidate remains less stable.

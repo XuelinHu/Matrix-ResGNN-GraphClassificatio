@@ -1,0 +1,24 @@
+\section{Introduction}
+
+Graph neural networks (GNNs) learn graph representations by repeatedly aggregating information from local neighborhoods \cite{kipf2017gcn,xu2019gin}. In graph classification, the final prediction depends on whether this iterative process preserves discriminative structural and attribute information until graph-level pooling. Increasing model depth or adding parallel branches can expand capacity, but it can also introduce over-smoothing, redundant representations, unstable optimization, and unnecessary computation \cite{li2018deeper,zhao2020pairnorm}.
+
+Residual connections are a common response to these difficulties. They improve gradient flow and make it possible to reuse earlier representations, and residual or dense connectivity has been transferred successfully to deeper graph convolutional networks \cite{li2019deepgcns}. However, residual connectivity is still commonly treated as a default layer-wise component rather than as the object of study. Most residual graph classifiers reuse information along depth in the same stream. Once a model contains multiple branches, this view is incomplete: residual information may also move across branches at the same depth or through diagonal branch-depth neighborhoods.
+
+This paper studies residual reuse as a structured design problem on a branch-by-layer grid. The central question is not whether skip connections should be present, but where residual signals should flow. A grid view exposes three controlled neighborhoods: vertical reuse along depth, horizontal exchange across neighboring branches, and matrix-style reuse that combines same-branch, neighboring-branch, and diagonal residual paths. A sparse/gated matrix variant further tests whether matrix residual traffic should be filtered before injection.
+
+The study is deliberately controlled. It fixes the graph-classification pipeline, uses the same GCNConv backbone across the main benchmark, and changes only the residual topology and residual-control mechanism. This separation is important because it keeps the empirical comparison focused on information-flow design rather than on unrelated changes in message-passing operator or readout structure.
+
+The work is organized around three research questions:
+\begin{enumerate}
+    \item \textbf{Which residual topology is strongest under a shared graph-classification protocol?} We compare plain message passing, vertical residual reuse, horizontal branch-wise exchange, local matrix residual reuse, and sparse/gated matrix reuse on PROTEINS, DD, and ENZYMES.
+    \item \textbf{How does branch count change residual behavior?} We test \(B=1,\ldots,8\) for the multi-branch residual families and ask whether more branches improve accuracy monotonically or only within a useful operating region.
+    \item \textbf{When does controlled matrix reuse help?} We use sensitivity scans, five-fold tuned-candidate checks, and mechanism metrics to distinguish promising residual-control settings from fold-specific artifacts.
+\end{enumerate}
+
+The main contributions are:
+\begin{itemize}
+    \item \textbf{A branch-by-layer residual formulation for graph classification.} Vertical, horizontal, matrix, and sparse/gated matrix residual families are expressed as local neighborhoods on the same grid, making their differences explicit while preserving a common backbone and classifier.
+    \item \textbf{A controlled five-fold benchmark and branch-count ablation.} The experiments show that residual topology is dataset-dependent: HorizontalRes is strongest on PROTEINS at \(B=3\), VerticalRes is strongest on DD, and MatrixResGated is strongest on ENZYMES, while branch-count curves follow a rise-then-fall pattern.
+    \item \textbf{Evidence that branch expansion is not merely a capacity knob.} Branch diversity, branch cosine similarity, and gradient norms show that additional branches help only when they create useful separation without excessive residual traffic or optimization weakening.
+    \item \textbf{A conservative validation of MatrixResGated tuning.} Fold-0 sensitivity scans identify candidate operating regions, and five-fold reruns show that the smaller DD MatrixResGated setting is the most stable tuned improvement, whereas the PROTEINS sparsity candidate is not yet a robust full-fold gain.
+\end{itemize}

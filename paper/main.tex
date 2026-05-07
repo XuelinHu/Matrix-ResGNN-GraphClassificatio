@@ -1,0 +1,57 @@
+\documentclass[fleqn,10pt,lineno]{wlpeerj}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{placeins}
+\usepackage{float}
+\usepackage{flafter}
+\usepackage{microtype}
+\usepackage{url}
+\usepackage[authoryear,round]{natbib}
+\usepackage{hyperref}
+\usepackage{graphicx}
+
+\let\cite\citep
+
+\graphicspath{{../}{figures/}{../figures/}}
+
+\title{Matrix-Residual Graph Neural Networks for Graph Classification}
+
+\author[1]{Xuelin Hu}
+\author[2]{Xiaoqin Fu}
+
+\affil[1]{School of Railway Communication and Signaling Engineering, Liuzhou Railway Vocational Technical College, Liuzhou 545000, China}
+\affil[2]{School of Railway Locomotive and Rolling Stock, Liuzhou Railway Vocational Technical College, Liuzhou 545000, China}
+
+\corrauthor[2]{Xiaoqin Fu}{fuxiaoqin@ltzy.edu.cn}
+
+\begin{abstract}
+\textbf{Background.} Residual connections are widely used to stabilize graph neural networks, but residual design is often treated as a one-dimensional depth-wise choice. Multi-branch graph classifiers create a richer design space: residual information can flow along depth, across branches, or through a local two-dimensional branch-by-layer neighborhood.
+
+\textbf{Methods.} We propose Matrix-Residual Graph Neural Networks as a controlled residual-topology study for graph classification. The model family compares five information-flow designs under a shared GCNConv backbone: plain message passing, vertical residual reuse, horizontal branch-wise exchange, local matrix residual reuse, and sparse/gated matrix reuse. PROTEINS, DD, and ENZYMES are evaluated with five-fold graph-level splits. We further run branch-count ablations on PROTEINS and DD, fold-0 sensitivity scans for MatrixRes and MatrixResGated, five-fold checks of selected MatrixResGated candidates, and mechanism analyses based on branch diversity, branch cosine similarity, and gradient norms.
+
+\textbf{Results.} No single residual topology dominates all datasets. At the default branch count \(B=3\), HorizontalRes is strongest on PROTEINS, VerticalRes is strongest on DD, and MatrixResGated is strongest on ENZYMES. Branch-count ablations reveal a non-monotonic rise-then-fall pattern: PROTEINS tolerates moderate branch expansion, whereas DD prefers smaller branch budgets. Five-fold tuned-candidate checks show that a smaller MatrixResGated hidden dimension improves the DD result while reducing parameters; the PROTEINS sparsity candidate remains variable across folds.
+
+\textbf{Conclusions.} Residual topology, branch count, and residual filtering should be selected jointly. Additional branches help only when they create useful functional diversity; otherwise, residual traffic and branch redundancy can offset the added capacity. Matrix-style reuse is therefore best understood as a tunable residual family rather than a universal replacement for simpler vertical or horizontal residual paths.
+\end{abstract}
+
+\begin{document}
+
+\flushbottom
+\maketitle
+\thispagestyle{empty}
+
+\input{sections/01_introduction_peerj.tex}
+\input{sections/02_methods_peerj.tex}
+\input{sections/03_results_peerj.tex}
+\input{sections/04_discussion_peerj.tex}
+\input{sections/05_conclusions_peerj.tex}
+\input{sections/06_acknowledgments.tex}
+\input{sections/07_appendix.tex}
+
+\bibliographystyle{plainnat}
+\bibliography{references}
+
+\end{document}

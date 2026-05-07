@@ -1,0 +1,117 @@
+\section{Materials and Methods}
+\label{sec:methods}
+
+This section defines the graph-classification task, the Matrix-Residual architecture family, the benchmark protocol, and the mechanism metrics. The guiding principle is to isolate residual topology while holding the remaining learning pipeline fixed.
+
+\subsection{Problem definition and notation}
+
+Let \(\mathcal{G}=(\mathcal{V},\mathcal{E})\) be a graph with node feature matrix \(\mathbf{X}\in\mathbb{R}^{n\times d_{\mathrm{in}}}\) and adjacency structure \(\mathbf{A}\). For a dataset \(\mathcal{D}=\{(\mathcal{G}_i,y_i)\}_{i=1}^{N}\), the objective is to learn \(f_{\theta}:\mathcal{G}\rightarrow \hat{y}\), where \(\hat{y}\) is the predicted graph label.
+
+The compared model families share the same graph-classification wrapper:
+\begin{itemize}
+    \item \textbf{Plain}: stacked message passing without explicit residual reuse.
+    \item \textbf{VerticalRes}: same-branch residual reuse from the previous layer.
+    \item \textbf{HorizontalRes}: cross-branch exchange between adjacent branches at the same depth.
+    \item \textbf{MatrixRes}: local two-dimensional reuse over vertical, horizontal, and diagonal neighbors.
+    \item \textbf{MatrixResGated}: matrix reuse with gated or sparse residual filtering.
+\end{itemize}
+
+\subsection{Shared graph-classification pipeline}
+
+Let \(B\) be the number of branches and \(L\) be the number of message-passing layers. The hidden state at branch \(b\) and layer \(\ell\) is written as \(\mathbf{H}^{(\ell)}_{b}\), where \(b\in\{1,\ldots,B\}\). A branch-local propagation step is
+\begin{equation}
+\mathbf{Z}^{(\ell)}_{b} = \phi^{(\ell)}_{b}\left(\mathbf{H}^{(\ell-1)}_{b}, \mathbf{A}\right),
+\end{equation}
+where \(\phi\) is instantiated as GCNConv in the main benchmark. The residual-enhanced update is
+\begin{equation}
+\mathbf{H}^{(\ell)}_{b} =
+\mathbf{Z}^{(\ell)}_{b} +
+\sum_{(b',\ell')\in\mathcal{N}(b,\ell)}
+\mathcal{R}_{(b',\ell')\rightarrow(b,\ell)}
+\left(\mathbf{H}^{(\ell')}_{b'}\right).
+\end{equation}
+The only term that changes across architectures is the residual neighborhood \(\mathcal{N}(b,\ell)\) and the residual transform \(\mathcal{R}\).
+
+After the final message-passing layer, each branch is pooled to a graph-level vector and the branch vectors are combined before classification. The classifier is trained with cross-entropy loss. This keeps the comparison focused on residual topology rather than on architecture-specific readout heads.
+
+\subsection{Residual neighborhoods}
+\label{sec:model}
+
+\textbf{Plain.} The plain baseline has no residual neighborhood:
+\begin{equation}
+\mathcal{N}(b,\ell)=\emptyset.
+\end{equation}
+
+\textbf{VerticalRes.} Vertical residual reuse injects the previous layer on the same branch:
+\begin{equation}
+\mathcal{N}(b,\ell)=\{(b,\ell-1)\}.
+\end{equation}
+
+\textbf{HorizontalRes.} Horizontal residual reuse exchanges information across adjacent branches at the same depth:
+\begin{equation}
+\mathcal{N}(b,\ell)=\{(b-1,\ell),(b+1,\ell)\},
+\end{equation}
+with boundary branches using only valid neighbors.
+
+\textbf{MatrixRes.} Matrix residual reuse combines vertical, horizontal, and diagonal neighborhoods:
+\begin{equation}
+\mathcal{N}(b,\ell)=
+\{(b,\ell-1),(b-1,\ell),(b+1,\ell),(b-1,\ell-1),(b+1,\ell-1)\}.
+\end{equation}
+This local stencil is intentionally not dense all-to-all mixing. It preserves an interpretable residual structure over the branch-by-layer grid.
+
+\textbf{MatrixResGated.} MatrixResGated uses the same neighborhood as MatrixRes, but the residual transform controls the injected signal:
+\begin{equation}
+\mathcal{R}(\mathbf{U}) =
+\begin{cases}
+\alpha \mathbf{U}, & \text{gated residual injection},\\
+\mathrm{softshrink}_{\lambda}(\mathbf{U}), & \text{sparse residual filtering}.
+\end{cases}
+\end{equation}
+This variant tests whether matrix residual reuse should be passed densely or selectively.
+
+\subsection{Datasets and evaluation protocol}
+\label{sec:datasets}
+
+The main benchmark uses PROTEINS, DD, and ENZYMES from TUDataset \cite{morris2020tudataset}. PROTEINS and DD are binary protein-structure graph classification benchmarks, while ENZYMES is a six-class enzyme classification benchmark. All experiments use the raw benchmark features and graph structures without task-specific feature engineering.
+
+All main results use graph-level five-fold evaluation. For fold \(k\), the test accuracy is
+\begin{equation}
+\mathrm{Acc}_{k}=
+\frac{1}{|\mathcal{T}_{k}|}
+\sum_{(\mathcal{G}_{i},y_{i})\in\mathcal{T}_{k}}
+\mathbf{1}[\hat{y}_{i}=y_{i}].
+\end{equation}
+Across folds, we report
+\begin{equation}
+\overline{\mathrm{Acc}}=\frac{1}{5}\sum_{k=1}^{5}\mathrm{Acc}_{k},
+\end{equation}
+and the fold-level standard deviation.
+
+\subsection{Training configuration}
+
+All main benchmark runs use a shared GCNConv backbone with default branch count \(B=3\). The hidden dimension is 64 unless a sensitivity setting changes it, and all model families use the same optimizer, early-stopping logic, graph pooling, and fold protocol. The branch-count ablation evaluates \(B=1,\ldots,8\) for HorizontalRes, MatrixRes, and MatrixResGated on PROTEINS and DD. The sensitivity scan evaluates MatrixRes and MatrixResGated on fold 0 at \(B=3\), varying learning rate, dropout, hidden dimension, sparsity strength, and gate initialization. Selected MatrixResGated candidates are then rerun across all five folds.
+
+\begin{table}[h]
+\centering
+\small
+\caption{Key experimental settings shared by the main benchmark.}
+\label{tab:hyperparams}
+\begin{tabular}{l c}
+\toprule
+Parameter & Value \\
+\midrule
+Message-passing operator & GCNConv \\
+Default branch count & 3 \\
+Default hidden dimension & 64 \\
+Evaluation & Five-fold graph classification \\
+Branch-count ablation & \(B=1,\ldots,8\) \\
+Primary metric & Mean best test accuracy \\
+Sensitivity scope & Fold 0, \(B=3\) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Mechanism metrics}
+
+To interpret branch-count behavior, we track three mechanism indicators. Branch diversity measures the mean pairwise distance between branch representations. Branch cosine similarity measures whether branches remain redundant. Mean gradient norm tracks optimization weakening as branch count and residual traffic grow. CKA and residual-traffic summaries are retained as supplementary diagnostics.

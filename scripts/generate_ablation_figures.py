@@ -2,19 +2,16 @@ from __future__ import annotations
 
 import argparse
 import csv
+import sys
 from pathlib import Path
 
 import matplotlib.pyplot as plt
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 
-
-MODEL_COLORS = {
-    "VerticalRes": "#6a4c93",
-    "HorizontalRes": "#d1495b",
-    "MatrixRes": "#2e86ab",
-    "MatrixResGated": "#3a7d44",
-}
+from scripts.plot_style import MODEL_COLORS, MODEL_LINESTYLES, MODEL_MARKERS, apply_paper_style, style_axis
 
 
 def parse_args() -> argparse.Namespace:
@@ -29,10 +26,11 @@ def read_csv(path: Path) -> list[dict[str, str]]:
 
 
 def generate_branch_count_figure(branch_rows: list[dict[str, str]], target: Path) -> None:
-    fig, axes = plt.subplots(1, 2, figsize=(12, 4.5), sharey=True)
+    apply_paper_style()
+    fig, axes = plt.subplots(1, 2, figsize=(12, 4.8), sharey=True)
     for ax, dataset in zip(axes, ["PROTEINS", "DD"]):
         subset = [r for r in branch_rows if r["dataset"] == dataset]
-        for model in ["VerticalRes", "HorizontalRes", "MatrixRes", "MatrixResGated"]:
+        for model in ["HorizontalRes", "MatrixRes", "MatrixResGated"]:
             rows = sorted(
                 [r for r in subset if r["model"] == model],
                 key=lambda r: int(r["num_branches"]),
@@ -44,26 +42,30 @@ def generate_branch_count_figure(branch_rows: list[dict[str, str]], target: Path
                 xs,
                 ys,
                 yerr=errs,
-                marker="o",
+                marker=MODEL_MARKERS[model],
+                linestyle=MODEL_LINESTYLES[model],
                 linewidth=2,
                 capsize=3,
                 color=MODEL_COLORS[model],
                 label=model,
+                elinewidth=0.8,
+                capthick=0.8,
             )
-        ax.set_title(dataset)
-        ax.set_xlabel("Branch Count B")
-        ax.grid(alpha=0.25, linestyle="--")
-    axes[0].set_ylabel("Mean Best Test Accuracy")
-    axes[1].legend(frameon=False, loc="lower left")
-    fig.suptitle("Branch-Count Ablation on PROTEINS and DD", y=1.02)
+        ax.set_title(dataset, fontweight="bold")
+        ax.set_xlabel("Branch count B")
+        style_axis(ax)
+    axes[0].set_ylabel("Mean best test accuracy")
+    axes[1].legend(loc="lower left")
+    fig.suptitle("Branch-count ablation on PROTEINS and DD", y=1.03, fontweight="bold")
     fig.tight_layout()
     target.parent.mkdir(parents=True, exist_ok=True)
-    fig.savefig(target, dpi=300, bbox_inches="tight")
-    fig.savefig(target.with_suffix(".png"), dpi=300, bbox_inches="tight")
+    fig.savefig(target)
+    fig.savefig(target.with_suffix(".png"))
     plt.close(fig)
 
 
 def generate_sensitivity_figure(rows: list[dict[str, str]], target: Path) -> None:
+    apply_paper_style()
     fig, axes = plt.subplots(2, 2, figsize=(12, 8), sharey=False)
     panel_specs = [
         ("PROTEINS", "lr", "Learning Rate"),
@@ -83,7 +85,13 @@ def generate_sensitivity_figure(rows: list[dict[str, str]], target: Path) -> Non
         sweep_rows = sorted(sweep_rows, key=lambda r: float(r["sweep_value"]))
         xs = [str(r["sweep_value"]) for r in sweep_rows]
         ys = [float(r["mean_best_test_acc"]) for r in sweep_rows]
-        ax.plot(xs, ys, marker="o", linewidth=2, color=MODEL_COLORS["MatrixResGated"])
+        ax.plot(
+            xs,
+            ys,
+            marker=MODEL_MARKERS["MatrixResGated"],
+            linewidth=2,
+            color=MODEL_COLORS["MatrixResGated"],
+        )
         ax.axhline(
             float(baseline["mean_best_test_acc"]),
             color="#444444",
@@ -91,16 +99,16 @@ def generate_sensitivity_figure(rows: list[dict[str, str]], target: Path) -> Non
             linewidth=1.5,
             label="baseline",
         )
-        ax.set_title(f"{dataset}: {title}")
+        ax.set_title(f"{dataset}: {title}", fontweight="bold")
         ax.set_xlabel(sweep_name)
-        ax.set_ylabel("Best Test Accuracy")
-        ax.grid(alpha=0.25, linestyle="--")
-        ax.legend(frameon=False, loc="best")
-    fig.suptitle("MatrixResGated Sensitivity Slices", y=1.01)
+        ax.set_ylabel("Best test accuracy")
+        style_axis(ax)
+        ax.legend(loc="best")
+    fig.suptitle("MatrixResGated sensitivity slices", y=1.01, fontweight="bold")
     fig.tight_layout()
     target.parent.mkdir(parents=True, exist_ok=True)
-    fig.savefig(target, dpi=300, bbox_inches="tight")
-    fig.savefig(target.with_suffix(".png"), dpi=300, bbox_inches="tight")
+    fig.savefig(target)
+    fig.savefig(target.with_suffix(".png"))
     plt.close(fig)
 
 

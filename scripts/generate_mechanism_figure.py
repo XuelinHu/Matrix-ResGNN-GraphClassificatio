@@ -2,17 +2,16 @@ from __future__ import annotations
 
 import argparse
 import csv
+import sys
 from pathlib import Path
 
 import matplotlib.pyplot as plt
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 
-MODEL_COLORS = {
-    "HorizontalRes": "#d1495b",
-    "MatrixRes": "#2e86ab",
-    "MatrixResGated": "#3a7d44",
-}
+from scripts.plot_style import MODEL_COLORS, MODEL_LINESTYLES, MODEL_MARKERS, apply_paper_style, style_axis
 
 
 def parse_args() -> argparse.Namespace:
@@ -39,7 +38,8 @@ def main() -> None:
         ("mean_grad_norm", "Mean Gradient Norm", mech_rows, "branches"),
     ]
     datasets = ["PROTEINS", "DD"]
-    fig, axes = plt.subplots(2, 4, figsize=(16, 7), sharex="col")
+    apply_paper_style()
+    fig, axes = plt.subplots(2, 4, figsize=(16, 7.2), sharex="col")
 
     for row_idx, dataset in enumerate(datasets):
         for col_idx, (metric, title, source_rows, branch_key) in enumerate(metric_specs):
@@ -53,24 +53,32 @@ def main() -> None:
                     subset = sorted(subset, key=lambda r: int(r["branches"].replace("B", "")))
                     xs = [int(r["branches"].replace("B", "")) for r in subset]
                 ys = [float(r[metric]) for r in subset]
-                ax.plot(xs, ys, marker="o", linewidth=2, color=MODEL_COLORS[model], label=model)
+                ax.plot(
+                    xs,
+                    ys,
+                    marker=MODEL_MARKERS[model],
+                    linestyle=MODEL_LINESTYLES[model],
+                    linewidth=2,
+                    color=MODEL_COLORS[model],
+                    label=model,
+                )
             if row_idx == 0:
-                ax.set_title(title)
+                ax.set_title(title, fontweight="bold")
             if col_idx == 0:
                 ax.set_ylabel(dataset)
-            ax.grid(alpha=0.25, linestyle="--")
             ax.set_xlabel("B")
+            style_axis(ax)
 
     handles, labels = axes[0, 0].get_legend_handles_labels()
-    fig.legend(handles, labels, loc="upper center", ncol=3, frameon=False, bbox_to_anchor=(0.5, 1.02))
-    fig.suptitle("Branch-Count Dynamics: Accuracy, Diversity, Redundancy, and Optimization", y=1.08)
+    fig.legend(handles, labels, loc="upper center", ncol=3, bbox_to_anchor=(0.5, 1.02))
+    fig.suptitle("Branch-count dynamics: accuracy, diversity, redundancy, and optimization", y=1.08, fontweight="bold")
     fig.tight_layout()
 
     out_dir = ROOT / "figures" / "exp"
     out_dir.mkdir(parents=True, exist_ok=True)
     target = out_dir / "fig_mechanism_branch_dynamics.pdf"
-    fig.savefig(target, dpi=300, bbox_inches="tight")
-    fig.savefig(target.with_suffix(".png"), dpi=300, bbox_inches="tight")
+    fig.savefig(target)
+    fig.savefig(target.with_suffix(".png"))
     plt.close(fig)
     print(target)
 
