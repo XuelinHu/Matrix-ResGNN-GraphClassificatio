@@ -5,20 +5,25 @@ All results are reported as five-fold mean best test accuracy \(\pm\) fold-level
 
 \subsection{Overall benchmark performance}
 
-Table~\ref{tab:main_benchmark} reports the default \(B=3\) comparison. Residual topology changes the ranking, but the ranking is dataset-dependent. On PROTEINS, HorizontalRes gives the strongest mean accuracy at \(0.7062\pm0.0323\). On DD, VerticalRes performs best at \(0.7249\pm0.0247\). On ENZYMES, MatrixResGated obtains the best mean accuracy at \(0.2933\pm0.0470\), although the low absolute accuracy and higher variance make this dataset better interpreted as a difficult supporting benchmark.
+The main benchmark asks whether a single residual topology remains strongest across datasets and message-passing operators. The answer is negative. Across the 24 dataset--operator combinations, MatrixRes obtains the largest number of wins (9/24) and the best mean rank (2.13), but it is not uniformly dominant. MatrixResGated wins 5 combinations, Plain wins 5, HorizontalRes wins 3, and VerticalRes wins 2. This mixed ordering is important for the paper's central claim: matrix-style reuse is a strong residual topology, but it should be treated as a tunable design family rather than as a universal replacement for simpler residual paths.
+
+Table~\ref{tab:main_benchmark} reports the GCNConv slice at the default branch count \(B=3\). This slice is useful because it holds the operator fixed while showing how the preferred topology changes by dataset. Plain is strongest on PROTEINS, HorizontalRes is strongest on DD, MatrixResGated is strongest on ENZYMES, and MatrixRes is strongest on MUTAG, AIDS, and Mutagenicity.
 
 \begin{table}[h]
 \centering
-\small
-\caption{Main benchmark results with GCNConv and default branch count \(B=3\).}
+\scriptsize
+\caption{GCNConv benchmark results with default branch count \(B=3\).}
 \label{tab:main_benchmark}
 \begin{tabular}{l c c c c c}
 \toprule
 Dataset & Plain & VerticalRes & HorizontalRes & MatrixRes & MatrixResGated \\
 \midrule
-PROTEINS & \(0.7044\pm0.0387\) & \(0.6981\pm0.0402\) & \(\mathbf{0.7062\pm0.0323}\) & \(0.7035\pm0.0247\) & \(0.7026\pm0.0238\) \\
-DD & \(0.7053\pm0.0517\) & \(\mathbf{0.7249\pm0.0247}\) & \(0.7113\pm0.0409\) & \(0.7122\pm0.0362\) & \(0.7181\pm0.0259\) \\
+PROTEINS & \(\mathbf{0.7044\pm0.0387}\) & \(0.6993\pm0.0340\) & \(0.6992\pm0.0399\) & \(0.6973\pm0.0324\) & \(0.6886\pm0.0397\) \\
+DD & \(0.7053\pm0.0517\) & \(0.7143\pm0.0260\) & \(\mathbf{0.7181\pm0.0296}\) & \(0.7127\pm0.0365\) & \(0.7141\pm0.0359\) \\
 ENZYMES & \(0.2683\pm0.0343\) & \(0.2550\pm0.0455\) & \(0.2633\pm0.0584\) & \(0.2750\pm0.0577\) & \(\mathbf{0.2933\pm0.0470}\) \\
+MUTAG & \(0.7556\pm0.0439\) & \(0.7451\pm0.0695\) & \(0.7343\pm0.0433\) & \(\mathbf{0.7609\pm0.0715}\) & \(0.7556\pm0.0721\) \\
+AIDS & \(0.8215\pm0.0046\) & \(0.8210\pm0.0233\) & \(0.8130\pm0.0297\) & \(\mathbf{0.8365\pm0.0412}\) & \(0.8150\pm0.0231\) \\
+Mutagenicity & \(0.7644\pm0.0188\) & \(0.7667\pm0.0212\) & \(0.7738\pm0.0134\) & \(\mathbf{0.7784\pm0.0185}\) & \(0.7701\pm0.0165\) \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -30,7 +35,36 @@ ENZYMES & \(0.2683\pm0.0343\) & \(0.2550\pm0.0455\) & \(0.2633\pm0.0584\) & \(0.
 \label{fig:main_benchmark}
 \end{figure}
 
-Figure~\ref{fig:main_benchmark} makes the split regime visually explicit. The default setting does not support a universal residual winner; instead, each dataset favors a different residual neighborhood.
+Figure~\ref{fig:main_benchmark} makes the split regime visually explicit. The default GCNConv setting does not support a universal residual winner; instead, each dataset favors a different residual neighborhood.
+
+\subsection{Operator robustness}
+
+The full four-operator benchmark tests whether the GCNConv pattern is operator-specific. Table~\ref{tab:operator_wins} counts the winning topology across the 24 dataset--operator combinations. MatrixRes is the most frequent winner overall and wins under every operator family, but the remaining wins are distributed across all other models. This confirms that the residual-topology question is not reducible to one backbone choice.
+
+\begin{table}[h]
+\centering
+\small
+\caption{Winner counts across 24 dataset--operator combinations.}
+\label{tab:operator_wins}
+\begin{tabular}{l c c}
+\toprule
+Model & Wins & Mean rank \\
+\midrule
+Plain & 5 & 3.04 \\
+VerticalRes & 2 & 3.38 \\
+HorizontalRes & 3 & 3.54 \\
+MatrixRes & \(\mathbf{9}\) & \(\mathbf{2.13}\) \\
+MatrixResGated & 5 & 2.92 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.82\linewidth]{figures/exp/fig_model_win_counts.pdf}
+\caption{Model-level winner counts across the six datasets and four message-passing operators.}
+\label{fig:model_win_counts}
+\end{figure}
 
 \subsection{Branch-count ablation}
 

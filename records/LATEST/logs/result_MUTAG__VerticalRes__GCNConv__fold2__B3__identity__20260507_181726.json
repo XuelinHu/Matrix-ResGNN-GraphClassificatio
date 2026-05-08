@@ -1,0 +1,63 @@
+{
+  "config": {
+    "dataset": "MUTAG",
+    "model": "VerticalRes",
+    "operator": "GCNConv",
+    "version": "LATEST",
+    "fold": 2,
+    "seed": 1024,
+    "ep": 200,
+    "lr": 0.005,
+    "weight_decay": 0.0001,
+    "drop": 0.5,
+    "dim": 64,
+    "h_layer": 4,
+    "num_branches": 3,
+    "batch_size": 256,
+    "val_ratio": 0.1,
+    "patience": 60,
+    "min_delta": 0.0,
+    "grad_clip": 2.0,
+    "lr_factor": 0.5,
+    "lr_patience": 15,
+    "min_lr": 1e-05,
+    "gate_init": 0.8,
+    "gate_mode": "learnable",
+    "fixed_gate_value": 0.8,
+    "residual_mode": "identity",
+    "topk_ratio": 0.5,
+    "sparse_lambda": 0.05
+  },
+  "version": "LATEST",
+  "dataset_stats": {
+    "dataset": "MUTAG",
+    "dataset_family": "tu",
+    "graphs": 188,
+    "classes": 2,
+    "num_features": 7,
+    "avg_nodes": 17.930851063829788,
+    "avg_edges": 19.79255319148936,
+    "avg_degree": 2.1887720785524962,
+    "class_hist": {
+      "0": 63,
+      "1": 125
+    }
+  },
+  "split_context": {
+    "dataset_family": "tu",
+    "split_protocol": "stratified_5fold_cv",
+    "repeat_id": 2,
+    "official_split": false
+  },
+  "parameter_stats": {
+    "total_params": 39107,
+    "trainable_params": 39107,
+    "frozen_params": 0
+  },
+  "best_epoch": 130,
+  "best_val_loss": 0.47238874435424805,
+  "best_val_acc": 0.7333333333333333,
+  "best_test_acc": 0.7368421052631579,
+  "test_loss": 0.5264403820037842,
+  "runtime_seconds": 13.787740468978882
+}

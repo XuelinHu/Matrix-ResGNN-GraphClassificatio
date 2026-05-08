@@ -64,16 +64,16 @@ This local stencil is intentionally not dense all-to-all mixing. It preserves an
 \begin{equation}
 \mathcal{R}(\mathbf{U}) =
 \begin{cases}
-\alpha \mathbf{U}, & \text{gated residual injection},\\
-\mathrm{softshrink}_{\lambda}(\mathbf{U}), & \text{sparse residual filtering}.
+\alpha \mathbf{U}, & \text{identity residual filtering with a gate},\\
+\alpha\,\mathrm{softshrink}_{\lambda}(\mathbf{U}), & \text{sparse residual filtering with a gate}.
 \end{cases}
 \end{equation}
-This variant tests whether matrix residual reuse should be passed densely or selectively.
+In the main benchmark, Plain, VerticalRes, HorizontalRes, and MatrixRes use identity residual filtering. MatrixResGated uses sparse residual filtering with \(\lambda=0.05\) and a learnable scalar gate initialized at 0.8. The implementation also supports top-\(k\) residual filtering and fixed gates, but these are not the default settings used for the main reported results.
 
 \subsection{Datasets and evaluation protocol}
 \label{sec:datasets}
 
-The main benchmark uses PROTEINS, DD, and ENZYMES from TUDataset \cite{morris2020tudataset}. PROTEINS and DD are binary protein-structure graph classification benchmarks, while ENZYMES is a six-class enzyme classification benchmark. All experiments use the raw benchmark features and graph structures without task-specific feature engineering.
+The main benchmark uses six datasets from TUDataset \cite{morris2020tudataset}: PROTEINS, DD, ENZYMES, MUTAG, AIDS, and Mutagenicity. PROTEINS and DD are binary protein-structure graph classification benchmarks, ENZYMES is a six-class enzyme classification benchmark, and MUTAG, AIDS, and Mutagenicity provide supplementary molecular-graph robustness checks. All experiments use the raw benchmark features and graph structures without task-specific feature engineering.
 
 All main results use graph-level five-fold evaluation. For fold \(k\), the test accuracy is
 \begin{equation}
@@ -90,7 +90,7 @@ and the fold-level standard deviation.
 
 \subsection{Training configuration}
 
-All main benchmark runs use a shared GCNConv backbone with default branch count \(B=3\). The hidden dimension is 64 unless a sensitivity setting changes it, and all model families use the same optimizer, early-stopping logic, graph pooling, and fold protocol. The branch-count ablation evaluates \(B=1,\ldots,8\) for HorizontalRes, MatrixRes, and MatrixResGated on PROTEINS and DD. The sensitivity scan evaluates MatrixRes and MatrixResGated on fold 0 at \(B=3\), varying learning rate, dropout, hidden dimension, sparsity strength, and gate initialization. Selected MatrixResGated candidates are then rerun across all five folds.
+All main benchmark runs use the default branch count \(B=3\). The benchmark is repeated under four message-passing operators: GCNConv, GATConv, SAGEConv, and GINConv. The hidden dimension is 64 unless a sensitivity setting changes it, and all model families use the same optimizer, early-stopping logic, graph pooling, and fold protocol. The branch-count ablation evaluates \(B=1,\ldots,8\) for HorizontalRes, MatrixRes, and MatrixResGated on PROTEINS and DD under GCNConv. The sensitivity scan evaluates MatrixRes and MatrixResGated on fold 0 at \(B=3\), varying learning rate, dropout, hidden dimension, sparsity strength, and gate initialization. Selected MatrixResGated candidates are then rerun across all five folds.
 
 \begin{table}[h]
 \centering
@@ -101,13 +101,14 @@ All main benchmark runs use a shared GCNConv backbone with default branch count 
 \toprule
 Parameter & Value \\
 \midrule
-Message-passing operator & GCNConv \\
+Message-passing operators & GCNConv, GATConv, SAGEConv, GINConv \\
 Default branch count & 3 \\
 Default hidden dimension & 64 \\
 Evaluation & Five-fold graph classification \\
 Branch-count ablation & \(B=1,\ldots,8\) \\
 Primary metric & Mean best test accuracy \\
 Sensitivity scope & Fold 0, \(B=3\) \\
+Early stopping & Validation loss, patience 60 or 80 \\
 \bottomrule
 \end{tabular}
 \end{table}

@@ -1,0 +1,3017 @@
+{
+  "scope": {
+    "queue_name": "full_benchmark_6datasets_4ops",
+    "version": "LATEST",
+    "datasets": [
+      "PROTEINS",
+      "DD",
+      "ENZYMES",
+      "MUTAG",
+      "AIDS",
+      "Mutagenicity"
+    ],
+    "models": [
+      "Plain",
+      "VerticalRes",
+      "HorizontalRes",
+      "MatrixRes",
+      "MatrixResGated"
+    ],
+    "operators": [
+      "GCNConv",
+      "GATConv",
+      "SAGEConv",
+      "GINConv"
+    ],
+    "folds": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "expected": 600,
+    "completed_before": 455,
+    "pending_at_start": 425,
+    "max_workers": 4,
+    "pid": 4023322,
+    "started_at": "2026-05-07T18:31:18"
+  },
+  "jobs": [
+    {
+      "key": "result_PROTEINS__Plain__GATConv__fold0__B3__identity",
+      "dataset": "PROTEINS",
+      "model": "Plain",
+      "operator": "GATConv",
+      "fold": 0
+    },
+    {
+      "key": "result_PROTEINS__Plain__GATConv__fold1__B3__identity",
+      "dataset": "PROTEINS",
+      "model": "Plain",
+      "operator": "GATConv",
+      "fold": 1
+    },
+    {
+      "key": "result_PROTEINS__Plain__GATConv__fold2__B3__identity",
+      "dataset": "PROTEINS",
+      "model": "Plain",
+      "operator": "GATConv",
+      "fold": 2
+    },
+    {
+      "key": "result_PROTEINS__Plain__GATConv__fold3__B3__identity",
+      "dataset": "PROTEINS",
+      "model": "Plain",
+      "operator": "GATConv",
+      "fold": 3
+    },
+    {
+      "key": "result_PROTEINS__Plain__GATConv__fold4__B3__identity",
+      "dataset": "PROTEINS",
+      "model": "Plain",
+      "operator": "GATConv",
+      "fold": 4
+    },
+    {
+      "key": "result_PROTEINS__Plain__SAGEConv__fold0__B3__identity",
+      "dataset": "PROTEINS",
+      "model": "Plain",
+      "operator": "SAGEConv",
+      "fold": 0
+    },
+    {
+      "key": "result_PROTEINS__Plain__SAGEConv__fold1__B3__identity",
+      "dataset": "PROTEINS",
+      "model": "Plain",
+      "operator": "SAGEConv",
+      "fold": 1
+    },
+    {
+      "key": "result_PROTEINS__Plain__SAGEConv__fold2__B3__identity",
+      "dataset": "PROTEINS",
+      "model": "Plain",
+      "operator": "SAGEConv",
+      "fold": 2
+    },
+    {
+      "key": "result_PROTEINS__Plain__SAGEConv__fold3__B3__identity",
+      "dataset": "PROTEINS",
+      "model": "Plain",
+      "operator": "SAGEConv",
+      "fold": 3
+    },
+    {
+      "key": "result_PROTEINS__Plain__SAGEConv__fold4__B3__identity",
+      "dataset": "PROTEINS",
+      "model": "Plain",
+      "operator": "SAGEConv",
+      "fold": 4
+    },
+    {
+      "key": "result_PROTEINS__VerticalRes__GATConv__fold0__B3__identity",
+      "dataset": "PROTEINS",
+      "model": "VerticalRes",
+      "operator": "GATConv",
+      "fold": 0
+    },
+    {
+      "key": "result_PROTEINS__VerticalRes__GATConv__fold1__B3__identity",
+      "dataset": "PROTEINS",
+      "model": "VerticalRes",
+      "operator": "GATConv",
+      "fold": 1
+    },
+    {
+      "key": "result_PROTEINS__VerticalRes__GATConv__fold2__B3__identity",
+      "dataset": "PROTEINS",
+      "model": "VerticalRes",
+      "operator": "GATConv",
+      "fold": 2
+    },
+    {
+      "key": "result_PROTEINS__VerticalRes__GATConv__fold3__B3__identity",
+      "dataset": "PROTEINS",
+      "model": "VerticalRes",
+      "operator": "GATConv",
+      "fold": 3
+    },
+    {
+      "key": "result_PROTEINS__VerticalRes__GATConv__fold4__B3__identity",
+      "dataset": "PROTEINS",
+      "model": "VerticalRes",
+      "operator": "GATConv",
+      "fold": 4
+    },
+    {
+      "key": "result_PROTEINS__VerticalRes__SAGEConv__fold0__B3__identity",
+      "dataset": "PROTEINS",
+      "model": "VerticalRes",
+      "operator": "SAGEConv",
+      "fold": 0
+    },
+    {
+      "key": "result_PROTEINS__VerticalRes__SAGEConv__fold1__B3__identity",
+      "dataset": "PROTEINS",
+      "model": "VerticalRes",
+      "operator": "SAGEConv",
+      "fold": 1
+    },
+    {
+      "key": "result_PROTEINS__VerticalRes__SAGEConv__fold2__B3__identity",
+      "dataset": "PROTEINS",
+      "model": "VerticalRes",
+      "operator": "SAGEConv",
+      "fold": 2
+    },
+    {
+      "key": "result_PROTEINS__VerticalRes__SAGEConv__fold3__B3__identity",
+      "dataset": "PROTEINS",
+      "model": "VerticalRes",
+      "operator": "SAGEConv",
+      "fold": 3
+    },
+    {
+      "key": "result_PROTEINS__VerticalRes__SAGEConv__fold4__B3__identity",
+      "dataset": "PROTEINS",
+      "model": "VerticalRes",
+      "operator": "SAGEConv",
+      "fold": 4
+    },
+    {
+      "key": "result_PROTEINS__HorizontalRes__GATConv__fold0__B3__identity",
+      "dataset": "PROTEINS",
+      "model": "HorizontalRes",
+      "operator": "GATConv",
+      "fold": 0
+    },
+    {
+      "key": "result_PROTEINS__HorizontalRes__GATConv__fold1__B3__identity",
+      "dataset": "PROTEINS",
+      "model": "HorizontalRes",
+      "operator": "GATConv",
+      "fold": 1
+    },
+    {
+      "key": "result_PROTEINS__HorizontalRes__GATConv__fold2__B3__identity",
+      "dataset": "PROTEINS",
+      "model": "HorizontalRes",
+      "operator": "GATConv",
+      "fold": 2
+    },
+    {
+      "key": "result_PROTEINS__HorizontalRes__GATConv__fold3__B3__identity",
+      "dataset": "PROTEINS",
+      "model": "HorizontalRes",
+      "operator": "GATConv",
+      "fold": 3
+    },
+    {
+      "key": "result_PROTEINS__HorizontalRes__GATConv__fold4__B3__identity",
+      "dataset": "PROTEINS",
+      "model": "HorizontalRes",
+      "operator": "GATConv",
+      "fold": 4
+    },
+    {
+      "key": "result_PROTEINS__HorizontalRes__SAGEConv__fold0__B3__identity",
+      "dataset": "PROTEINS",
+      "model": "HorizontalRes",
+      "operator": "SAGEConv",
+      "fold": 0
+    },
+    {
+      "key": "result_PROTEINS__HorizontalRes__SAGEConv__fold1__B3__identity",
+      "dataset": "PROTEINS",
+      "model": "HorizontalRes",
+      "operator": "SAGEConv",
+      "fold": 1
+    },
+    {
+      "key": "result_PROTEINS__HorizontalRes__SAGEConv__fold2__B3__identity",
+      "dataset": "PROTEINS",
+      "model": "HorizontalRes",
+      "operator": "SAGEConv",
+      "fold": 2
+    },
+    {
+      "key": "result_PROTEINS__HorizontalRes__SAGEConv__fold3__B3__identity",
+      "dataset": "PROTEINS",
+      "model": "HorizontalRes",
+      "operator": "SAGEConv",
+      "fold": 3
+    },
+    {
+      "key": "result_PROTEINS__HorizontalRes__SAGEConv__fold4__B3__identity",
+      "dataset": "PROTEINS",
+      "model": "HorizontalRes",
+      "operator": "SAGEConv",
+      "fold": 4
+    },
+    {
+      "key": "result_PROTEINS__MatrixRes__GATConv__fold0__B3__identity",
+      "dataset": "PROTEINS",
+      "model": "MatrixRes",
+      "operator": "GATConv",
+      "fold": 0
+    },
+    {
+      "key": "result_PROTEINS__MatrixRes__GATConv__fold1__B3__identity",
+      "dataset": "PROTEINS",
+      "model": "MatrixRes",
+      "operator": "GATConv",
+      "fold": 1
+    },
+    {
+      "key": "result_PROTEINS__MatrixRes__GATConv__fold2__B3__identity",
+      "dataset": "PROTEINS",
+      "model": "MatrixRes",
+      "operator": "GATConv",
+      "fold": 2
+    },
+    {
+      "key": "result_PROTEINS__MatrixRes__GATConv__fold3__B3__identity",
+      "dataset": "PROTEINS",
+      "model": "MatrixRes",
+      "operator": "GATConv",
+      "fold": 3
+    },
+    {
+      "key": "result_PROTEINS__MatrixRes__GATConv__fold4__B3__identity",
+      "dataset": "PROTEINS",
+      "model": "MatrixRes",
+      "operator": "GATConv",
+      "fold": 4
+    },
+    {
+      "key": "result_PROTEINS__MatrixRes__SAGEConv__fold0__B3__identity",
+      "dataset": "PROTEINS",
+      "model": "MatrixRes",
+      "operator": "SAGEConv",
+      "fold": 0
+    },
+    {
+      "key": "result_PROTEINS__MatrixRes__SAGEConv__fold1__B3__identity",
+      "dataset": "PROTEINS",
+      "model": "MatrixRes",
+      "operator": "SAGEConv",
+      "fold": 1
+    },
+    {
+      "key": "result_PROTEINS__MatrixRes__SAGEConv__fold2__B3__identity",
+      "dataset": "PROTEINS",
+      "model": "MatrixRes",
+      "operator": "SAGEConv",
+      "fold": 2
+    },
+    {
+      "key": "result_PROTEINS__MatrixRes__SAGEConv__fold3__B3__identity",
+      "dataset": "PROTEINS",
+      "model": "MatrixRes",
+      "operator": "SAGEConv",
+      "fold": 3
+    },
+    {
+      "key": "result_PROTEINS__MatrixRes__SAGEConv__fold4__B3__identity",
+      "dataset": "PROTEINS",
+      "model": "MatrixRes",
+      "operator": "SAGEConv",
+      "fold": 4
+    },
+    {
+      "key": "result_PROTEINS__MatrixResGated__GATConv__fold0__B3__sparse",
+      "dataset": "PROTEINS",
+      "model": "MatrixResGated",
+      "operator": "GATConv",
+      "fold": 0
+    },
+    {
+      "key": "result_PROTEINS__MatrixResGated__GATConv__fold1__B3__sparse",
+      "dataset": "PROTEINS",
+      "model": "MatrixResGated",
+      "operator": "GATConv",
+      "fold": 1
+    },
+    {
+      "key": "result_PROTEINS__MatrixResGated__GATConv__fold2__B3__sparse",
+      "dataset": "PROTEINS",
+      "model": "MatrixResGated",
+      "operator": "GATConv",
+      "fold": 2
+    },
+    {
+      "key": "result_PROTEINS__MatrixResGated__GATConv__fold3__B3__sparse",
+      "dataset": "PROTEINS",
+      "model": "MatrixResGated",
+      "operator": "GATConv",
+      "fold": 3
+    },
+    {
+      "key": "result_PROTEINS__MatrixResGated__GATConv__fold4__B3__sparse",
+      "dataset": "PROTEINS",
+      "model": "MatrixResGated",
+      "operator": "GATConv",
+      "fold": 4
+    },
+    {
+      "key": "result_PROTEINS__MatrixResGated__SAGEConv__fold0__B3__sparse",
+      "dataset": "PROTEINS",
+      "model": "MatrixResGated",
+      "operator": "SAGEConv",
+      "fold": 0
+    },
+    {
+      "key": "result_PROTEINS__MatrixResGated__SAGEConv__fold1__B3__sparse",
+      "dataset": "PROTEINS",
+      "model": "MatrixResGated",
+      "operator": "SAGEConv",
+      "fold": 1
+    },
+    {
+      "key": "result_PROTEINS__MatrixResGated__SAGEConv__fold2__B3__sparse",
+      "dataset": "PROTEINS",
+      "model": "MatrixResGated",
+      "operator": "SAGEConv",
+      "fold": 2
+    },
+    {
+      "key": "result_PROTEINS__MatrixResGated__SAGEConv__fold3__B3__sparse",
+      "dataset": "PROTEINS",
+      "model": "MatrixResGated",
+      "operator": "SAGEConv",
+      "fold": 3
+    },
+    {
+      "key": "result_PROTEINS__MatrixResGated__SAGEConv__fold4__B3__sparse",
+      "dataset": "PROTEINS",
+      "model": "MatrixResGated",
+      "operator": "SAGEConv",
+      "fold": 4
+    },
+    {
+      "key": "result_DD__Plain__GATConv__fold0__B3__identity",
+      "dataset": "DD",
+      "model": "Plain",
+      "operator": "GATConv",
+      "fold": 0
+    },
+    {
+      "key": "result_DD__Plain__GATConv__fold1__B3__identity",
+      "dataset": "DD",
+      "model": "Plain",
+      "operator": "GATConv",
+      "fold": 1
+    },
+    {
+      "key": "result_DD__Plain__GATConv__fold2__B3__identity",
+      "dataset": "DD",
+      "model": "Plain",
+      "operator": "GATConv",
+      "fold": 2
+    },
+    {
+      "key": "result_DD__Plain__GATConv__fold3__B3__identity",
+      "dataset": "DD",
+      "model": "Plain",
+      "operator": "GATConv",
+      "fold": 3
+    },
+    {
+      "key": "result_DD__Plain__GATConv__fold4__B3__identity",
+      "dataset": "DD",
+      "model": "Plain",
+      "operator": "GATConv",
+      "fold": 4
+    },
+    {
+      "key": "result_DD__Plain__SAGEConv__fold0__B3__identity",
+      "dataset": "DD",
+      "model": "Plain",
+      "operator": "SAGEConv",
+      "fold": 0
+    },
+    {
+      "key": "result_DD__Plain__SAGEConv__fold1__B3__identity",
+      "dataset": "DD",
+      "model": "Plain",
+      "operator": "SAGEConv",
+      "fold": 1
+    },
+    {
+      "key": "result_DD__Plain__SAGEConv__fold2__B3__identity",
+      "dataset": "DD",
+      "model": "Plain",
+      "operator": "SAGEConv",
+      "fold": 2
+    },
+    {
+      "key": "result_DD__Plain__SAGEConv__fold3__B3__identity",
+      "dataset": "DD",
+      "model": "Plain",
+      "operator": "SAGEConv",
+      "fold": 3
+    },
+    {
+      "key": "result_DD__Plain__SAGEConv__fold4__B3__identity",
+      "dataset": "DD",
+      "model": "Plain",
+      "operator": "SAGEConv",
+      "fold": 4
+    },
+    {
+      "key": "result_DD__VerticalRes__GATConv__fold0__B3__identity",
+      "dataset": "DD",
+      "model": "VerticalRes",
+      "operator": "GATConv",
+      "fold": 0
+    },
+    {
+      "key": "result_DD__VerticalRes__GATConv__fold1__B3__identity",
+      "dataset": "DD",
+      "model": "VerticalRes",
+      "operator": "GATConv",
+      "fold": 1
+    },
+    {
+      "key": "result_DD__VerticalRes__GATConv__fold2__B3__identity",
+      "dataset": "DD",
+      "model": "VerticalRes",
+      "operator": "GATConv",
+      "fold": 2
+    },
+    {
+      "key": "result_DD__VerticalRes__GATConv__fold3__B3__identity",
+      "dataset": "DD",
+      "model": "VerticalRes",
+      "operator": "GATConv",
+      "fold": 3
+    },
+    {
+      "key": "result_DD__VerticalRes__GATConv__fold4__B3__identity",
+      "dataset": "DD",
+      "model": "VerticalRes",
+      "operator": "GATConv",
+      "fold": 4
+    },
+    {
+      "key": "result_DD__VerticalRes__SAGEConv__fold0__B3__identity",
+      "dataset": "DD",
+      "model": "VerticalRes",
+      "operator": "SAGEConv",
+      "fold": 0
+    },
+    {
+      "key": "result_DD__VerticalRes__SAGEConv__fold1__B3__identity",
+      "dataset": "DD",
+      "model": "VerticalRes",
+      "operator": "SAGEConv",
+      "fold": 1
+    },
+    {
+      "key": "result_DD__VerticalRes__SAGEConv__fold2__B3__identity",
+      "dataset": "DD",
+      "model": "VerticalRes",
+      "operator": "SAGEConv",
+      "fold": 2
+    },
+    {
+      "key": "result_DD__VerticalRes__SAGEConv__fold3__B3__identity",
+      "dataset": "DD",
+      "model": "VerticalRes",
+      "operator": "SAGEConv",
+      "fold": 3
+    },
+    {
+      "key": "result_DD__VerticalRes__SAGEConv__fold4__B3__identity",
+      "dataset": "DD",
+      "model": "VerticalRes",
+      "operator": "SAGEConv",
+      "fold": 4
+    },
+    {
+      "key": "result_DD__HorizontalRes__GATConv__fold0__B3__identity",
+      "dataset": "DD",
+      "model": "HorizontalRes",
+      "operator": "GATConv",
+      "fold": 0
+    },
+    {
+      "key": "result_DD__HorizontalRes__GATConv__fold1__B3__identity",
+      "dataset": "DD",
+      "model": "HorizontalRes",
+      "operator": "GATConv",
+      "fold": 1
+    },
+    {
+      "key": "result_DD__HorizontalRes__GATConv__fold2__B3__identity",
+      "dataset": "DD",
+      "model": "HorizontalRes",
+      "operator": "GATConv",
+      "fold": 2
+    },
+    {
+      "key": "result_DD__HorizontalRes__GATConv__fold3__B3__identity",
+      "dataset": "DD",
+      "model": "HorizontalRes",
+      "operator": "GATConv",
+      "fold": 3
+    },
+    {
+      "key": "result_DD__HorizontalRes__GATConv__fold4__B3__identity",
+      "dataset": "DD",
+      "model": "HorizontalRes",
+      "operator": "GATConv",
+      "fold": 4
+    },
+    {
+      "key": "result_DD__HorizontalRes__SAGEConv__fold0__B3__identity",
+      "dataset": "DD",
+      "model": "HorizontalRes",
+      "operator": "SAGEConv",
+      "fold": 0
+    },
+    {
+      "key": "result_DD__HorizontalRes__SAGEConv__fold1__B3__identity",
+      "dataset": "DD",
+      "model": "HorizontalRes",
+      "operator": "SAGEConv",
+      "fold": 1
+    },
+    {
+      "key": "result_DD__HorizontalRes__SAGEConv__fold2__B3__identity",
+      "dataset": "DD",
+      "model": "HorizontalRes",
+      "operator": "SAGEConv",
+      "fold": 2
+    },
+    {
+      "key": "result_DD__HorizontalRes__SAGEConv__fold3__B3__identity",
+      "dataset": "DD",
+      "model": "HorizontalRes",
+      "operator": "SAGEConv",
+      "fold": 3
+    },
+    {
+      "key": "result_DD__HorizontalRes__SAGEConv__fold4__B3__identity",
+      "dataset": "DD",
+      "model": "HorizontalRes",
+      "operator": "SAGEConv",
+      "fold": 4
+    },
+    {
+      "key": "result_DD__MatrixRes__GATConv__fold0__B3__identity",
+      "dataset": "DD",
+      "model": "MatrixRes",
+      "operator": "GATConv",
+      "fold": 0
+    },
+    {
+      "key": "result_DD__MatrixRes__GATConv__fold1__B3__identity",
+      "dataset": "DD",
+      "model": "MatrixRes",
+      "operator": "GATConv",
+      "fold": 1
+    },
+    {
+      "key": "result_DD__MatrixRes__GATConv__fold2__B3__identity",
+      "dataset": "DD",
+      "model": "MatrixRes",
+      "operator": "GATConv",
+      "fold": 2
+    },
+    {
+      "key": "result_DD__MatrixRes__GATConv__fold3__B3__identity",
+      "dataset": "DD",
+      "model": "MatrixRes",
+      "operator": "GATConv",
+      "fold": 3
+    },
+    {
+      "key": "result_DD__MatrixRes__GATConv__fold4__B3__identity",
+      "dataset": "DD",
+      "model": "MatrixRes",
+      "operator": "GATConv",
+      "fold": 4
+    },
+    {
+      "key": "result_DD__MatrixRes__SAGEConv__fold0__B3__identity",
+      "dataset": "DD",
+      "model": "MatrixRes",
+      "operator": "SAGEConv",
+      "fold": 0
+    },
+    {
+      "key": "result_DD__MatrixRes__SAGEConv__fold1__B3__identity",
+      "dataset": "DD",
+      "model": "MatrixRes",
+      "operator": "SAGEConv",
+      "fold": 1
+    },
+    {
+      "key": "result_DD__MatrixRes__SAGEConv__fold2__B3__identity",
+      "dataset": "DD",
+      "model": "MatrixRes",
+      "operator": "SAGEConv",
+      "fold": 2
+    },
+    {
+      "key": "result_DD__MatrixRes__SAGEConv__fold3__B3__identity",
+      "dataset": "DD",
+      "model": "MatrixRes",
+      "operator": "SAGEConv",
+      "fold": 3
+    },
+    {
+      "key": "result_DD__MatrixRes__SAGEConv__fold4__B3__identity",
+      "dataset": "DD",
+      "model": "MatrixRes",
+      "operator": "SAGEConv",
+      "fold": 4
+    },
+    {
+      "key": "result_DD__MatrixResGated__GATConv__fold0__B3__sparse",
+      "dataset": "DD",
+      "model": "MatrixResGated",
+      "operator": "GATConv",
+      "fold": 0
+    },
+    {
+      "key": "result_DD__MatrixResGated__GATConv__fold1__B3__sparse",
+      "dataset": "DD",
+      "model": "MatrixResGated",
+      "operator": "GATConv",
+      "fold": 1
+    },
+    {
+      "key": "result_DD__MatrixResGated__GATConv__fold2__B3__sparse",
+      "dataset": "DD",
+      "model": "MatrixResGated",
+      "operator": "GATConv",
+      "fold": 2
+    },
+    {
+      "key": "result_DD__MatrixResGated__GATConv__fold3__B3__sparse",
+      "dataset": "DD",
+      "model": "MatrixResGated",
+      "operator": "GATConv",
+      "fold": 3
+    },
+    {
+      "key": "result_DD__MatrixResGated__GATConv__fold4__B3__sparse",
+      "dataset": "DD",
+      "model": "MatrixResGated",
+      "operator": "GATConv",
+      "fold": 4
+    },
+    {
+      "key": "result_DD__MatrixResGated__SAGEConv__fold0__B3__sparse",
+      "dataset": "DD",
+      "model": "MatrixResGated",
+      "operator": "SAGEConv",
+      "fold": 0
+    },
+    {
+      "key": "result_DD__MatrixResGated__SAGEConv__fold1__B3__sparse",
+      "dataset": "DD",
+      "model": "MatrixResGated",
+      "operator": "SAGEConv",
+      "fold": 1
+    },
+    {
+      "key": "result_DD__MatrixResGated__SAGEConv__fold2__B3__sparse",
+      "dataset": "DD",
+      "model": "MatrixResGated",
+      "operator": "SAGEConv",
+      "fold": 2
+    },
+    {
+      "key": "result_DD__MatrixResGated__SAGEConv__fold3__B3__sparse",
+      "dataset": "DD",
+      "model": "MatrixResGated",
+      "operator": "SAGEConv",
+      "fold": 3
+    },
+    {
+      "key": "result_DD__MatrixResGated__SAGEConv__fold4__B3__sparse",
+      "dataset": "DD",
+      "model": "MatrixResGated",
+      "operator": "SAGEConv",
+      "fold": 4
+    },
+    {
+      "key": "result_ENZYMES__Plain__GATConv__fold0__B3__identity",
+      "dataset": "ENZYMES",
+      "model": "Plain",
+      "operator": "GATConv",
+      "fold": 0
+    },
+    {
+      "key": "result_ENZYMES__Plain__GATConv__fold1__B3__identity",
+      "dataset": "ENZYMES",
+      "model": "Plain",
+      "operator": "GATConv",
+      "fold": 1
+    },
+    {
+      "key": "result_ENZYMES__Plain__GATConv__fold2__B3__identity",
+      "dataset": "ENZYMES",
+      "model": "Plain",
+      "operator": "GATConv",
+      "fold": 2
+    },
+    {
+      "key": "result_ENZYMES__Plain__GATConv__fold3__B3__identity",
+      "dataset": "ENZYMES",
+      "model": "Plain",
+      "operator": "GATConv",
+      "fold": 3
+    },
+    {
+      "key": "result_ENZYMES__Plain__GATConv__fold4__B3__identity",
+      "dataset": "ENZYMES",
+      "model": "Plain",
+      "operator": "GATConv",
+      "fold": 4
+    },
+    {
+      "key": "result_ENZYMES__Plain__SAGEConv__fold0__B3__identity",
+      "dataset": "ENZYMES",
+      "model": "Plain",
+      "operator": "SAGEConv",
+      "fold": 0
+    },
+    {
+      "key": "result_ENZYMES__Plain__SAGEConv__fold1__B3__identity",
+      "dataset": "ENZYMES",
+      "model": "Plain",
+      "operator": "SAGEConv",
+      "fold": 1
+    },
+    {
+      "key": "result_ENZYMES__Plain__SAGEConv__fold2__B3__identity",
+      "dataset": "ENZYMES",
+      "model": "Plain",
+      "operator": "SAGEConv",
+      "fold": 2
+    },
+    {
+      "key": "result_ENZYMES__Plain__SAGEConv__fold3__B3__identity",
+      "dataset": "ENZYMES",
+      "model": "Plain",
+      "operator": "SAGEConv",
+      "fold": 3
+    },
+    {
+      "key": "result_ENZYMES__Plain__SAGEConv__fold4__B3__identity",
+      "dataset": "ENZYMES",
+      "model": "Plain",
+      "operator": "SAGEConv",
+      "fold": 4
+    },
+    {
+      "key": "result_ENZYMES__VerticalRes__GATConv__fold0__B3__identity",
+      "dataset": "ENZYMES",
+      "model": "VerticalRes",
+      "operator": "GATConv",
+      "fold": 0
+    },
+    {
+      "key": "result_ENZYMES__VerticalRes__GATConv__fold1__B3__identity",
+      "dataset": "ENZYMES",
+      "model": "VerticalRes",
+      "operator": "GATConv",
+      "fold": 1
+    },
+    {
+      "key": "result_ENZYMES__VerticalRes__GATConv__fold2__B3__identity",
+      "dataset": "ENZYMES",
+      "model": "VerticalRes",
+      "operator": "GATConv",
+      "fold": 2
+    },
+    {
+      "key": "result_ENZYMES__VerticalRes__GATConv__fold3__B3__identity",
+      "dataset": "ENZYMES",
+      "model": "VerticalRes",
+      "operator": "GATConv",
+      "fold": 3
+    },
+    {
+      "key": "result_ENZYMES__VerticalRes__GATConv__fold4__B3__identity",
+      "dataset": "ENZYMES",
+      "model": "VerticalRes",
+      "operator": "GATConv",
+      "fold": 4
+    },
+    {
+      "key": "result_ENZYMES__VerticalRes__SAGEConv__fold0__B3__identity",
+      "dataset": "ENZYMES",
+      "model": "VerticalRes",
+      "operator": "SAGEConv",
+      "fold": 0
+    },
+    {
+      "key": "result_ENZYMES__VerticalRes__SAGEConv__fold1__B3__identity",
+      "dataset": "ENZYMES",
+      "model": "VerticalRes",
+      "operator": "SAGEConv",
+      "fold": 1
+    },
+    {
+      "key": "result_ENZYMES__VerticalRes__SAGEConv__fold2__B3__identity",
+      "dataset": "ENZYMES",
+      "model": "VerticalRes",
+      "operator": "SAGEConv",
+      "fold": 2
+    },
+    {
+      "key": "result_ENZYMES__VerticalRes__SAGEConv__fold3__B3__identity",
+      "dataset": "ENZYMES",
+      "model": "VerticalRes",
+      "operator": "SAGEConv",
+      "fold": 3
+    },
+    {
+      "key": "result_ENZYMES__VerticalRes__SAGEConv__fold4__B3__identity",
+      "dataset": "ENZYMES",
+      "model": "VerticalRes",
+      "operator": "SAGEConv",
+      "fold": 4
+    },
+    {
+      "key": "result_ENZYMES__HorizontalRes__GATConv__fold0__B3__identity",
+      "dataset": "ENZYMES",
+      "model": "HorizontalRes",
+      "operator": "GATConv",
+      "fold": 0
+    },
+    {
+      "key": "result_ENZYMES__HorizontalRes__GATConv__fold1__B3__identity",
+      "dataset": "ENZYMES",
+      "model": "HorizontalRes",
+      "operator": "GATConv",
+      "fold": 1
+    },
+    {
+      "key": "result_ENZYMES__HorizontalRes__GATConv__fold2__B3__identity",
+      "dataset": "ENZYMES",
+      "model": "HorizontalRes",
+      "operator": "GATConv",
+      "fold": 2
+    },
+    {
+      "key": "result_ENZYMES__HorizontalRes__GATConv__fold3__B3__identity",
+      "dataset": "ENZYMES",
+      "model": "HorizontalRes",
+      "operator": "GATConv",
+      "fold": 3
+    },
+    {
+      "key": "result_ENZYMES__HorizontalRes__GATConv__fold4__B3__identity",
+      "dataset": "ENZYMES",
+      "model": "HorizontalRes",
+      "operator": "GATConv",
+      "fold": 4
+    },
+    {
+      "key": "result_ENZYMES__HorizontalRes__SAGEConv__fold0__B3__identity",
+      "dataset": "ENZYMES",
+      "model": "HorizontalRes",
+      "operator": "SAGEConv",
+      "fold": 0
+    },
+    {
+      "key": "result_ENZYMES__HorizontalRes__SAGEConv__fold1__B3__identity",
+      "dataset": "ENZYMES",
+      "model": "HorizontalRes",
+      "operator": "SAGEConv",
+      "fold": 1
+    },
+    {
+      "key": "result_ENZYMES__HorizontalRes__SAGEConv__fold2__B3__identity",
+      "dataset": "ENZYMES",
+      "model": "HorizontalRes",
+      "operator": "SAGEConv",
+      "fold": 2
+    },
+    {
+      "key": "result_ENZYMES__HorizontalRes__SAGEConv__fold3__B3__identity",
+      "dataset": "ENZYMES",
+      "model": "HorizontalRes",
+      "operator": "SAGEConv",
+      "fold": 3
+    },
+    {
+      "key": "result_ENZYMES__HorizontalRes__SAGEConv__fold4__B3__identity",
+      "dataset": "ENZYMES",
+      "model": "HorizontalRes",
+      "operator": "SAGEConv",
+      "fold": 4
+    },
+    {
+      "key": "result_ENZYMES__MatrixRes__GATConv__fold0__B3__identity",
+      "dataset": "ENZYMES",
+      "model": "MatrixRes",
+      "operator": "GATConv",
+      "fold": 0
+    },
+    {
+      "key": "result_ENZYMES__MatrixRes__GATConv__fold1__B3__identity",
+      "dataset": "ENZYMES",
+      "model": "MatrixRes",
+      "operator": "GATConv",
+      "fold": 1
+    },
+    {
+      "key": "result_ENZYMES__MatrixRes__GATConv__fold2__B3__identity",
+      "dataset": "ENZYMES",
+      "model": "MatrixRes",
+      "operator": "GATConv",
+      "fold": 2
+    },
+    {
+      "key": "result_ENZYMES__MatrixRes__GATConv__fold3__B3__identity",
+      "dataset": "ENZYMES",
+      "model": "MatrixRes",
+      "operator": "GATConv",
+      "fold": 3
+    },
+    {
+      "key": "result_ENZYMES__MatrixRes__GATConv__fold4__B3__identity",
+      "dataset": "ENZYMES",
+      "model": "MatrixRes",
+      "operator": "GATConv",
+      "fold": 4
+    },
+    {
+      "key": "result_ENZYMES__MatrixRes__SAGEConv__fold0__B3__identity",
+      "dataset": "ENZYMES",
+      "model": "MatrixRes",
+      "operator": "SAGEConv",
+      "fold": 0
+    },
+    {
+      "key": "result_ENZYMES__MatrixRes__SAGEConv__fold1__B3__identity",
+      "dataset": "ENZYMES",
+      "model": "MatrixRes",
+      "operator": "SAGEConv",
+      "fold": 1
+    },
+    {
+      "key": "result_ENZYMES__MatrixRes__SAGEConv__fold2__B3__identity",
+      "dataset": "ENZYMES",
+      "model": "MatrixRes",
+      "operator": "SAGEConv",
+      "fold": 2
+    },
+    {
+      "key": "result_ENZYMES__MatrixRes__SAGEConv__fold3__B3__identity",
+      "dataset": "ENZYMES",
+      "model": "MatrixRes",
+      "operator": "SAGEConv",
+      "fold": 3
+    },
+    {
+      "key": "result_ENZYMES__MatrixRes__SAGEConv__fold4__B3__identity",
+      "dataset": "ENZYMES",
+      "model": "MatrixRes",
+      "operator": "SAGEConv",
+      "fold": 4
+    },
+    {
+      "key": "result_ENZYMES__MatrixResGated__GATConv__fold0__B3__sparse",
+      "dataset": "ENZYMES",
+      "model": "MatrixResGated",
+      "operator": "GATConv",
+      "fold": 0
+    },
+    {
+      "key": "result_ENZYMES__MatrixResGated__GATConv__fold1__B3__sparse",
+      "dataset": "ENZYMES",
+      "model": "MatrixResGated",
+      "operator": "GATConv",
+      "fold": 1
+    },
+    {
+      "key": "result_ENZYMES__MatrixResGated__GATConv__fold2__B3__sparse",
+      "dataset": "ENZYMES",
+      "model": "MatrixResGated",
+      "operator": "GATConv",
+      "fold": 2
+    },
+    {
+      "key": "result_ENZYMES__MatrixResGated__GATConv__fold3__B3__sparse",
+      "dataset": "ENZYMES",
+      "model": "MatrixResGated",
+      "operator": "GATConv",
+      "fold": 3
+    },
+    {
+      "key": "result_ENZYMES__MatrixResGated__GATConv__fold4__B3__sparse",
+      "dataset": "ENZYMES",
+      "model": "MatrixResGated",
+      "operator": "GATConv",
+      "fold": 4
+    },
+    {
+      "key": "result_ENZYMES__MatrixResGated__SAGEConv__fold0__B3__sparse",
+      "dataset": "ENZYMES",
+      "model": "MatrixResGated",
+      "operator": "SAGEConv",
+      "fold": 0
+    },
+    {
+      "key": "result_ENZYMES__MatrixResGated__SAGEConv__fold1__B3__sparse",
+      "dataset": "ENZYMES",
+      "model": "MatrixResGated",
+      "operator": "SAGEConv",
+      "fold": 1
+    },
+    {
+      "key": "result_ENZYMES__MatrixResGated__SAGEConv__fold2__B3__sparse",
+      "dataset": "ENZYMES",
+      "model": "MatrixResGated",
+      "operator": "SAGEConv",
+      "fold": 2
+    },
+    {
+      "key": "result_ENZYMES__MatrixResGated__SAGEConv__fold3__B3__sparse",
+      "dataset": "ENZYMES",
+      "model": "MatrixResGated",
+      "operator": "SAGEConv",
+      "fold": 3
+    },
+    {
+      "key": "result_ENZYMES__MatrixResGated__SAGEConv__fold4__B3__sparse",
+      "dataset": "ENZYMES",
+      "model": "MatrixResGated",
+      "operator": "SAGEConv",
+      "fold": 4
+    },
+    {
+      "key": "result_MUTAG__Plain__GATConv__fold0__B3__identity",
+      "dataset": "MUTAG",
+      "model": "Plain",
+      "operator": "GATConv",
+      "fold": 0
+    },
+    {
+      "key": "result_MUTAG__Plain__GATConv__fold1__B3__identity",
+      "dataset": "MUTAG",
+      "model": "Plain",
+      "operator": "GATConv",
+      "fold": 1
+    },
+    {
+      "key": "result_MUTAG__Plain__GATConv__fold2__B3__identity",
+      "dataset": "MUTAG",
+      "model": "Plain",
+      "operator": "GATConv",
+      "fold": 2
+    },
+    {
+      "key": "result_MUTAG__Plain__GATConv__fold3__B3__identity",
+      "dataset": "MUTAG",
+      "model": "Plain",
+      "operator": "GATConv",
+      "fold": 3
+    },
+    {
+      "key": "result_MUTAG__Plain__GATConv__fold4__B3__identity",
+      "dataset": "MUTAG",
+      "model": "Plain",
+      "operator": "GATConv",
+      "fold": 4
+    },
+    {
+      "key": "result_MUTAG__Plain__SAGEConv__fold0__B3__identity",
+      "dataset": "MUTAG",
+      "model": "Plain",
+      "operator": "SAGEConv",
+      "fold": 0
+    },
+    {
+      "key": "result_MUTAG__Plain__SAGEConv__fold1__B3__identity",
+      "dataset": "MUTAG",
+      "model": "Plain",
+      "operator": "SAGEConv",
+      "fold": 1
+    },
+    {
+      "key": "result_MUTAG__Plain__SAGEConv__fold2__B3__identity",
+      "dataset": "MUTAG",
+      "model": "Plain",
+      "operator": "SAGEConv",
+      "fold": 2
+    },
+    {
+      "key": "result_MUTAG__Plain__SAGEConv__fold3__B3__identity",
+      "dataset": "MUTAG",
+      "model": "Plain",
+      "operator": "SAGEConv",
+      "fold": 3
+    },
+    {
+      "key": "result_MUTAG__Plain__SAGEConv__fold4__B3__identity",
+      "dataset": "MUTAG",
+      "model": "Plain",
+      "operator": "SAGEConv",
+      "fold": 4
+    },
+    {
+      "key": "result_MUTAG__Plain__GINConv__fold0__B3__identity",
+      "dataset": "MUTAG",
+      "model": "Plain",
+      "operator": "GINConv",
+      "fold": 0
+    },
+    {
+      "key": "result_MUTAG__Plain__GINConv__fold1__B3__identity",
+      "dataset": "MUTAG",
+      "model": "Plain",
+      "operator": "GINConv",
+      "fold": 1
+    },
+    {
+      "key": "result_MUTAG__Plain__GINConv__fold2__B3__identity",
+      "dataset": "MUTAG",
+      "model": "Plain",
+      "operator": "GINConv",
+      "fold": 2
+    },
+    {
+      "key": "result_MUTAG__Plain__GINConv__fold3__B3__identity",
+      "dataset": "MUTAG",
+      "model": "Plain",
+      "operator": "GINConv",
+      "fold": 3
+    },
+    {
+      "key": "result_MUTAG__Plain__GINConv__fold4__B3__identity",
+      "dataset": "MUTAG",
+      "model": "Plain",
+      "operator": "GINConv",
+      "fold": 4
+    },
+    {
+      "key": "result_MUTAG__VerticalRes__GATConv__fold0__B3__identity",
+      "dataset": "MUTAG",
+      "model": "VerticalRes",
+      "operator": "GATConv",
+      "fold": 0
+    },
+    {
+      "key": "result_MUTAG__VerticalRes__GATConv__fold1__B3__identity",
+      "dataset": "MUTAG",
+      "model": "VerticalRes",
+      "operator": "GATConv",
+      "fold": 1
+    },
+    {
+      "key": "result_MUTAG__VerticalRes__GATConv__fold2__B3__identity",
+      "dataset": "MUTAG",
+      "model": "VerticalRes",
+      "operator": "GATConv",
+      "fold": 2
+    },
+    {
+      "key": "result_MUTAG__VerticalRes__GATConv__fold3__B3__identity",
+      "dataset": "MUTAG",
+      "model": "VerticalRes",
+      "operator": "GATConv",
+      "fold": 3
+    },
+    {
+      "key": "result_MUTAG__VerticalRes__GATConv__fold4__B3__identity",
+      "dataset": "MUTAG",
+      "model": "VerticalRes",
+      "operator": "GATConv",
+      "fold": 4
+    },
+    {
+      "key": "result_MUTAG__VerticalRes__SAGEConv__fold0__B3__identity",
+      "dataset": "MUTAG",
+      "model": "VerticalRes",
+      "operator": "SAGEConv",
+      "fold": 0
+    },
+    {
+      "key": "result_MUTAG__VerticalRes__SAGEConv__fold1__B3__identity",
+      "dataset": "MUTAG",
+      "model": "VerticalRes",
+      "operator": "SAGEConv",
+      "fold": 1
+    },
+    {
+      "key": "result_MUTAG__VerticalRes__SAGEConv__fold2__B3__identity",
+      "dataset": "MUTAG",
+      "model": "VerticalRes",
+      "operator": "SAGEConv",
+      "fold": 2
+    },
+    {
+      "key": "result_MUTAG__VerticalRes__SAGEConv__fold3__B3__identity",
+      "dataset": "MUTAG",
+      "model": "VerticalRes",
+      "operator": "SAGEConv",
+      "fold": 3
+    },
+    {
+      "key": "result_MUTAG__VerticalRes__SAGEConv__fold4__B3__identity",
+      "dataset": "MUTAG",
+      "model": "VerticalRes",
+      "operator": "SAGEConv",
+      "fold": 4
+    },
+    {
+      "key": "result_MUTAG__VerticalRes__GINConv__fold0__B3__identity",
+      "dataset": "MUTAG",
+      "model": "VerticalRes",
+      "operator": "GINConv",
+      "fold": 0
+    },
+    {
+      "key": "result_MUTAG__VerticalRes__GINConv__fold1__B3__identity",
+      "dataset": "MUTAG",
+      "model": "VerticalRes",
+      "operator": "GINConv",
+      "fold": 1
+    },
+    {
+      "key": "result_MUTAG__VerticalRes__GINConv__fold2__B3__identity",
+      "dataset": "MUTAG",
+      "model": "VerticalRes",
+      "operator": "GINConv",
+      "fold": 2
+    },
+    {
+      "key": "result_MUTAG__VerticalRes__GINConv__fold3__B3__identity",
+      "dataset": "MUTAG",
+      "model": "VerticalRes",
+      "operator": "GINConv",
+      "fold": 3
+    },
+    {
+      "key": "result_MUTAG__VerticalRes__GINConv__fold4__B3__identity",
+      "dataset": "MUTAG",
+      "model": "VerticalRes",
+      "operator": "GINConv",
+      "fold": 4
+    },
+    {
+      "key": "result_MUTAG__HorizontalRes__GATConv__fold0__B3__identity",
+      "dataset": "MUTAG",
+      "model": "HorizontalRes",
+      "operator": "GATConv",
+      "fold": 0
+    },
+    {
+      "key": "result_MUTAG__HorizontalRes__GATConv__fold1__B3__identity",
+      "dataset": "MUTAG",
+      "model": "HorizontalRes",
+      "operator": "GATConv",
+      "fold": 1
+    },
+    {
+      "key": "result_MUTAG__HorizontalRes__GATConv__fold2__B3__identity",
+      "dataset": "MUTAG",
+      "model": "HorizontalRes",
+      "operator": "GATConv",
+      "fold": 2
+    },
+    {
+      "key": "result_MUTAG__HorizontalRes__GATConv__fold3__B3__identity",
+      "dataset": "MUTAG",
+      "model": "HorizontalRes",
+      "operator": "GATConv",
+      "fold": 3
+    },
+    {
+      "key": "result_MUTAG__HorizontalRes__GATConv__fold4__B3__identity",
+      "dataset": "MUTAG",
+      "model": "HorizontalRes",
+      "operator": "GATConv",
+      "fold": 4
+    },
+    {
+      "key": "result_MUTAG__HorizontalRes__SAGEConv__fold0__B3__identity",
+      "dataset": "MUTAG",
+      "model": "HorizontalRes",
+      "operator": "SAGEConv",
+      "fold": 0
+    },
+    {
+      "key": "result_MUTAG__HorizontalRes__SAGEConv__fold1__B3__identity",
+      "dataset": "MUTAG",
+      "model": "HorizontalRes",
+      "operator": "SAGEConv",
+      "fold": 1
+    },
+    {
+      "key": "result_MUTAG__HorizontalRes__SAGEConv__fold2__B3__identity",
+      "dataset": "MUTAG",
+      "model": "HorizontalRes",
+      "operator": "SAGEConv",
+      "fold": 2
+    },
+    {
+      "key": "result_MUTAG__HorizontalRes__SAGEConv__fold3__B3__identity",
+      "dataset": "MUTAG",
+      "model": "HorizontalRes",
+      "operator": "SAGEConv",
+      "fold": 3
+    },
+    {
+      "key": "result_MUTAG__HorizontalRes__SAGEConv__fold4__B3__identity",
+      "dataset": "MUTAG",
+      "model": "HorizontalRes",
+      "operator": "SAGEConv",
+      "fold": 4
+    },
+    {
+      "key": "result_MUTAG__HorizontalRes__GINConv__fold0__B3__identity",
+      "dataset": "MUTAG",
+      "model": "HorizontalRes",
+      "operator": "GINConv",
+      "fold": 0
+    },
+    {
+      "key": "result_MUTAG__HorizontalRes__GINConv__fold1__B3__identity",
+      "dataset": "MUTAG",
+      "model": "HorizontalRes",
+      "operator": "GINConv",
+      "fold": 1
+    },
+    {
+      "key": "result_MUTAG__HorizontalRes__GINConv__fold2__B3__identity",
+      "dataset": "MUTAG",
+      "model": "HorizontalRes",
+      "operator": "GINConv",
+      "fold": 2
+    },
+    {
+      "key": "result_MUTAG__HorizontalRes__GINConv__fold3__B3__identity",
+      "dataset": "MUTAG",
+      "model": "HorizontalRes",
+      "operator": "GINConv",
+      "fold": 3
+    },
+    {
+      "key": "result_MUTAG__HorizontalRes__GINConv__fold4__B3__identity",
+      "dataset": "MUTAG",
+      "model": "HorizontalRes",
+      "operator": "GINConv",
+      "fold": 4
+    },
+    {
+      "key": "result_MUTAG__MatrixRes__GATConv__fold0__B3__identity",
+      "dataset": "MUTAG",
+      "model": "MatrixRes",
+      "operator": "GATConv",
+      "fold": 0
+    },
+    {
+      "key": "result_MUTAG__MatrixRes__GATConv__fold1__B3__identity",
+      "dataset": "MUTAG",
+      "model": "MatrixRes",
+      "operator": "GATConv",
+      "fold": 1
+    },
+    {
+      "key": "result_MUTAG__MatrixRes__GATConv__fold2__B3__identity",
+      "dataset": "MUTAG",
+      "model": "MatrixRes",
+      "operator": "GATConv",
+      "fold": 2
+    },
+    {
+      "key": "result_MUTAG__MatrixRes__GATConv__fold3__B3__identity",
+      "dataset": "MUTAG",
+      "model": "MatrixRes",
+      "operator": "GATConv",
+      "fold": 3
+    },
+    {
+      "key": "result_MUTAG__MatrixRes__GATConv__fold4__B3__identity",
+      "dataset": "MUTAG",
+      "model": "MatrixRes",
+      "operator": "GATConv",
+      "fold": 4
+    },
+    {
+      "key": "result_MUTAG__MatrixRes__SAGEConv__fold0__B3__identity",
+      "dataset": "MUTAG",
+      "model": "MatrixRes",
+      "operator": "SAGEConv",
+      "fold": 0
+    },
+    {
+      "key": "result_MUTAG__MatrixRes__SAGEConv__fold1__B3__identity",
+      "dataset": "MUTAG",
+      "model": "MatrixRes",
+      "operator": "SAGEConv",
+      "fold": 1
+    },
+    {
+      "key": "result_MUTAG__MatrixRes__SAGEConv__fold2__B3__identity",
+      "dataset": "MUTAG",
+      "model": "MatrixRes",
+      "operator": "SAGEConv",
+      "fold": 2
+    },
+    {
+      "key": "result_MUTAG__MatrixRes__SAGEConv__fold3__B3__identity",
+      "dataset": "MUTAG",
+      "model": "MatrixRes",
+      "operator": "SAGEConv",
+      "fold": 3
+    },
+    {
+      "key": "result_MUTAG__MatrixRes__SAGEConv__fold4__B3__identity",
+      "dataset": "MUTAG",
+      "model": "MatrixRes",
+      "operator": "SAGEConv",
+      "fold": 4
+    },
+    {
+      "key": "result_MUTAG__MatrixRes__GINConv__fold0__B3__identity",
+      "dataset": "MUTAG",
+      "model": "MatrixRes",
+      "operator": "GINConv",
+      "fold": 0
+    },
+    {
+      "key": "result_MUTAG__MatrixRes__GINConv__fold1__B3__identity",
+      "dataset": "MUTAG",
+      "model": "MatrixRes",
+      "operator": "GINConv",
+      "fold": 1
+    },
+    {
+      "key": "result_MUTAG__MatrixRes__GINConv__fold2__B3__identity",
+      "dataset": "MUTAG",
+      "model": "MatrixRes",
+      "operator": "GINConv",
+      "fold": 2
+    },
+    {
+      "key": "result_MUTAG__MatrixRes__GINConv__fold3__B3__identity",
+      "dataset": "MUTAG",
+      "model": "MatrixRes",
+      "operator": "GINConv",
+      "fold": 3
+    },
+    {
+      "key": "result_MUTAG__MatrixRes__GINConv__fold4__B3__identity",
+      "dataset": "MUTAG",
+      "model": "MatrixRes",
+      "operator": "GINConv",
+      "fold": 4
+    },
+    {
+      "key": "result_MUTAG__MatrixResGated__GATConv__fold0__B3__sparse",
+      "dataset": "MUTAG",
+      "model": "MatrixResGated",
+      "operator": "GATConv",
+      "fold": 0
+    },
+    {
+      "key": "result_MUTAG__MatrixResGated__GATConv__fold1__B3__sparse",
+      "dataset": "MUTAG",
+      "model": "MatrixResGated",
+      "operator": "GATConv",
+      "fold": 1
+    },
+    {
+      "key": "result_MUTAG__MatrixResGated__GATConv__fold2__B3__sparse",
+      "dataset": "MUTAG",
+      "model": "MatrixResGated",
+      "operator": "GATConv",
+      "fold": 2
+    },
+    {
+      "key": "result_MUTAG__MatrixResGated__GATConv__fold3__B3__sparse",
+      "dataset": "MUTAG",
+      "model": "MatrixResGated",
+      "operator": "GATConv",
+      "fold": 3
+    },
+    {
+      "key": "result_MUTAG__MatrixResGated__GATConv__fold4__B3__sparse",
+      "dataset": "MUTAG",
+      "model": "MatrixResGated",
+      "operator": "GATConv",
+      "fold": 4
+    },
+    {
+      "key": "result_MUTAG__MatrixResGated__SAGEConv__fold0__B3__sparse",
+      "dataset": "MUTAG",
+      "model": "MatrixResGated",
+      "operator": "SAGEConv",
+      "fold": 0
+    },
+    {
+      "key": "result_MUTAG__MatrixResGated__SAGEConv__fold1__B3__sparse",
+      "dataset": "MUTAG",
+      "model": "MatrixResGated",
+      "operator": "SAGEConv",
+      "fold": 1
+    },
+    {
+      "key": "result_MUTAG__MatrixResGated__SAGEConv__fold2__B3__sparse",
+      "dataset": "MUTAG",
+      "model": "MatrixResGated",
+      "operator": "SAGEConv",
+      "fold": 2
+    },
+    {
+      "key": "result_MUTAG__MatrixResGated__SAGEConv__fold3__B3__sparse",
+      "dataset": "MUTAG",
+      "model": "MatrixResGated",
+      "operator": "SAGEConv",
+      "fold": 3
+    },
+    {
+      "key": "result_MUTAG__MatrixResGated__SAGEConv__fold4__B3__sparse",
+      "dataset": "MUTAG",
+      "model": "MatrixResGated",
+      "operator": "SAGEConv",
+      "fold": 4
+    },
+    {
+      "key": "result_MUTAG__MatrixResGated__GINConv__fold0__B3__sparse",
+      "dataset": "MUTAG",
+      "model": "MatrixResGated",
+      "operator": "GINConv",
+      "fold": 0
+    },
+    {
+      "key": "result_MUTAG__MatrixResGated__GINConv__fold1__B3__sparse",
+      "dataset": "MUTAG",
+      "model": "MatrixResGated",
+      "operator": "GINConv",
+      "fold": 1
+    },
+    {
+      "key": "result_MUTAG__MatrixResGated__GINConv__fold2__B3__sparse",
+      "dataset": "MUTAG",
+      "model": "MatrixResGated",
+      "operator": "GINConv",
+      "fold": 2
+    },
+    {
+      "key": "result_MUTAG__MatrixResGated__GINConv__fold3__B3__sparse",
+      "dataset": "MUTAG",
+      "model": "MatrixResGated",
+      "operator": "GINConv",
+      "fold": 3
+    },
+    {
+      "key": "result_MUTAG__MatrixResGated__GINConv__fold4__B3__sparse",
+      "dataset": "MUTAG",
+      "model": "MatrixResGated",
+      "operator": "GINConv",
+      "fold": 4
+    },
+    {
+      "key": "result_AIDS__Plain__GCNConv__fold0__B3__identity",
+      "dataset": "AIDS",
+      "model": "Plain",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_AIDS__Plain__GCNConv__fold1__B3__identity",
+      "dataset": "AIDS",
+      "model": "Plain",
+      "operator": "GCNConv",
+      "fold": 1
+    },
+    {
+      "key": "result_AIDS__Plain__GCNConv__fold2__B3__identity",
+      "dataset": "AIDS",
+      "model": "Plain",
+      "operator": "GCNConv",
+      "fold": 2
+    },
+    {
+      "key": "result_AIDS__Plain__GCNConv__fold3__B3__identity",
+      "dataset": "AIDS",
+      "model": "Plain",
+      "operator": "GCNConv",
+      "fold": 3
+    },
+    {
+      "key": "result_AIDS__Plain__GCNConv__fold4__B3__identity",
+      "dataset": "AIDS",
+      "model": "Plain",
+      "operator": "GCNConv",
+      "fold": 4
+    },
+    {
+      "key": "result_AIDS__Plain__GATConv__fold0__B3__identity",
+      "dataset": "AIDS",
+      "model": "Plain",
+      "operator": "GATConv",
+      "fold": 0
+    },
+    {
+      "key": "result_AIDS__Plain__GATConv__fold1__B3__identity",
+      "dataset": "AIDS",
+      "model": "Plain",
+      "operator": "GATConv",
+      "fold": 1
+    },
+    {
+      "key": "result_AIDS__Plain__GATConv__fold2__B3__identity",
+      "dataset": "AIDS",
+      "model": "Plain",
+      "operator": "GATConv",
+      "fold": 2
+    },
+    {
+      "key": "result_AIDS__Plain__GATConv__fold3__B3__identity",
+      "dataset": "AIDS",
+      "model": "Plain",
+      "operator": "GATConv",
+      "fold": 3
+    },
+    {
+      "key": "result_AIDS__Plain__GATConv__fold4__B3__identity",
+      "dataset": "AIDS",
+      "model": "Plain",
+      "operator": "GATConv",
+      "fold": 4
+    },
+    {
+      "key": "result_AIDS__Plain__SAGEConv__fold0__B3__identity",
+      "dataset": "AIDS",
+      "model": "Plain",
+      "operator": "SAGEConv",
+      "fold": 0
+    },
+    {
+      "key": "result_AIDS__Plain__SAGEConv__fold1__B3__identity",
+      "dataset": "AIDS",
+      "model": "Plain",
+      "operator": "SAGEConv",
+      "fold": 1
+    },
+    {
+      "key": "result_AIDS__Plain__SAGEConv__fold2__B3__identity",
+      "dataset": "AIDS",
+      "model": "Plain",
+      "operator": "SAGEConv",
+      "fold": 2
+    },
+    {
+      "key": "result_AIDS__Plain__SAGEConv__fold3__B3__identity",
+      "dataset": "AIDS",
+      "model": "Plain",
+      "operator": "SAGEConv",
+      "fold": 3
+    },
+    {
+      "key": "result_AIDS__Plain__SAGEConv__fold4__B3__identity",
+      "dataset": "AIDS",
+      "model": "Plain",
+      "operator": "SAGEConv",
+      "fold": 4
+    },
+    {
+      "key": "result_AIDS__Plain__GINConv__fold0__B3__identity",
+      "dataset": "AIDS",
+      "model": "Plain",
+      "operator": "GINConv",
+      "fold": 0
+    },
+    {
+      "key": "result_AIDS__Plain__GINConv__fold1__B3__identity",
+      "dataset": "AIDS",
+      "model": "Plain",
+      "operator": "GINConv",
+      "fold": 1
+    },
+    {
+      "key": "result_AIDS__Plain__GINConv__fold2__B3__identity",
+      "dataset": "AIDS",
+      "model": "Plain",
+      "operator": "GINConv",
+      "fold": 2
+    },
+    {
+      "key": "result_AIDS__Plain__GINConv__fold3__B3__identity",
+      "dataset": "AIDS",
+      "model": "Plain",
+      "operator": "GINConv",
+      "fold": 3
+    },
+    {
+      "key": "result_AIDS__Plain__GINConv__fold4__B3__identity",
+      "dataset": "AIDS",
+      "model": "Plain",
+      "operator": "GINConv",
+      "fold": 4
+    },
+    {
+      "key": "result_AIDS__VerticalRes__GCNConv__fold0__B3__identity",
+      "dataset": "AIDS",
+      "model": "VerticalRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_AIDS__VerticalRes__GCNConv__fold1__B3__identity",
+      "dataset": "AIDS",
+      "model": "VerticalRes",
+      "operator": "GCNConv",
+      "fold": 1
+    },
+    {
+      "key": "result_AIDS__VerticalRes__GCNConv__fold2__B3__identity",
+      "dataset": "AIDS",
+      "model": "VerticalRes",
+      "operator": "GCNConv",
+      "fold": 2
+    },
+    {
+      "key": "result_AIDS__VerticalRes__GCNConv__fold3__B3__identity",
+      "dataset": "AIDS",
+      "model": "VerticalRes",
+      "operator": "GCNConv",
+      "fold": 3
+    },
+    {
+      "key": "result_AIDS__VerticalRes__GCNConv__fold4__B3__identity",
+      "dataset": "AIDS",
+      "model": "VerticalRes",
+      "operator": "GCNConv",
+      "fold": 4
+    },
+    {
+      "key": "result_AIDS__VerticalRes__GATConv__fold0__B3__identity",
+      "dataset": "AIDS",
+      "model": "VerticalRes",
+      "operator": "GATConv",
+      "fold": 0
+    },
+    {
+      "key": "result_AIDS__VerticalRes__GATConv__fold1__B3__identity",
+      "dataset": "AIDS",
+      "model": "VerticalRes",
+      "operator": "GATConv",
+      "fold": 1
+    },
+    {
+      "key": "result_AIDS__VerticalRes__GATConv__fold2__B3__identity",
+      "dataset": "AIDS",
+      "model": "VerticalRes",
+      "operator": "GATConv",
+      "fold": 2
+    },
+    {
+      "key": "result_AIDS__VerticalRes__GATConv__fold3__B3__identity",
+      "dataset": "AIDS",
+      "model": "VerticalRes",
+      "operator": "GATConv",
+      "fold": 3
+    },
+    {
+      "key": "result_AIDS__VerticalRes__GATConv__fold4__B3__identity",
+      "dataset": "AIDS",
+      "model": "VerticalRes",
+      "operator": "GATConv",
+      "fold": 4
+    },
+    {
+      "key": "result_AIDS__VerticalRes__SAGEConv__fold0__B3__identity",
+      "dataset": "AIDS",
+      "model": "VerticalRes",
+      "operator": "SAGEConv",
+      "fold": 0
+    },
+    {
+      "key": "result_AIDS__VerticalRes__SAGEConv__fold1__B3__identity",
+      "dataset": "AIDS",
+      "model": "VerticalRes",
+      "operator": "SAGEConv",
+      "fold": 1
+    },
+    {
+      "key": "result_AIDS__VerticalRes__SAGEConv__fold2__B3__identity",
+      "dataset": "AIDS",
+      "model": "VerticalRes",
+      "operator": "SAGEConv",
+      "fold": 2
+    },
+    {
+      "key": "result_AIDS__VerticalRes__SAGEConv__fold3__B3__identity",
+      "dataset": "AIDS",
+      "model": "VerticalRes",
+      "operator": "SAGEConv",
+      "fold": 3
+    },
+    {
+      "key": "result_AIDS__VerticalRes__SAGEConv__fold4__B3__identity",
+      "dataset": "AIDS",
+      "model": "VerticalRes",
+      "operator": "SAGEConv",
+      "fold": 4
+    },
+    {
+      "key": "result_AIDS__VerticalRes__GINConv__fold0__B3__identity",
+      "dataset": "AIDS",
+      "model": "VerticalRes",
+      "operator": "GINConv",
+      "fold": 0
+    },
+    {
+      "key": "result_AIDS__VerticalRes__GINConv__fold1__B3__identity",
+      "dataset": "AIDS",
+      "model": "VerticalRes",
+      "operator": "GINConv",
+      "fold": 1
+    },
+    {
+      "key": "result_AIDS__VerticalRes__GINConv__fold2__B3__identity",
+      "dataset": "AIDS",
+      "model": "VerticalRes",
+      "operator": "GINConv",
+      "fold": 2
+    },
+    {
+      "key": "result_AIDS__VerticalRes__GINConv__fold3__B3__identity",
+      "dataset": "AIDS",
+      "model": "VerticalRes",
+      "operator": "GINConv",
+      "fold": 3
+    },
+    {
+      "key": "result_AIDS__VerticalRes__GINConv__fold4__B3__identity",
+      "dataset": "AIDS",
+      "model": "VerticalRes",
+      "operator": "GINConv",
+      "fold": 4
+    },
+    {
+      "key": "result_AIDS__HorizontalRes__GCNConv__fold0__B3__identity",
+      "dataset": "AIDS",
+      "model": "HorizontalRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_AIDS__HorizontalRes__GCNConv__fold1__B3__identity",
+      "dataset": "AIDS",
+      "model": "HorizontalRes",
+      "operator": "GCNConv",
+      "fold": 1
+    },
+    {
+      "key": "result_AIDS__HorizontalRes__GCNConv__fold2__B3__identity",
+      "dataset": "AIDS",
+      "model": "HorizontalRes",
+      "operator": "GCNConv",
+      "fold": 2
+    },
+    {
+      "key": "result_AIDS__HorizontalRes__GCNConv__fold3__B3__identity",
+      "dataset": "AIDS",
+      "model": "HorizontalRes",
+      "operator": "GCNConv",
+      "fold": 3
+    },
+    {
+      "key": "result_AIDS__HorizontalRes__GCNConv__fold4__B3__identity",
+      "dataset": "AIDS",
+      "model": "HorizontalRes",
+      "operator": "GCNConv",
+      "fold": 4
+    },
+    {
+      "key": "result_AIDS__HorizontalRes__GATConv__fold0__B3__identity",
+      "dataset": "AIDS",
+      "model": "HorizontalRes",
+      "operator": "GATConv",
+      "fold": 0
+    },
+    {
+      "key": "result_AIDS__HorizontalRes__GATConv__fold1__B3__identity",
+      "dataset": "AIDS",
+      "model": "HorizontalRes",
+      "operator": "GATConv",
+      "fold": 1
+    },
+    {
+      "key": "result_AIDS__HorizontalRes__GATConv__fold2__B3__identity",
+      "dataset": "AIDS",
+      "model": "HorizontalRes",
+      "operator": "GATConv",
+      "fold": 2
+    },
+    {
+      "key": "result_AIDS__HorizontalRes__GATConv__fold3__B3__identity",
+      "dataset": "AIDS",
+      "model": "HorizontalRes",
+      "operator": "GATConv",
+      "fold": 3
+    },
+    {
+      "key": "result_AIDS__HorizontalRes__GATConv__fold4__B3__identity",
+      "dataset": "AIDS",
+      "model": "HorizontalRes",
+      "operator": "GATConv",
+      "fold": 4
+    },
+    {
+      "key": "result_AIDS__HorizontalRes__SAGEConv__fold0__B3__identity",
+      "dataset": "AIDS",
+      "model": "HorizontalRes",
+      "operator": "SAGEConv",
+      "fold": 0
+    },
+    {
+      "key": "result_AIDS__HorizontalRes__SAGEConv__fold1__B3__identity",
+      "dataset": "AIDS",
+      "model": "HorizontalRes",
+      "operator": "SAGEConv",
+      "fold": 1
+    },
+    {
+      "key": "result_AIDS__HorizontalRes__SAGEConv__fold2__B3__identity",
+      "dataset": "AIDS",
+      "model": "HorizontalRes",
+      "operator": "SAGEConv",
+      "fold": 2
+    },
+    {
+      "key": "result_AIDS__HorizontalRes__SAGEConv__fold3__B3__identity",
+      "dataset": "AIDS",
+      "model": "HorizontalRes",
+      "operator": "SAGEConv",
+      "fold": 3
+    },
+    {
+      "key": "result_AIDS__HorizontalRes__SAGEConv__fold4__B3__identity",
+      "dataset": "AIDS",
+      "model": "HorizontalRes",
+      "operator": "SAGEConv",
+      "fold": 4
+    },
+    {
+      "key": "result_AIDS__HorizontalRes__GINConv__fold0__B3__identity",
+      "dataset": "AIDS",
+      "model": "HorizontalRes",
+      "operator": "GINConv",
+      "fold": 0
+    },
+    {
+      "key": "result_AIDS__HorizontalRes__GINConv__fold1__B3__identity",
+      "dataset": "AIDS",
+      "model": "HorizontalRes",
+      "operator": "GINConv",
+      "fold": 1
+    },
+    {
+      "key": "result_AIDS__HorizontalRes__GINConv__fold2__B3__identity",
+      "dataset": "AIDS",
+      "model": "HorizontalRes",
+      "operator": "GINConv",
+      "fold": 2
+    },
+    {
+      "key": "result_AIDS__HorizontalRes__GINConv__fold3__B3__identity",
+      "dataset": "AIDS",
+      "model": "HorizontalRes",
+      "operator": "GINConv",
+      "fold": 3
+    },
+    {
+      "key": "result_AIDS__HorizontalRes__GINConv__fold4__B3__identity",
+      "dataset": "AIDS",
+      "model": "HorizontalRes",
+      "operator": "GINConv",
+      "fold": 4
+    },
+    {
+      "key": "result_AIDS__MatrixRes__GCNConv__fold0__B3__identity",
+      "dataset": "AIDS",
+      "model": "MatrixRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_AIDS__MatrixRes__GCNConv__fold1__B3__identity",
+      "dataset": "AIDS",
+      "model": "MatrixRes",
+      "operator": "GCNConv",
+      "fold": 1
+    },
+    {
+      "key": "result_AIDS__MatrixRes__GCNConv__fold2__B3__identity",
+      "dataset": "AIDS",
+      "model": "MatrixRes",
+      "operator": "GCNConv",
+      "fold": 2
+    },
+    {
+      "key": "result_AIDS__MatrixRes__GCNConv__fold3__B3__identity",
+      "dataset": "AIDS",
+      "model": "MatrixRes",
+      "operator": "GCNConv",
+      "fold": 3
+    },
+    {
+      "key": "result_AIDS__MatrixRes__GCNConv__fold4__B3__identity",
+      "dataset": "AIDS",
+      "model": "MatrixRes",
+      "operator": "GCNConv",
+      "fold": 4
+    },
+    {
+      "key": "result_AIDS__MatrixRes__GATConv__fold0__B3__identity",
+      "dataset": "AIDS",
+      "model": "MatrixRes",
+      "operator": "GATConv",
+      "fold": 0
+    },
+    {
+      "key": "result_AIDS__MatrixRes__GATConv__fold1__B3__identity",
+      "dataset": "AIDS",
+      "model": "MatrixRes",
+      "operator": "GATConv",
+      "fold": 1
+    },
+    {
+      "key": "result_AIDS__MatrixRes__GATConv__fold2__B3__identity",
+      "dataset": "AIDS",
+      "model": "MatrixRes",
+      "operator": "GATConv",
+      "fold": 2
+    },
+    {
+      "key": "result_AIDS__MatrixRes__GATConv__fold3__B3__identity",
+      "dataset": "AIDS",
+      "model": "MatrixRes",
+      "operator": "GATConv",
+      "fold": 3
+    },
+    {
+      "key": "result_AIDS__MatrixRes__GATConv__fold4__B3__identity",
+      "dataset": "AIDS",
+      "model": "MatrixRes",
+      "operator": "GATConv",
+      "fold": 4
+    },
+    {
+      "key": "result_AIDS__MatrixRes__SAGEConv__fold0__B3__identity",
+      "dataset": "AIDS",
+      "model": "MatrixRes",
+      "operator": "SAGEConv",
+      "fold": 0
+    },
+    {
+      "key": "result_AIDS__MatrixRes__SAGEConv__fold1__B3__identity",
+      "dataset": "AIDS",
+      "model": "MatrixRes",
+      "operator": "SAGEConv",
+      "fold": 1
+    },
+    {
+      "key": "result_AIDS__MatrixRes__SAGEConv__fold2__B3__identity",
+      "dataset": "AIDS",
+      "model": "MatrixRes",
+      "operator": "SAGEConv",
+      "fold": 2
+    },
+    {
+      "key": "result_AIDS__MatrixRes__SAGEConv__fold3__B3__identity",
+      "dataset": "AIDS",
+      "model": "MatrixRes",
+      "operator": "SAGEConv",
+      "fold": 3
+    },
+    {
+      "key": "result_AIDS__MatrixRes__SAGEConv__fold4__B3__identity",
+      "dataset": "AIDS",
+      "model": "MatrixRes",
+      "operator": "SAGEConv",
+      "fold": 4
+    },
+    {
+      "key": "result_AIDS__MatrixRes__GINConv__fold0__B3__identity",
+      "dataset": "AIDS",
+      "model": "MatrixRes",
+      "operator": "GINConv",
+      "fold": 0
+    },
+    {
+      "key": "result_AIDS__MatrixRes__GINConv__fold1__B3__identity",
+      "dataset": "AIDS",
+      "model": "MatrixRes",
+      "operator": "GINConv",
+      "fold": 1
+    },
+    {
+      "key": "result_AIDS__MatrixRes__GINConv__fold2__B3__identity",
+      "dataset": "AIDS",
+      "model": "MatrixRes",
+      "operator": "GINConv",
+      "fold": 2
+    },
+    {
+      "key": "result_AIDS__MatrixRes__GINConv__fold3__B3__identity",
+      "dataset": "AIDS",
+      "model": "MatrixRes",
+      "operator": "GINConv",
+      "fold": 3
+    },
+    {
+      "key": "result_AIDS__MatrixRes__GINConv__fold4__B3__identity",
+      "dataset": "AIDS",
+      "model": "MatrixRes",
+      "operator": "GINConv",
+      "fold": 4
+    },
+    {
+      "key": "result_AIDS__MatrixResGated__GCNConv__fold0__B3__sparse",
+      "dataset": "AIDS",
+      "model": "MatrixResGated",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_AIDS__MatrixResGated__GCNConv__fold1__B3__sparse",
+      "dataset": "AIDS",
+      "model": "MatrixResGated",
+      "operator": "GCNConv",
+      "fold": 1
+    },
+    {
+      "key": "result_AIDS__MatrixResGated__GCNConv__fold2__B3__sparse",
+      "dataset": "AIDS",
+      "model": "MatrixResGated",
+      "operator": "GCNConv",
+      "fold": 2
+    },
+    {
+      "key": "result_AIDS__MatrixResGated__GCNConv__fold3__B3__sparse",
+      "dataset": "AIDS",
+      "model": "MatrixResGated",
+      "operator": "GCNConv",
+      "fold": 3
+    },
+    {
+      "key": "result_AIDS__MatrixResGated__GCNConv__fold4__B3__sparse",
+      "dataset": "AIDS",
+      "model": "MatrixResGated",
+      "operator": "GCNConv",
+      "fold": 4
+    },
+    {
+      "key": "result_AIDS__MatrixResGated__GATConv__fold0__B3__sparse",
+      "dataset": "AIDS",
+      "model": "MatrixResGated",
+      "operator": "GATConv",
+      "fold": 0
+    },
+    {
+      "key": "result_AIDS__MatrixResGated__GATConv__fold1__B3__sparse",
+      "dataset": "AIDS",
+      "model": "MatrixResGated",
+      "operator": "GATConv",
+      "fold": 1
+    },
+    {
+      "key": "result_AIDS__MatrixResGated__GATConv__fold2__B3__sparse",
+      "dataset": "AIDS",
+      "model": "MatrixResGated",
+      "operator": "GATConv",
+      "fold": 2
+    },
+    {
+      "key": "result_AIDS__MatrixResGated__GATConv__fold3__B3__sparse",
+      "dataset": "AIDS",
+      "model": "MatrixResGated",
+      "operator": "GATConv",
+      "fold": 3
+    },
+    {
+      "key": "result_AIDS__MatrixResGated__GATConv__fold4__B3__sparse",
+      "dataset": "AIDS",
+      "model": "MatrixResGated",
+      "operator": "GATConv",
+      "fold": 4
+    },
+    {
+      "key": "result_AIDS__MatrixResGated__SAGEConv__fold0__B3__sparse",
+      "dataset": "AIDS",
+      "model": "MatrixResGated",
+      "operator": "SAGEConv",
+      "fold": 0
+    },
+    {
+      "key": "result_AIDS__MatrixResGated__SAGEConv__fold1__B3__sparse",
+      "dataset": "AIDS",
+      "model": "MatrixResGated",
+      "operator": "SAGEConv",
+      "fold": 1
+    },
+    {
+      "key": "result_AIDS__MatrixResGated__SAGEConv__fold2__B3__sparse",
+      "dataset": "AIDS",
+      "model": "MatrixResGated",
+      "operator": "SAGEConv",
+      "fold": 2
+    },
+    {
+      "key": "result_AIDS__MatrixResGated__SAGEConv__fold3__B3__sparse",
+      "dataset": "AIDS",
+      "model": "MatrixResGated",
+      "operator": "SAGEConv",
+      "fold": 3
+    },
+    {
+      "key": "result_AIDS__MatrixResGated__SAGEConv__fold4__B3__sparse",
+      "dataset": "AIDS",
+      "model": "MatrixResGated",
+      "operator": "SAGEConv",
+      "fold": 4
+    },
+    {
+      "key": "result_AIDS__MatrixResGated__GINConv__fold0__B3__sparse",
+      "dataset": "AIDS",
+      "model": "MatrixResGated",
+      "operator": "GINConv",
+      "fold": 0
+    },
+    {
+      "key": "result_AIDS__MatrixResGated__GINConv__fold1__B3__sparse",
+      "dataset": "AIDS",
+      "model": "MatrixResGated",
+      "operator": "GINConv",
+      "fold": 1
+    },
+    {
+      "key": "result_AIDS__MatrixResGated__GINConv__fold2__B3__sparse",
+      "dataset": "AIDS",
+      "model": "MatrixResGated",
+      "operator": "GINConv",
+      "fold": 2
+    },
+    {
+      "key": "result_AIDS__MatrixResGated__GINConv__fold3__B3__sparse",
+      "dataset": "AIDS",
+      "model": "MatrixResGated",
+      "operator": "GINConv",
+      "fold": 3
+    },
+    {
+      "key": "result_AIDS__MatrixResGated__GINConv__fold4__B3__sparse",
+      "dataset": "AIDS",
+      "model": "MatrixResGated",
+      "operator": "GINConv",
+      "fold": 4
+    },
+    {
+      "key": "result_Mutagenicity__Plain__GCNConv__fold0__B3__identity",
+      "dataset": "Mutagenicity",
+      "model": "Plain",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_Mutagenicity__Plain__GCNConv__fold1__B3__identity",
+      "dataset": "Mutagenicity",
+      "model": "Plain",
+      "operator": "GCNConv",
+      "fold": 1
+    },
+    {
+      "key": "result_Mutagenicity__Plain__GCNConv__fold2__B3__identity",
+      "dataset": "Mutagenicity",
+      "model": "Plain",
+      "operator": "GCNConv",
+      "fold": 2
+    },
+    {
+      "key": "result_Mutagenicity__Plain__GCNConv__fold3__B3__identity",
+      "dataset": "Mutagenicity",
+      "model": "Plain",
+      "operator": "GCNConv",
+      "fold": 3
+    },
+    {
+      "key": "result_Mutagenicity__Plain__GCNConv__fold4__B3__identity",
+      "dataset": "Mutagenicity",
+      "model": "Plain",
+      "operator": "GCNConv",
+      "fold": 4
+    },
+    {
+      "key": "result_Mutagenicity__Plain__GATConv__fold0__B3__identity",
+      "dataset": "Mutagenicity",
+      "model": "Plain",
+      "operator": "GATConv",
+      "fold": 0
+    },
+    {
+      "key": "result_Mutagenicity__Plain__GATConv__fold1__B3__identity",
+      "dataset": "Mutagenicity",
+      "model": "Plain",
+      "operator": "GATConv",
+      "fold": 1
+    },
+    {
+      "key": "result_Mutagenicity__Plain__GATConv__fold2__B3__identity",
+      "dataset": "Mutagenicity",
+      "model": "Plain",
+      "operator": "GATConv",
+      "fold": 2
+    },
+    {
+      "key": "result_Mutagenicity__Plain__GATConv__fold3__B3__identity",
+      "dataset": "Mutagenicity",
+      "model": "Plain",
+      "operator": "GATConv",
+      "fold": 3
+    },
+    {
+      "key": "result_Mutagenicity__Plain__GATConv__fold4__B3__identity",
+      "dataset": "Mutagenicity",
+      "model": "Plain",
+      "operator": "GATConv",
+      "fold": 4
+    },
+    {
+      "key": "result_Mutagenicity__Plain__SAGEConv__fold0__B3__identity",
+      "dataset": "Mutagenicity",
+      "model": "Plain",
+      "operator": "SAGEConv",
+      "fold": 0
+    },
+    {
+      "key": "result_Mutagenicity__Plain__SAGEConv__fold1__B3__identity",
+      "dataset": "Mutagenicity",
+      "model": "Plain",
+      "operator": "SAGEConv",
+      "fold": 1
+    },
+    {
+      "key": "result_Mutagenicity__Plain__SAGEConv__fold2__B3__identity",
+      "dataset": "Mutagenicity",
+      "model": "Plain",
+      "operator": "SAGEConv",
+      "fold": 2
+    },
+    {
+      "key": "result_Mutagenicity__Plain__SAGEConv__fold3__B3__identity",
+      "dataset": "Mutagenicity",
+      "model": "Plain",
+      "operator": "SAGEConv",
+      "fold": 3
+    },
+    {
+      "key": "result_Mutagenicity__Plain__SAGEConv__fold4__B3__identity",
+      "dataset": "Mutagenicity",
+      "model": "Plain",
+      "operator": "SAGEConv",
+      "fold": 4
+    },
+    {
+      "key": "result_Mutagenicity__Plain__GINConv__fold0__B3__identity",
+      "dataset": "Mutagenicity",
+      "model": "Plain",
+      "operator": "GINConv",
+      "fold": 0
+    },
+    {
+      "key": "result_Mutagenicity__Plain__GINConv__fold1__B3__identity",
+      "dataset": "Mutagenicity",
+      "model": "Plain",
+      "operator": "GINConv",
+      "fold": 1
+    },
+    {
+      "key": "result_Mutagenicity__Plain__GINConv__fold2__B3__identity",
+      "dataset": "Mutagenicity",
+      "model": "Plain",
+      "operator": "GINConv",
+      "fold": 2
+    },
+    {
+      "key": "result_Mutagenicity__Plain__GINConv__fold3__B3__identity",
+      "dataset": "Mutagenicity",
+      "model": "Plain",
+      "operator": "GINConv",
+      "fold": 3
+    },
+    {
+      "key": "result_Mutagenicity__Plain__GINConv__fold4__B3__identity",
+      "dataset": "Mutagenicity",
+      "model": "Plain",
+      "operator": "GINConv",
+      "fold": 4
+    },
+    {
+      "key": "result_Mutagenicity__VerticalRes__GCNConv__fold0__B3__identity",
+      "dataset": "Mutagenicity",
+      "model": "VerticalRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_Mutagenicity__VerticalRes__GCNConv__fold1__B3__identity",
+      "dataset": "Mutagenicity",
+      "model": "VerticalRes",
+      "operator": "GCNConv",
+      "fold": 1
+    },
+    {
+      "key": "result_Mutagenicity__VerticalRes__GCNConv__fold2__B3__identity",
+      "dataset": "Mutagenicity",
+      "model": "VerticalRes",
+      "operator": "GCNConv",
+      "fold": 2
+    },
+    {
+      "key": "result_Mutagenicity__VerticalRes__GCNConv__fold3__B3__identity",
+      "dataset": "Mutagenicity",
+      "model": "VerticalRes",
+      "operator": "GCNConv",
+      "fold": 3
+    },
+    {
+      "key": "result_Mutagenicity__VerticalRes__GCNConv__fold4__B3__identity",
+      "dataset": "Mutagenicity",
+      "model": "VerticalRes",
+      "operator": "GCNConv",
+      "fold": 4
+    },
+    {
+      "key": "result_Mutagenicity__VerticalRes__GATConv__fold0__B3__identity",
+      "dataset": "Mutagenicity",
+      "model": "VerticalRes",
+      "operator": "GATConv",
+      "fold": 0
+    },
+    {
+      "key": "result_Mutagenicity__VerticalRes__GATConv__fold1__B3__identity",
+      "dataset": "Mutagenicity",
+      "model": "VerticalRes",
+      "operator": "GATConv",
+      "fold": 1
+    },
+    {
+      "key": "result_Mutagenicity__VerticalRes__GATConv__fold2__B3__identity",
+      "dataset": "Mutagenicity",
+      "model": "VerticalRes",
+      "operator": "GATConv",
+      "fold": 2
+    },
+    {
+      "key": "result_Mutagenicity__VerticalRes__GATConv__fold3__B3__identity",
+      "dataset": "Mutagenicity",
+      "model": "VerticalRes",
+      "operator": "GATConv",
+      "fold": 3
+    },
+    {
+      "key": "result_Mutagenicity__VerticalRes__GATConv__fold4__B3__identity",
+      "dataset": "Mutagenicity",
+      "model": "VerticalRes",
+      "operator": "GATConv",
+      "fold": 4
+    },
+    {
+      "key": "result_Mutagenicity__VerticalRes__SAGEConv__fold0__B3__identity",
+      "dataset": "Mutagenicity",
+      "model": "VerticalRes",
+      "operator": "SAGEConv",
+      "fold": 0
+    },
+    {
+      "key": "result_Mutagenicity__VerticalRes__SAGEConv__fold1__B3__identity",
+      "dataset": "Mutagenicity",
+      "model": "VerticalRes",
+      "operator": "SAGEConv",
+      "fold": 1
+    },
+    {
+      "key": "result_Mutagenicity__VerticalRes__SAGEConv__fold2__B3__identity",
+      "dataset": "Mutagenicity",
+      "model": "VerticalRes",
+      "operator": "SAGEConv",
+      "fold": 2
+    },
+    {
+      "key": "result_Mutagenicity__VerticalRes__SAGEConv__fold3__B3__identity",
+      "dataset": "Mutagenicity",
+      "model": "VerticalRes",
+      "operator": "SAGEConv",
+      "fold": 3
+    },
+    {
+      "key": "result_Mutagenicity__VerticalRes__SAGEConv__fold4__B3__identity",
+      "dataset": "Mutagenicity",
+      "model": "VerticalRes",
+      "operator": "SAGEConv",
+      "fold": 4
+    },
+    {
+      "key": "result_Mutagenicity__VerticalRes__GINConv__fold0__B3__identity",
+      "dataset": "Mutagenicity",
+      "model": "VerticalRes",
+      "operator": "GINConv",
+      "fold": 0
+    },
+    {
+      "key": "result_Mutagenicity__VerticalRes__GINConv__fold1__B3__identity",
+      "dataset": "Mutagenicity",
+      "model": "VerticalRes",
+      "operator": "GINConv",
+      "fold": 1
+    },
+    {
+      "key": "result_Mutagenicity__VerticalRes__GINConv__fold2__B3__identity",
+      "dataset": "Mutagenicity",
+      "model": "VerticalRes",
+      "operator": "GINConv",
+      "fold": 2
+    },
+    {
+      "key": "result_Mutagenicity__VerticalRes__GINConv__fold3__B3__identity",
+      "dataset": "Mutagenicity",
+      "model": "VerticalRes",
+      "operator": "GINConv",
+      "fold": 3
+    },
+    {
+      "key": "result_Mutagenicity__VerticalRes__GINConv__fold4__B3__identity",
+      "dataset": "Mutagenicity",
+      "model": "VerticalRes",
+      "operator": "GINConv",
+      "fold": 4
+    },
+    {
+      "key": "result_Mutagenicity__HorizontalRes__GCNConv__fold0__B3__identity",
+      "dataset": "Mutagenicity",
+      "model": "HorizontalRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_Mutagenicity__HorizontalRes__GCNConv__fold1__B3__identity",
+      "dataset": "Mutagenicity",
+      "model": "HorizontalRes",
+      "operator": "GCNConv",
+      "fold": 1
+    },
+    {
+      "key": "result_Mutagenicity__HorizontalRes__GCNConv__fold2__B3__identity",
+      "dataset": "Mutagenicity",
+      "model": "HorizontalRes",
+      "operator": "GCNConv",
+      "fold": 2
+    },
+    {
+      "key": "result_Mutagenicity__HorizontalRes__GCNConv__fold3__B3__identity",
+      "dataset": "Mutagenicity",
+      "model": "HorizontalRes",
+      "operator": "GCNConv",
+      "fold": 3
+    },
+    {
+      "key": "result_Mutagenicity__HorizontalRes__GCNConv__fold4__B3__identity",
+      "dataset": "Mutagenicity",
+      "model": "HorizontalRes",
+      "operator": "GCNConv",
+      "fold": 4
+    },
+    {
+      "key": "result_Mutagenicity__HorizontalRes__GATConv__fold0__B3__identity",
+      "dataset": "Mutagenicity",
+      "model": "HorizontalRes",
+      "operator": "GATConv",
+      "fold": 0
+    },
+    {
+      "key": "result_Mutagenicity__HorizontalRes__GATConv__fold1__B3__identity",
+      "dataset": "Mutagenicity",
+      "model": "HorizontalRes",
+      "operator": "GATConv",
+      "fold": 1
+    },
+    {
+      "key": "result_Mutagenicity__HorizontalRes__GATConv__fold2__B3__identity",
+      "dataset": "Mutagenicity",
+      "model": "HorizontalRes",
+      "operator": "GATConv",
+      "fold": 2
+    },
+    {
+      "key": "result_Mutagenicity__HorizontalRes__GATConv__fold3__B3__identity",
+      "dataset": "Mutagenicity",
+      "model": "HorizontalRes",
+      "operator": "GATConv",
+      "fold": 3
+    },
+    {
+      "key": "result_Mutagenicity__HorizontalRes__GATConv__fold4__B3__identity",
+      "dataset": "Mutagenicity",
+      "model": "HorizontalRes",
+      "operator": "GATConv",
+      "fold": 4
+    },
+    {
+      "key": "result_Mutagenicity__HorizontalRes__SAGEConv__fold0__B3__identity",
+      "dataset": "Mutagenicity",
+      "model": "HorizontalRes",
+      "operator": "SAGEConv",
+      "fold": 0
+    },
+    {
+      "key": "result_Mutagenicity__HorizontalRes__SAGEConv__fold1__B3__identity",
+      "dataset": "Mutagenicity",
+      "model": "HorizontalRes",
+      "operator": "SAGEConv",
+      "fold": 1
+    },
+    {
+      "key": "result_Mutagenicity__HorizontalRes__SAGEConv__fold2__B3__identity",
+      "dataset": "Mutagenicity",
+      "model": "HorizontalRes",
+      "operator": "SAGEConv",
+      "fold": 2
+    },
+    {
+      "key": "result_Mutagenicity__HorizontalRes__SAGEConv__fold3__B3__identity",
+      "dataset": "Mutagenicity",
+      "model": "HorizontalRes",
+      "operator": "SAGEConv",
+      "fold": 3
+    },
+    {
+      "key": "result_Mutagenicity__HorizontalRes__SAGEConv__fold4__B3__identity",
+      "dataset": "Mutagenicity",
+      "model": "HorizontalRes",
+      "operator": "SAGEConv",
+      "fold": 4
+    },
+    {
+      "key": "result_Mutagenicity__HorizontalRes__GINConv__fold0__B3__identity",
+      "dataset": "Mutagenicity",
+      "model": "HorizontalRes",
+      "operator": "GINConv",
+      "fold": 0
+    },
+    {
+      "key": "result_Mutagenicity__HorizontalRes__GINConv__fold1__B3__identity",
+      "dataset": "Mutagenicity",
+      "model": "HorizontalRes",
+      "operator": "GINConv",
+      "fold": 1
+    },
+    {
+      "key": "result_Mutagenicity__HorizontalRes__GINConv__fold2__B3__identity",
+      "dataset": "Mutagenicity",
+      "model": "HorizontalRes",
+      "operator": "GINConv",
+      "fold": 2
+    },
+    {
+      "key": "result_Mutagenicity__HorizontalRes__GINConv__fold3__B3__identity",
+      "dataset": "Mutagenicity",
+      "model": "HorizontalRes",
+      "operator": "GINConv",
+      "fold": 3
+    },
+    {
+      "key": "result_Mutagenicity__HorizontalRes__GINConv__fold4__B3__identity",
+      "dataset": "Mutagenicity",
+      "model": "HorizontalRes",
+      "operator": "GINConv",
+      "fold": 4
+    },
+    {
+      "key": "result_Mutagenicity__MatrixRes__GCNConv__fold0__B3__identity",
+      "dataset": "Mutagenicity",
+      "model": "MatrixRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_Mutagenicity__MatrixRes__GCNConv__fold1__B3__identity",
+      "dataset": "Mutagenicity",
+      "model": "MatrixRes",
+      "operator": "GCNConv",
+      "fold": 1
+    },
+    {
+      "key": "result_Mutagenicity__MatrixRes__GCNConv__fold2__B3__identity",
+      "dataset": "Mutagenicity",
+      "model": "MatrixRes",
+      "operator": "GCNConv",
+      "fold": 2
+    },
+    {
+      "key": "result_Mutagenicity__MatrixRes__GCNConv__fold3__B3__identity",
+      "dataset": "Mutagenicity",
+      "model": "MatrixRes",
+      "operator": "GCNConv",
+      "fold": 3
+    },
+    {
+      "key": "result_Mutagenicity__MatrixRes__GCNConv__fold4__B3__identity",
+      "dataset": "Mutagenicity",
+      "model": "MatrixRes",
+      "operator": "GCNConv",
+      "fold": 4
+    },
+    {
+      "key": "result_Mutagenicity__MatrixRes__GATConv__fold0__B3__identity",
+      "dataset": "Mutagenicity",
+      "model": "MatrixRes",
+      "operator": "GATConv",
+      "fold": 0
+    },
+    {
+      "key": "result_Mutagenicity__MatrixRes__GATConv__fold1__B3__identity",
+      "dataset": "Mutagenicity",
+      "model": "MatrixRes",
+      "operator": "GATConv",
+      "fold": 1
+    },
+    {
+      "key": "result_Mutagenicity__MatrixRes__GATConv__fold2__B3__identity",
+      "dataset": "Mutagenicity",
+      "model": "MatrixRes",
+      "operator": "GATConv",
+      "fold": 2
+    },
+    {
+      "key": "result_Mutagenicity__MatrixRes__GATConv__fold3__B3__identity",
+      "dataset": "Mutagenicity",
+      "model": "MatrixRes",
+      "operator": "GATConv",
+      "fold": 3
+    },
+    {
+      "key": "result_Mutagenicity__MatrixRes__GATConv__fold4__B3__identity",
+      "dataset": "Mutagenicity",
+      "model": "MatrixRes",
+      "operator": "GATConv",
+      "fold": 4
+    },
+    {
+      "key": "result_Mutagenicity__MatrixRes__SAGEConv__fold0__B3__identity",
+      "dataset": "Mutagenicity",
+      "model": "MatrixRes",
+      "operator": "SAGEConv",
+      "fold": 0
+    },
+    {
+      "key": "result_Mutagenicity__MatrixRes__SAGEConv__fold1__B3__identity",
+      "dataset": "Mutagenicity",
+      "model": "MatrixRes",
+      "operator": "SAGEConv",
+      "fold": 1
+    },
+    {
+      "key": "result_Mutagenicity__MatrixRes__SAGEConv__fold2__B3__identity",
+      "dataset": "Mutagenicity",
+      "model": "MatrixRes",
+      "operator": "SAGEConv",
+      "fold": 2
+    },
+    {
+      "key": "result_Mutagenicity__MatrixRes__SAGEConv__fold3__B3__identity",
+      "dataset": "Mutagenicity",
+      "model": "MatrixRes",
+      "operator": "SAGEConv",
+      "fold": 3
+    },
+    {
+      "key": "result_Mutagenicity__MatrixRes__SAGEConv__fold4__B3__identity",
+      "dataset": "Mutagenicity",
+      "model": "MatrixRes",
+      "operator": "SAGEConv",
+      "fold": 4
+    },
+    {
+      "key": "result_Mutagenicity__MatrixRes__GINConv__fold0__B3__identity",
+      "dataset": "Mutagenicity",
+      "model": "MatrixRes",
+      "operator": "GINConv",
+      "fold": 0
+    },
+    {
+      "key": "result_Mutagenicity__MatrixRes__GINConv__fold1__B3__identity",
+      "dataset": "Mutagenicity",
+      "model": "MatrixRes",
+      "operator": "GINConv",
+      "fold": 1
+    },
+    {
+      "key": "result_Mutagenicity__MatrixRes__GINConv__fold2__B3__identity",
+      "dataset": "Mutagenicity",
+      "model": "MatrixRes",
+      "operator": "GINConv",
+      "fold": 2
+    },
+    {
+      "key": "result_Mutagenicity__MatrixRes__GINConv__fold3__B3__identity",
+      "dataset": "Mutagenicity",
+      "model": "MatrixRes",
+      "operator": "GINConv",
+      "fold": 3
+    },
+    {
+      "key": "result_Mutagenicity__MatrixRes__GINConv__fold4__B3__identity",
+      "dataset": "Mutagenicity",
+      "model": "MatrixRes",
+      "operator": "GINConv",
+      "fold": 4
+    },
+    {
+      "key": "result_Mutagenicity__MatrixResGated__GCNConv__fold0__B3__sparse",
+      "dataset": "Mutagenicity",
+      "model": "MatrixResGated",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_Mutagenicity__MatrixResGated__GCNConv__fold1__B3__sparse",
+      "dataset": "Mutagenicity",
+      "model": "MatrixResGated",
+      "operator": "GCNConv",
+      "fold": 1
+    },
+    {
+      "key": "result_Mutagenicity__MatrixResGated__GCNConv__fold2__B3__sparse",
+      "dataset": "Mutagenicity",
+      "model": "MatrixResGated",
+      "operator": "GCNConv",
+      "fold": 2
+    },
+    {
+      "key": "result_Mutagenicity__MatrixResGated__GCNConv__fold3__B3__sparse",
+      "dataset": "Mutagenicity",
+      "model": "MatrixResGated",
+      "operator": "GCNConv",
+      "fold": 3
+    },
+    {
+      "key": "result_Mutagenicity__MatrixResGated__GCNConv__fold4__B3__sparse",
+      "dataset": "Mutagenicity",
+      "model": "MatrixResGated",
+      "operator": "GCNConv",
+      "fold": 4
+    },
+    {
+      "key": "result_Mutagenicity__MatrixResGated__GATConv__fold0__B3__sparse",
+      "dataset": "Mutagenicity",
+      "model": "MatrixResGated",
+      "operator": "GATConv",
+      "fold": 0
+    },
+    {
+      "key": "result_Mutagenicity__MatrixResGated__GATConv__fold1__B3__sparse",
+      "dataset": "Mutagenicity",
+      "model": "MatrixResGated",
+      "operator": "GATConv",
+      "fold": 1
+    },
+    {
+      "key": "result_Mutagenicity__MatrixResGated__GATConv__fold2__B3__sparse",
+      "dataset": "Mutagenicity",
+      "model": "MatrixResGated",
+      "operator": "GATConv",
+      "fold": 2
+    },
+    {
+      "key": "result_Mutagenicity__MatrixResGated__GATConv__fold3__B3__sparse",
+      "dataset": "Mutagenicity",
+      "model": "MatrixResGated",
+      "operator": "GATConv",
+      "fold": 3
+    },
+    {
+      "key": "result_Mutagenicity__MatrixResGated__GATConv__fold4__B3__sparse",
+      "dataset": "Mutagenicity",
+      "model": "MatrixResGated",
+      "operator": "GATConv",
+      "fold": 4
+    },
+    {
+      "key": "result_Mutagenicity__MatrixResGated__SAGEConv__fold0__B3__sparse",
+      "dataset": "Mutagenicity",
+      "model": "MatrixResGated",
+      "operator": "SAGEConv",
+      "fold": 0
+    },
+    {
+      "key": "result_Mutagenicity__MatrixResGated__SAGEConv__fold1__B3__sparse",
+      "dataset": "Mutagenicity",
+      "model": "MatrixResGated",
+      "operator": "SAGEConv",
+      "fold": 1
+    },
+    {
+      "key": "result_Mutagenicity__MatrixResGated__SAGEConv__fold2__B3__sparse",
+      "dataset": "Mutagenicity",
+      "model": "MatrixResGated",
+      "operator": "SAGEConv",
+      "fold": 2
+    },
+    {
+      "key": "result_Mutagenicity__MatrixResGated__SAGEConv__fold3__B3__sparse",
+      "dataset": "Mutagenicity",
+      "model": "MatrixResGated",
+      "operator": "SAGEConv",
+      "fold": 3
+    },
+    {
+      "key": "result_Mutagenicity__MatrixResGated__SAGEConv__fold4__B3__sparse",
+      "dataset": "Mutagenicity",
+      "model": "MatrixResGated",
+      "operator": "SAGEConv",
+      "fold": 4
+    },
+    {
+      "key": "result_Mutagenicity__MatrixResGated__GINConv__fold0__B3__sparse",
+      "dataset": "Mutagenicity",
+      "model": "MatrixResGated",
+      "operator": "GINConv",
+      "fold": 0
+    },
+    {
+      "key": "result_Mutagenicity__MatrixResGated__GINConv__fold1__B3__sparse",
+      "dataset": "Mutagenicity",
+      "model": "MatrixResGated",
+      "operator": "GINConv",
+      "fold": 1
+    },
+    {
+      "key": "result_Mutagenicity__MatrixResGated__GINConv__fold2__B3__sparse",
+      "dataset": "Mutagenicity",
+      "model": "MatrixResGated",
+      "operator": "GINConv",
+      "fold": 2
+    },
+    {
+      "key": "result_Mutagenicity__MatrixResGated__GINConv__fold3__B3__sparse",
+      "dataset": "Mutagenicity",
+      "model": "MatrixResGated",
+      "operator": "GINConv",
+      "fold": 3
+    },
+    {
+      "key": "result_Mutagenicity__MatrixResGated__GINConv__fold4__B3__sparse",
+      "dataset": "Mutagenicity",
+      "model": "MatrixResGated",
+      "operator": "GINConv",
+      "fold": 4
+    }
+  ]
+}

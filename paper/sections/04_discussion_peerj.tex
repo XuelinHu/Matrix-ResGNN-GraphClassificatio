@@ -1,12 +1,12 @@
 \section{Discussion}
 
-This section answers the three research questions in light of the benchmark, ablation, tuned-candidate, and mechanism evidence.
+This section answers the research questions in light of the six-dataset, four-operator benchmark, the branch-count ablation, the tuned-candidate checks, and the mechanism evidence.
 
 \subsection{RQ1: Which residual topology is strongest?}
 
-The main benchmark argues against a universal residual topology. At \(B=3\), HorizontalRes is strongest on PROTEINS, VerticalRes is strongest on DD, and MatrixResGated is strongest on ENZYMES. These outcomes indicate that the useful residual neighborhood depends on dataset-specific tolerance for branch specialization, residual traffic, and optimization complexity.
+The main benchmark argues against a universal residual topology. Across 24 dataset--operator combinations, MatrixRes is the most frequent winner and has the best mean rank, but all five model families win at least two combinations. Under GCNConv alone, Plain is strongest on PROTEINS, HorizontalRes is strongest on DD, MatrixResGated is strongest on ENZYMES, and MatrixRes is strongest on MUTAG, AIDS, and Mutagenicity. These outcomes indicate that the useful residual neighborhood depends on dataset-specific tolerance for branch specialization, residual traffic, and optimization complexity.
 
-\textbf{Answer:} Residual topology is dataset-dependent. A graph-classification benchmark should compare vertical, horizontal, and matrix-style reuse rather than assuming that one residual direction is universally best.
+\textbf{Answer:} MatrixRes is the strongest overall topology in the current full benchmark, but residual topology is still dataset- and operator-dependent. A graph-classification benchmark should compare vertical, horizontal, matrix-style, and sparse/gated reuse rather than assuming that one residual direction is universally best.
 
 \subsection{RQ2: How does branch count change residual behavior?}
 
@@ -14,7 +14,13 @@ The branch-count ablation shows that \(B\) is not only a capacity parameter. Inc
 
 \textbf{Answer:} Branch count helps when it creates useful functional diversity, and hurts when residual complexity grows faster than branch separation or optimization quality.
 
-\subsection{RQ3: When does controlled matrix reuse help?}
+\subsection{RQ3: Why include sparse/gated matrix reuse?}
+
+MatrixResGated tests whether matrix residual traffic should be filtered before injection. The main benchmark shows that sparse/gated reuse is not uniformly better than dense matrix reuse: MatrixRes wins more dataset--operator combinations overall. However, MatrixResGated is still useful because it wins several combinations, including the difficult ENZYMES GCNConv setting, and it provides a controlled way to reduce weak residual coefficients. This distinction is important. The value of MatrixResGated is not that sparsity always improves accuracy, but that sparse residual control can be beneficial when matrix-style reuse would otherwise inject too much low-value residual traffic.
+
+\textbf{Answer:} Sparse/gated matrix reuse is a control mechanism for residual traffic. It is complementary to dense MatrixRes rather than a strict replacement.
+
+\subsection{RQ4: When does controlled matrix reuse help?}
 
 MatrixResGated defines a tunable family rather than a plug-and-play winner. The fold-0 sensitivity scan suggests that PROTEINS can benefit from mild sparsification, while DD benefits from conservative optimization, smaller hidden dimension, and lower initial gate. The five-fold candidate reruns refine this interpretation. On DD, the smaller hidden dimension remains beneficial and parameter-efficient. On PROTEINS, the mild-sparsity candidate does not preserve its fold-0 advantage across all folds.
 
@@ -22,8 +28,8 @@ MatrixResGated defines a tunable family rather than a plug-and-play winner. The 
 
 \subsection{Limitations}
 
-Several limitations bound the generality of these findings. First, the main benchmark uses GCNConv only. This makes the comparison controlled but leaves open whether the same residual-topology trends hold for GINConv, GraphSAGE, or attention-based operators. Second, the sensitivity scan is fold-0 only; although selected candidates were rerun across five folds, that follow-up is limited to MatrixResGated on PROTEINS and DD. Third, ENZYMES has low absolute accuracy and high variability, so its result should be interpreted cautiously. Finally, the mechanism analysis is correlational. Branch diversity, cosine similarity, and gradient norms support a coherent explanation, but they do not prove causality.
+Several limitations bound the generality of these findings. First, although the main benchmark includes four message-passing operators, it still uses a fixed graph-level pooling and classification head; alternative readout designs may interact with residual topology. Second, the sensitivity scan is fold-0 only; although selected candidates were rerun across five folds, that follow-up is limited to MatrixResGated on PROTEINS and DD. Third, ENZYMES has low absolute accuracy and high variability, so its result should be interpreted cautiously. Finally, the mechanism analysis is correlational. Branch diversity, cosine similarity, and gradient norms support a coherent explanation, but they do not prove causality.
 
 \subsection{Future directions}
 
-Future work should extend the comparison to additional message-passing operators, larger graph-classification datasets, and adaptive residual-neighborhood selection. A natural next step is to replace manually chosen vertical, horizontal, or matrix stencils with a learned local residual policy. The tuned-candidate validation should also be broadened beyond the current MatrixResGated checks to determine whether dataset-specific residual control can be selected reliably.
+Future work should extend the comparison to larger graph-classification datasets, richer readout mechanisms, and adaptive residual-neighborhood selection. A natural next step is to replace manually chosen vertical, horizontal, or matrix stencils with a learned local residual policy. The tuned-candidate validation should also be broadened beyond the current MatrixResGated checks to determine whether dataset-specific residual control can be selected reliably.

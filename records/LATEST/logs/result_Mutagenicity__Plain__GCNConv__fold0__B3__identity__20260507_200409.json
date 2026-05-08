@@ -1,0 +1,63 @@
+{
+  "config": {
+    "dataset": "Mutagenicity",
+    "model": "Plain",
+    "operator": "GCNConv",
+    "version": "LATEST",
+    "fold": 0,
+    "seed": 1024,
+    "ep": 200,
+    "lr": 0.005,
+    "weight_decay": 0.0001,
+    "drop": 0.5,
+    "dim": 64,
+    "h_layer": 4,
+    "num_branches": 3,
+    "batch_size": 256,
+    "val_ratio": 0.1,
+    "patience": 60,
+    "min_delta": 0.0,
+    "grad_clip": 2.0,
+    "lr_factor": 0.5,
+    "lr_patience": 15,
+    "min_lr": 1e-05,
+    "gate_init": 0.8,
+    "gate_mode": "learnable",
+    "fixed_gate_value": 0.8,
+    "residual_mode": "identity",
+    "topk_ratio": 0.5,
+    "sparse_lambda": 0.05
+  },
+  "version": "LATEST",
+  "dataset_stats": {
+    "dataset": "Mutagenicity",
+    "dataset_family": "tu",
+    "graphs": 4337,
+    "classes": 2,
+    "num_features": 14,
+    "avg_nodes": 30.317731150564907,
+    "avg_edges": 30.76942587041734,
+    "avg_degree": 2.0379886162441143,
+    "class_hist": {
+      "1": 1936,
+      "0": 2401
+    }
+  },
+  "split_context": {
+    "dataset_family": "tu",
+    "split_protocol": "stratified_5fold_cv",
+    "repeat_id": 0,
+    "official_split": false
+  },
+  "parameter_stats": {
+    "total_params": 40451,
+    "trainable_params": 40451,
+    "frozen_params": 0
+  },
+  "best_epoch": 199,
+  "best_val_loss": 0.5200684063716305,
+  "best_val_acc": 0.760806916426513,
+  "best_test_acc": 0.7583429228998849,
+  "test_loss": 0.5199348696082041,
+  "runtime_seconds": 125.504070520401
+}

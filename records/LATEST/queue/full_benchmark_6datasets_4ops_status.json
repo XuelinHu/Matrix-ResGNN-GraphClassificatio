@@ -1,0 +1,46 @@
+{
+  "queue_name": "full_benchmark_6datasets_4ops",
+  "version": "LATEST",
+  "datasets": [
+    "PROTEINS",
+    "DD",
+    "ENZYMES",
+    "MUTAG",
+    "AIDS",
+    "Mutagenicity"
+  ],
+  "models": [
+    "Plain",
+    "VerticalRes",
+    "HorizontalRes",
+    "MatrixRes",
+    "MatrixResGated"
+  ],
+  "operators": [
+    "GCNConv",
+    "GATConv",
+    "SAGEConv",
+    "GINConv"
+  ],
+  "folds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "expected": 600,
+  "completed_before": 455,
+  "pending_at_start": 425,
+  "max_workers": 4,
+  "pid": 4023322,
+  "started_at": "2026-05-07T18:31:18",
+  "completed_now": 425,
+  "failed": 0,
+  "remaining": 0,
+  "complete_in_logs": 880,
+  "state": "completed",
+  "finished_at": "2026-05-07T21:30:00",
+  "events_path": "records/LATEST/queue/full_benchmark_6datasets_4ops_events.jsonl",
+  "plan_path": "records/LATEST/queue/full_benchmark_6datasets_4ops_plan.json"
+}
