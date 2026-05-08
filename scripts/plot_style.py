@@ -1,3 +1,4 @@
+"""集中定义论文图表的颜色、线型、标记和 Matplotlib 样式。"""
 from __future__ import annotations
 
 from typing import Dict
@@ -6,6 +7,7 @@ import matplotlib.pyplot as plt
 from matplotlib import rcParams
 
 
+# 模型颜色配置：保证所有论文图中同一模型使用一致颜色。
 MODEL_COLORS: Dict[str, str] = {
     "Plain": "#4D4D4D",
     "VerticalRes": "#0072B2",
@@ -14,6 +16,7 @@ MODEL_COLORS: Dict[str, str] = {
     "MatrixResGated": "#CC79A7",
 }
 
+# 模型标记配置：保证折线图中不同模型容易区分。
 MODEL_MARKERS: Dict[str, str] = {
     "Plain": "o",
     "VerticalRes": "s",
@@ -22,6 +25,7 @@ MODEL_MARKERS: Dict[str, str] = {
     "MatrixResGated": "P",
 }
 
+# 模型线型配置：配合颜色和标记提升黑白打印下的可读性。
 MODEL_LINESTYLES: Dict[str, object] = {
     "Plain": "-",
     "VerticalRes": "--",
@@ -32,6 +36,7 @@ MODEL_LINESTYLES: Dict[str, object] = {
 
 
 def apply_paper_style() -> None:
+    """设置论文图表统一的字体、颜色、网格和导出风格。"""
     rcParams["font.family"] = "serif"
     rcParams["font.serif"] = ["Times New Roman", "Times", "DejaVu Serif"]
     rcParams["font.size"] = 13
@@ -57,6 +62,7 @@ def apply_paper_style() -> None:
 
 
 def style_axis(ax: plt.Axes, with_grid: bool = True, grid_axis: str = "y") -> None:
+    """为单个坐标轴应用统一网格和边框样式。"""
     if with_grid:
         ax.grid(axis=grid_axis, zorder=0)
     ax.set_axisbelow(True)

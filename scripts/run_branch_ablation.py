@@ -1,3 +1,4 @@
+"""批量运行分支数 B 的消融实验。"""
 from __future__ import annotations
 
 import argparse
@@ -6,6 +7,7 @@ import subprocess
 import sys
 from pathlib import Path
 
+# 仓库根目录：用于把脚本中的相对路径统一定位到项目根路径。
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
@@ -15,6 +17,7 @@ from src.experiment_paths import DEFAULT_EXPERIMENT_VERSION, ensure_version_mani
 
 
 def parse_args() -> argparse.Namespace:
+    """解析命令行参数，返回当前脚本需要的实验配置。"""
     parser = argparse.ArgumentParser(description="Run branch-count ablations for multi-branch residual models.")
     parser.add_argument("--dataset", default="PROTEINS")
     parser.add_argument("--models", nargs="+", default=["VerticalRes", "HorizontalRes", "MatrixRes", "MatrixResGated"])
@@ -28,6 +31,7 @@ def parse_args() -> argparse.Namespace:
 
 
 def main() -> None:
+    """脚本主入口，串联参数解析、数据读取、处理和结果写出。"""
     args = parse_args()
     ensure_version_manifest(ROOT)
     jobs: list[list[str]] = []
@@ -60,6 +64,7 @@ def main() -> None:
                 jobs.append(cmd)
 
     def run_job(cmd: list[str]) -> tuple[int, str]:
+        """run_job 函数的职责说明。"""
         proc = subprocess.run(cmd, capture_output=True, text=True, cwd=ROOT)
         tail = "\n".join(proc.stdout.strip().splitlines()[-4:]) if proc.stdout else ""
         if proc.returncode != 0:

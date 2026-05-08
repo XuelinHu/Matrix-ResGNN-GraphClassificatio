@@ -1,3 +1,4 @@
+"""实现残差 GNN 的共享配置、门控、残差过滤、邻域构造和基类前向逻辑。"""
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -15,50 +16,60 @@ GridIndex = Tuple[int, int]
 
 @dataclass(frozen=True)
 class ResidualConfig:
-    hidden_dim: int = 64
-    num_layers: int = 4
-    num_branches: int = 3
-    dropout: float = 0.5
-    operator: str = "GCNConv"
-    gate_init: float = 0.8
-    gate_mode: str = "learnable"
-    fixed_gate_value: float = 0.8
-    residual_mode: str = "identity"
-    topk_ratio: float = 0.5
-    sparse_lambda: float = 0.05
+    """残差 GNN 的共享配置对象，集中保存隐藏维度、层数、分支数、门控和残差过滤参数。"""
+    hidden_dim: int = 64  # 隐藏层维度，控制每个分支的表示宽度。
+    num_layers: int = 4  # 消息传递层数，决定深度方向的残差网格大小。
+    num_branches: int = 3  # 分支数量，决定横向残差网格大小。
+    dropout: float = 0.5  # 分类前和层间使用的 dropout 比例。
+    operator: str = "GCNConv"  # 消息传递算子名称，可选 GCN/GAT/SAGE/GIN。
+    gate_init: float = 0.8  # 可学习门控的初始概率。
+    gate_mode: str = "learnable"  # 门控模式，支持 learnable 或 fixed。
+    fixed_gate_value: float = 0.8  # 固定门控模式下使用的门控值。
+    residual_mode: str = "identity"  # 残差过滤模式，支持 identity/topk/sparse。
+    topk_ratio: float = 0.5  # top-k 残差过滤保留比例。
+    sparse_lambda: float = 0.05  # sparse 残差过滤的 softshrink 阈值。
 
 
 def gate_logit_from_probability(probability: float) -> float:
+    """把门控初始概率转换为 sigmoid logit 参数。"""
     clipped = min(max(probability, 1e-4), 1.0 - 1e-4)
     return float(np.log(clipped / (1.0 - clipped)))
 
 
 class LearnableGate(nn.Module):
+    """可学习标量门控模块，用于控制残差注入强度。"""
     def __init__(self, init_probability: float = 1.0):
+        """初始化模块参数并调用父类构造逻辑。"""
         super().__init__()
         self.logit = nn.Parameter(torch.tensor(gate_logit_from_probability(init_probability), dtype=torch.float))
 
     def forward(self) -> torch.Tensor:
+        """返回 sigmoid 后的可学习残差门控值。"""
         return torch.sigmoid(self.logit)
 
 
 class FixedGate(nn.Module):
+    """固定标量门控模块，用于不训练门控值的对照实验。"""
     def __init__(self, value: float):
+        """初始化模块参数并调用父类构造逻辑。"""
         super().__init__()
         clipped = min(max(value, 0.0), 1.0)
         self.register_buffer("value", torch.tensor(float(clipped), dtype=torch.float))
 
     def forward(self) -> torch.Tensor:
+        """返回固定残差门控值。"""
         return self.value
 
 
 def build_gate(init_probability: float, gate_mode: str, fixed_gate_value: float) -> nn.Module:
+    """根据门控模式创建可学习门控或固定门控模块。"""
     if gate_mode == "fixed":
         return FixedGate(fixed_gate_value)
     return LearnableGate(init_probability=init_probability)
 
 
 def topk_mask(tensor: torch.Tensor, ratio: float) -> torch.Tensor:
+    """根据绝对值大小生成 top-k 残差过滤掩码。"""
     if tensor.numel() == 0:
         return torch.zeros_like(tensor)
     keep_ratio = min(max(ratio, 1e-4), 1.0)
@@ -78,6 +89,7 @@ def apply_residual_mode(
     topk_ratio: float,
     sparse_lambda: float,
 ) -> torch.Tensor:
+    """根据 residual_mode 对残差信号应用 identity、top-k 或 sparse 过滤。"""
     if residual_mode == "topk":
         return residual * topk_mask(residual, ratio=topk_ratio)
     if residual_mode == "sparse":
@@ -86,10 +98,12 @@ def apply_residual_mode(
 
 
 def valid_branch(branch: int, num_branches: int) -> bool:
+    """判断分支编号是否落在合法范围内。"""
     return 0 <= branch < num_branches
 
 
 def vertical_neighbors(branch: int, layer: int, num_branches: int) -> List[GridIndex]:
+    """返回同分支上一层的纵向残差邻居。"""
     del num_branches
     if layer <= 0:
         return []
@@ -97,6 +111,7 @@ def vertical_neighbors(branch: int, layer: int, num_branches: int) -> List[GridI
 
 
 def horizontal_neighbors(branch: int, layer: int, num_branches: int) -> List[GridIndex]:
+    """返回同层相邻分支的横向残差邻居。"""
     neighbors: List[GridIndex] = []
     for other in (branch - 1, branch + 1):
         if valid_branch(other, num_branches):
@@ -105,6 +120,7 @@ def horizontal_neighbors(branch: int, layer: int, num_branches: int) -> List[Gri
 
 
 def matrix_neighbors(branch: int, layer: int, num_branches: int) -> List[GridIndex]:
+    """返回矩阵残差的纵向、横向和对角邻居。"""
     neighbors = vertical_neighbors(branch, layer, num_branches)
     neighbors.extend(horizontal_neighbors(branch, layer, num_branches))
     if layer > 0:
@@ -115,6 +131,7 @@ def matrix_neighbors(branch: int, layer: int, num_branches: int) -> List[GridInd
 
 
 def build_neighbor_map(num_branches: int, num_layers: int, mode: str) -> Dict[GridIndex, List[GridIndex]]:
+    """为所有分支和层预计算残差邻接表。"""
     if mode == "plain":
         fn = lambda b, l, nb: []  # noqa: E731
     elif mode == "vertical":
@@ -134,10 +151,12 @@ def build_neighbor_map(num_branches: int, num_layers: int, mode: str) -> Dict[Gr
 
 
 def infer_input_dim(dataset: object) -> int:
+    """推断数据集输入特征维度，无特征时使用 1 维常数特征。"""
     return dataset.num_features if dataset.num_features > 0 else 1
 
 
 def build_mlp(input_dim: int, output_dim: int) -> nn.Sequential:
+    """构建 GINConv 使用的小型 MLP。"""
     return nn.Sequential(
         nn.Linear(input_dim, output_dim),
         nn.ReLU(),
@@ -146,6 +165,7 @@ def build_mlp(input_dim: int, output_dim: int) -> nn.Sequential:
 
 
 def build_operator(name: str, in_channels: int, out_channels: int) -> nn.Module:
+    """按名称构造 GCN、GAT、SAGE 或 GIN 消息传递算子。"""
     if name == "GCNConv":
         return GCNConv(in_channels, out_channels)
     if name == "GATConv":
@@ -158,9 +178,11 @@ def build_operator(name: str, in_channels: int, out_channels: int) -> nn.Module:
 
 
 class BaseResidualGNN(nn.Module):
+    """所有残差拓扑模型共享的多分支图分类基类。"""
     topology_mode: str = "undefined"
 
     def __init__(self, config: ResidualConfig, dataset: object):
+        """初始化模块参数并调用父类构造逻辑。"""
         super().__init__()
         self.config = config
         self.dataset = dataset
@@ -197,6 +219,7 @@ class BaseResidualGNN(nn.Module):
         self.classifier = nn.Linear(config.hidden_dim, self.num_classes)
 
     def residual_sources(self, branch: int, layer: int) -> Sequence[GridIndex]:
+        """返回指定分支和层对应的残差来源坐标。"""
         return tuple(self.neighbor_map[(branch, layer)])
 
     def _fuse_residuals(
@@ -206,6 +229,7 @@ class BaseResidualGNN(nn.Module):
         proposals: Sequence[torch.Tensor],
         previous_states: Sequence[torch.Tensor],
     ) -> Tuple[torch.Tensor, Dict[str, float]]:
+        """融合当前层 proposal 与配置指定的残差来源，并记录残差统计。"""
         fused = proposals[branch]
         gate = self.residual_gate()
         stats = {
@@ -244,6 +268,7 @@ class BaseResidualGNN(nn.Module):
         batch: torch.Tensor,
         return_aux: bool = False,
     ):
+        """执行多分支残差 GNN 前向传播，并可返回机制分析辅助信息。"""
         branch_states: List[torch.Tensor] = [x for _ in range(self.config.num_branches)]
         branch_node_history: List[List[torch.Tensor]] = [[] for _ in range(self.config.num_branches)]
         branch_graph_history: List[List[torch.Tensor]] = [[] for _ in range(self.config.num_branches)]

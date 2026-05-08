@@ -1,3 +1,4 @@
+"""生成单个配置的残差分析导出计划文件。"""
 from __future__ import annotations
 
 import argparse
@@ -8,6 +9,7 @@ from src.experiment_paths import DEFAULT_EXPERIMENT_VERSION, analysis_dir, ensur
 
 
 def parse_args() -> argparse.Namespace:
+    """解析命令行参数，返回当前脚本需要的实验配置。"""
     parser = argparse.ArgumentParser(description="Scaffold for exporting residual-analysis artifacts.")
     parser.add_argument("--dataset", required=True)
     parser.add_argument("--model", required=True)
@@ -18,6 +20,7 @@ def parse_args() -> argparse.Namespace:
 
 
 def main() -> None:
+    """脚本主入口，串联参数解析、数据读取、处理和结果写出。"""
     root = Path(__file__).resolve().parents[1]
     ensure_version_manifest(root)
     args = parse_args()

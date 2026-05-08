@@ -1,3 +1,4 @@
+"""发现缺失 benchmark 任务并可按队列批量补跑。"""
 from __future__ import annotations
 
 import argparse
@@ -11,6 +12,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Dict, Iterable, List
 
+# 仓库根目录：用于把脚本中的相对路径统一定位到项目根路径。
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
@@ -21,6 +23,7 @@ from src.experiment_paths import DEFAULT_EXPERIMENT_VERSION, ensure_version_mani
 
 
 def parse_args() -> argparse.Namespace:
+    """解析命令行参数，返回当前脚本需要的实验配置。"""
     parser = argparse.ArgumentParser(description="Run missing benchmark jobs with resumable progress tracking.")
     parser.add_argument("--version", default=DEFAULT_EXPERIMENT_VERSION)
     parser.add_argument("--datasets", nargs="+", default=ALL_ACTIVE_DATASETS)
@@ -34,6 +37,7 @@ def parse_args() -> argparse.Namespace:
 
 
 def latest_results(active_log_dir: Path) -> Dict[str, Path]:
+    """扫描日志目录，按实验配置键保留最新的 result JSON 文件路径。"""
     latest: Dict[str, Path] = {}
     for path in sorted(active_log_dir.glob("result_*.json")):
         key = path.stem.rsplit("__", 1)[0]
@@ -42,6 +46,7 @@ def latest_results(active_log_dir: Path) -> Dict[str, Path]:
 
 
 def expected_key(dataset: str, model: str, operator: str, fold: int) -> str:
+    """根据数据集、模型、算子和折号构造预期日志键。"""
     protocol = build_protocol(dataset=dataset, model=model, operator=operator)
     residual_mode = str(protocol.get("residual_mode", "identity"))
     num_branches = int(protocol.get("num_branches", 3))
@@ -49,6 +54,7 @@ def expected_key(dataset: str, model: str, operator: str, fold: int) -> str:
 
 
 def build_command(dataset: str, model: str, operator: str, fold: int, version: str) -> List[str]:
+    """把任务配置转换为可执行的 run_single 命令。"""
     protocol = build_protocol(dataset=dataset, model=model, operator=operator)
     cmd = [
         sys.executable,
@@ -70,6 +76,7 @@ def build_command(dataset: str, model: str, operator: str, fold: int, version: s
 
 
 def build_jobs(args: argparse.Namespace, completed: Dict[str, Path]) -> List[Dict[str, object]]:
+    """根据实验网格构造待运行任务列表。"""
     jobs: List[Dict[str, object]] = []
     for dataset in args.datasets:
         for model in args.models:
@@ -92,6 +99,7 @@ def build_jobs(args: argparse.Namespace, completed: Dict[str, Path]) -> List[Dic
 
 
 def write_json(path: Path, payload: Dict[str, object]) -> None:
+    """把任务状态或队列信息写入 JSON 文件。"""
     path.parent.mkdir(parents=True, exist_ok=True)
     tmp = path.with_suffix(path.suffix + ".tmp")
     tmp.write_text(json.dumps(payload, indent=2), encoding="utf-8")
@@ -99,12 +107,14 @@ def write_json(path: Path, payload: Dict[str, object]) -> None:
 
 
 def append_jsonl(path: Path, payload: Dict[str, object]) -> None:
+    """向 JSONL 文件追加一条任务记录，便于持续跟踪队列进度。"""
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("a", encoding="utf-8") as handle:
         handle.write(json.dumps(payload, ensure_ascii=False) + "\n")
 
 
 def run_one(job: Dict[str, object]) -> Dict[str, object]:
+    """执行单个补跑任务，并记录任务状态。"""
     start = time.time()
     proc = subprocess.run(job["cmd"], capture_output=True, text=True, cwd=ROOT)
     tail_lines = []
@@ -126,6 +136,7 @@ def run_one(job: Dict[str, object]) -> Dict[str, object]:
 
 
 def summarize_scope(args: argparse.Namespace, completed_before: int, pending: int) -> Dict[str, object]:
+    """统计当前队列范围内已完成和缺失的实验组合。"""
     expected = len(args.datasets) * len(args.models) * len(args.operators) * len(args.folds)
     return {
         "queue_name": args.queue_name,
@@ -144,6 +155,7 @@ def summarize_scope(args: argparse.Namespace, completed_before: int, pending: in
 
 
 def main() -> None:
+    """脚本主入口，串联参数解析、数据读取、处理和结果写出。"""
     args = parse_args()
     ensure_version_manifest(ROOT)
     version = normalize_version(args.version)

@@ -1,3 +1,4 @@
+"""汇总主 benchmark 的逐折 JSON 日志为 fold rows 和 summary CSV。"""
 from __future__ import annotations
 
 import argparse
@@ -8,6 +9,7 @@ import sys
 from pathlib import Path
 from typing import Dict, List
 
+# 仓库根目录：用于把脚本中的相对路径统一定位到项目根路径。
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
@@ -17,12 +19,14 @@ from src.experiment_paths import DEFAULT_EXPERIMENT_VERSION, log_dir, normalize_
 
 
 def parse_args() -> argparse.Namespace:
+    """解析命令行参数，返回当前脚本需要的实验配置。"""
     parser = argparse.ArgumentParser(description="Summarize benchmark result JSON files into stable CSV tables.")
     parser.add_argument("--version", default=DEFAULT_EXPERIMENT_VERSION)
     return parser.parse_args()
 
 
 def latest_results(active_log_dir: Path) -> Dict[str, Path]:
+    """扫描日志目录，按实验配置键保留最新的 result JSON 文件路径。"""
     latest: Dict[str, Path] = {}
     for path in sorted(active_log_dir.glob("result_*.json")):
         stem = path.stem
@@ -34,6 +38,7 @@ def latest_results(active_log_dir: Path) -> Dict[str, Path]:
 
 
 def load_rows(active_log_dir: Path) -> List[Dict[str, object]]:
+    """读取输入结果文件，并转换成后续汇总需要的结构化行。"""
     rows: List[Dict[str, object]] = []
     for path in latest_results(active_log_dir).values():
         payload = json.loads(path.read_text(encoding="utf-8"))
@@ -58,6 +63,7 @@ def load_rows(active_log_dir: Path) -> List[Dict[str, object]]:
 
 
 def summarize(rows: List[Dict[str, object]]) -> List[Dict[str, object]]:
+    """对逐折实验记录做聚合，生成均值、标准差和运行统计。"""
     summary_rows: List[Dict[str, object]] = []
     for dataset in ALL_ACTIVE_DATASETS:
         for model in MAIN_MODELS:
@@ -93,6 +99,7 @@ def summarize(rows: List[Dict[str, object]]) -> List[Dict[str, object]]:
 
 
 def write_csv(rows: List[Dict[str, object]], target: Path) -> None:
+    """把结构化行写入 CSV 文件，并自动创建父目录。"""
     target.parent.mkdir(parents=True, exist_ok=True)
     if not rows:
         target.write_text("", encoding="utf-8")
@@ -104,6 +111,7 @@ def write_csv(rows: List[Dict[str, object]], target: Path) -> None:
 
 
 def main() -> None:
+    """脚本主入口，串联参数解析、数据读取、处理和结果写出。"""
     args = parse_args()
     version = normalize_version(args.version)
     rows = load_rows(log_dir(ROOT, version))

@@ -1,3 +1,4 @@
+"""汇总已确认调参候选的五折结果。"""
 from __future__ import annotations
 
 import csv
@@ -7,6 +8,7 @@ import sys
 from pathlib import Path
 from typing import Dict, List
 
+# 仓库根目录：用于把脚本中的相对路径统一定位到项目根路径。
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
@@ -16,6 +18,7 @@ from src.experiment_paths import DEFAULT_EXPERIMENT_VERSION, log_dir, normalize_
 
 
 def matches_candidate(config: Dict[str, object], candidate: Dict[str, object]) -> bool:
+    """判断日志配置是否命中预定义的调参候选。"""
     if config["dataset"] != candidate["dataset"]:
         return False
     if config["model"] != candidate["model"]:
@@ -29,6 +32,7 @@ def matches_candidate(config: Dict[str, object], candidate: Dict[str, object]) -
 
 
 def load_rows(version: str) -> List[Dict[str, object]]:
+    """读取输入结果文件，并转换成后续汇总需要的结构化行。"""
     latest: Dict[tuple[str, int], Dict[str, object]] = {}
     for path in sorted(log_dir(ROOT, normalize_version(version)).glob("result_*.json")):
         payload = json.loads(path.read_text(encoding="utf-8"))
@@ -52,6 +56,7 @@ def load_rows(version: str) -> List[Dict[str, object]]:
 
 
 def summarize(rows: List[Dict[str, object]]) -> List[Dict[str, object]]:
+    """对逐折实验记录做聚合，生成均值、标准差和运行统计。"""
     summary: List[Dict[str, object]] = []
     keys = sorted(set(str(row["candidate"]) for row in rows))
     for key in keys:
@@ -79,6 +84,7 @@ def summarize(rows: List[Dict[str, object]]) -> List[Dict[str, object]]:
 
 
 def write_csv(rows: List[Dict[str, object]], target: Path) -> None:
+    """把结构化行写入 CSV 文件，并自动创建父目录。"""
     target.parent.mkdir(parents=True, exist_ok=True)
     if not rows:
         target.write_text("", encoding="utf-8")
@@ -90,6 +96,7 @@ def write_csv(rows: List[Dict[str, object]], target: Path) -> None:
 
 
 def main() -> None:
+    """脚本主入口，串联参数解析、数据读取、处理和结果写出。"""
     version = DEFAULT_EXPERIMENT_VERSION
     rows = load_rows(version)
     out_dir = record_dir(ROOT, normalize_version(version)) / "summaries"

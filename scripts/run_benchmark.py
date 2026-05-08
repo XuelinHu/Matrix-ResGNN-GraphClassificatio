@@ -1,3 +1,4 @@
+"""批量运行主 benchmark 的数据集、模型、算子和折数组合。"""
 from __future__ import annotations
 
 import argparse
@@ -6,6 +7,7 @@ import subprocess
 import sys
 from pathlib import Path
 
+# 仓库根目录：用于把脚本中的相对路径统一定位到项目根路径。
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
@@ -16,6 +18,7 @@ from src.experiment_paths import DEFAULT_EXPERIMENT_VERSION, ensure_version_mani
 
 
 def parse_args() -> argparse.Namespace:
+    """解析命令行参数，返回当前脚本需要的实验配置。"""
     parser = argparse.ArgumentParser(description="Scaffold for the main benchmark runner.")
     parser.add_argument("--dataset_group", choices=["main", "supplementary", "all"], default="main")
     parser.add_argument("--models", nargs="+", default=MAIN_MODELS)
@@ -28,6 +31,7 @@ def parse_args() -> argparse.Namespace:
 
 
 def main() -> None:
+    """脚本主入口，串联参数解析、数据读取、处理和结果写出。"""
     root = ROOT
     ensure_version_manifest(root)
     args = parse_args()
@@ -65,6 +69,7 @@ def main() -> None:
                     jobs.append(cmd)
 
     def run_job(cmd: list[str]) -> tuple[int, str]:
+        """run_job 函数的职责说明。"""
         proc = subprocess.run(cmd, capture_output=True, text=True, cwd=root)
         tail = "\n".join(proc.stdout.strip().splitlines()[-4:]) if proc.stdout else ""
         if proc.returncode != 0:

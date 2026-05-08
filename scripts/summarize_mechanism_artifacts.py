@@ -1,3 +1,4 @@
+"""汇总原始机制分析文件，生成多样性、残差、梯度、余弦和 CKA 汇总 CSV。"""
 from __future__ import annotations
 
 import argparse
@@ -7,6 +8,7 @@ import sys
 from pathlib import Path
 from typing import Dict, List
 
+# 仓库根目录：用于把脚本中的相对路径统一定位到项目根路径。
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
@@ -26,12 +28,14 @@ ARTIFACT_PREFIXES = [
 
 
 def parse_args() -> argparse.Namespace:
+    """解析命令行参数，返回当前脚本需要的实验配置。"""
     parser = argparse.ArgumentParser(description="Summarize saved mechanism-analysis artifacts into compact CSV tables.")
     parser.add_argument("--version", default=DEFAULT_EXPERIMENT_VERSION)
     return parser.parse_args()
 
 
 def parse_stem(path: Path) -> Dict[str, str]:
+    """解析机制文件名中的数据集、模型、算子、折号、分支数和残差模式。"""
     stem = path.stem
     artifact = ""
     suffix = stem
@@ -55,6 +59,7 @@ def parse_stem(path: Path) -> Dict[str, str]:
 
 
 def write_csv(rows: List[Dict[str, object]], target: Path) -> None:
+    """把结构化行写入 CSV 文件，并自动创建父目录。"""
     target.parent.mkdir(parents=True, exist_ok=True)
     if not rows:
         target.write_text("", encoding="utf-8")
@@ -66,6 +71,7 @@ def write_csv(rows: List[Dict[str, object]], target: Path) -> None:
 
 
 def summarize_branch_diversity(active_analysis_dir: Path) -> List[Dict[str, object]]:
+    """汇总分支表示多样性 JSON 文件。"""
     rows: List[Dict[str, object]] = []
     for path in sorted(active_analysis_dir.glob("branch_diversity_*.json")):
         meta = parse_stem(path)
@@ -82,6 +88,7 @@ def summarize_branch_diversity(active_analysis_dir: Path) -> List[Dict[str, obje
 
 
 def summarize_residual_stats(active_analysis_dir: Path) -> List[Dict[str, object]]:
+    """汇总残差路径数量、范数、活跃比例和门控值。"""
     rows: List[Dict[str, object]] = []
     for path in sorted(active_analysis_dir.glob("residual_stats_*.json")):
         meta = parse_stem(path)
@@ -109,6 +116,7 @@ def summarize_residual_stats(active_analysis_dir: Path) -> List[Dict[str, object
 
 
 def summarize_gradient(active_analysis_dir: Path) -> List[Dict[str, object]]:
+    """汇总代表 batch 上各参数梯度范数。"""
     rows: List[Dict[str, object]] = []
     for path in sorted(active_analysis_dir.glob("gradient_by_layer_*.csv")):
         meta = parse_stem(path)
@@ -130,6 +138,7 @@ def summarize_gradient(active_analysis_dir: Path) -> List[Dict[str, object]]:
 
 
 def summarize_similarity(active_analysis_dir: Path, prefix: str) -> List[Dict[str, object]]:
+    """汇总余弦相似度或 CKA 矩阵的非对角统计。"""
     rows: List[Dict[str, object]] = []
     for path in sorted(active_analysis_dir.glob(f"{prefix}_*.csv")):
         meta = parse_stem(path)
@@ -157,6 +166,7 @@ def summarize_similarity(active_analysis_dir: Path, prefix: str) -> List[Dict[st
 
 
 def main() -> None:
+    """脚本主入口，串联参数解析、数据读取、处理和结果写出。"""
     args = parse_args()
     version = normalize_version(args.version)
     active_analysis_dir = analysis_dir(ROOT, version)

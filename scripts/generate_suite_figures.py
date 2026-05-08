@@ -1,3 +1,4 @@
+"""根据主 benchmark 汇总 CSV 生成论文使用的整体结果图。"""
 from __future__ import annotations
 
 import argparse
@@ -9,6 +10,7 @@ from typing import Dict, List
 import matplotlib.pyplot as plt
 import numpy as np
 
+# 仓库根目录：用于把脚本中的相对路径统一定位到项目根路径。
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
@@ -19,12 +21,14 @@ from scripts.plot_style import MODEL_COLORS, apply_paper_style, style_axis
 
 
 def parse_args() -> argparse.Namespace:
+    """解析命令行参数，返回当前脚本需要的实验配置。"""
     parser = argparse.ArgumentParser(description="Generate paper-facing suite figures from benchmark_summary.csv.")
     parser.add_argument("--version", default=DEFAULT_EXPERIMENT_VERSION)
     return parser.parse_args()
 
 
 def load_rows(summary_path: Path) -> List[Dict[str, object]]:
+    """读取输入结果文件，并转换成后续汇总需要的结构化行。"""
     rows: List[Dict[str, object]] = []
     with summary_path.open("r", encoding="utf-8", newline="") as handle:
         reader = csv.DictReader(handle)
@@ -42,10 +46,12 @@ def load_rows(summary_path: Path) -> List[Dict[str, object]]:
 
 
 def filtered_rows(rows: List[Dict[str, object]]) -> List[Dict[str, object]]:
+    """筛选绘图所需的 GCNConv 主结果行。"""
     return [row for row in rows if row["operator"] == "GCNConv"]
 
 
 def plot_main_bar(rows: List[Dict[str, object]], out_dir: Path) -> None:
+    """绘制 GCNConv 主 benchmark 柱状图。"""
     datasets = MAIN_DATASETS
     models = list(MODEL_DISPLAY.keys())
     x = np.arange(len(datasets))
@@ -99,6 +105,7 @@ def plot_main_bar(rows: List[Dict[str, object]], out_dir: Path) -> None:
 
 
 def plot_model_wins(rows: List[Dict[str, object]], out_dir: Path) -> None:
+    """绘制不同模型在数据集-算子组合上的胜出次数图。"""
     win_counts = {model: 0 for model in MODEL_DISPLAY}
     datasets = sorted(set(row["dataset"] for row in rows))
     for dataset in datasets:
@@ -140,6 +147,7 @@ def plot_model_wins(rows: List[Dict[str, object]], out_dir: Path) -> None:
 
 
 def main() -> None:
+    """脚本主入口，串联参数解析、数据读取、处理和结果写出。"""
     args = parse_args()
     version = normalize_version(args.version)
     summary_path = record_dir(ROOT, version) / "summaries" / "benchmark_summary.csv"

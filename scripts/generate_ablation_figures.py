@@ -1,3 +1,4 @@
+"""根据汇总 CSV 生成分支数消融图和 MatrixResGated 灵敏度图。"""
 from __future__ import annotations
 
 import argparse
@@ -7,6 +8,7 @@ from pathlib import Path
 
 import matplotlib.pyplot as plt
 
+# 仓库根目录：用于把脚本中的相对路径统一定位到项目根路径。
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
@@ -15,17 +17,20 @@ from scripts.plot_style import MODEL_COLORS, MODEL_LINESTYLES, MODEL_MARKERS, ap
 
 
 def parse_args() -> argparse.Namespace:
+    """解析命令行参数，返回当前脚本需要的实验配置。"""
     parser = argparse.ArgumentParser(description="Generate branch-count and sensitivity figures.")
     parser.add_argument("--version", default="LATEST")
     return parser.parse_args()
 
 
 def read_csv(path: Path) -> list[dict[str, str]]:
+    """读取 CSV 文件并返回字典行列表，供绘图或汇总使用。"""
     with path.open("r", encoding="utf-8", newline="") as handle:
         return list(csv.DictReader(handle))
 
 
 def generate_branch_count_figure(branch_rows: list[dict[str, str]], target: Path) -> None:
+    """绘制分支数消融曲线，并标注各分支数的准确率。"""
     apply_paper_style()
     fig, axes = plt.subplots(1, 2, figsize=(14, 5.6), sharey=True)
     label_offsets = {
@@ -84,6 +89,7 @@ def generate_branch_count_figure(branch_rows: list[dict[str, str]], target: Path
 
 
 def generate_sensitivity_figure(rows: list[dict[str, str]], target: Path) -> None:
+    """绘制 MatrixResGated 参数灵敏度切片图。"""
     apply_paper_style()
     fig, axes = plt.subplots(2, 2, figsize=(12, 8), sharey=False)
     panel_specs = [
@@ -132,6 +138,7 @@ def generate_sensitivity_figure(rows: list[dict[str, str]], target: Path) -> Non
 
 
 def main() -> None:
+    """脚本主入口，串联参数解析、数据读取、处理和结果写出。"""
     args = parse_args()
     base = ROOT / "records" / args.version / "summaries"
     fig_dir = ROOT / "figures" / "exp"

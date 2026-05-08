@@ -1,3 +1,4 @@
+"""汇总参数灵敏度实验日志并推断每条记录对应的 sweep 名称和值。"""
 from __future__ import annotations
 
 import argparse
@@ -8,6 +9,7 @@ import sys
 from pathlib import Path
 from typing import Dict, List
 
+# 仓库根目录：用于把脚本中的相对路径统一定位到项目根路径。
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
@@ -25,6 +27,7 @@ BASELINE_DEFAULTS = {
 
 
 def parse_args() -> argparse.Namespace:
+    """解析命令行参数，返回当前脚本需要的实验配置。"""
     parser = argparse.ArgumentParser(description="Summarize first-batch parameter sensitivity runs.")
     parser.add_argument("--version", default=DEFAULT_EXPERIMENT_VERSION)
     parser.add_argument("--datasets", nargs="+", default=["PROTEINS", "DD"])
@@ -37,6 +40,7 @@ def parse_args() -> argparse.Namespace:
 
 
 def latest_results(active_log_dir: Path) -> Dict[str, Path]:
+    """扫描日志目录，按实验配置键保留最新的 result JSON 文件路径。"""
     latest: Dict[str, Path] = {}
     for path in sorted(active_log_dir.glob("result_*.json")):
         key = path.stem.rsplit("__", 1)[0]
@@ -53,6 +57,7 @@ def latest_results_by_config(
     num_branches: int,
     ep: int,
 ) -> Dict[str, Dict[str, object]]:
+    """按配置签名保留最新一次参数灵敏度实验结果。"""
     latest: Dict[str, Dict[str, object]] = {}
     for path in sorted(active_log_dir.glob("result_*.json")):
         payload = json.loads(path.read_text(encoding="utf-8"))
@@ -88,6 +93,7 @@ def latest_results_by_config(
 
 
 def infer_sweep(config: Dict[str, object]) -> tuple[str, object]:
+    """从实验配置和默认配置差异中推断参数扫描名称和值。"""
     candidates: List[tuple[str, object]] = []
     for key, default in BASELINE_DEFAULTS.items():
         if key not in config:
@@ -113,6 +119,7 @@ def load_rows(
     num_branches: int,
     ep: int,
 ) -> List[Dict[str, object]]:
+    """读取输入结果文件，并转换成后续汇总需要的结构化行。"""
     rows: List[Dict[str, object]] = []
     for payload in latest_results_by_config(
         active_log_dir,
@@ -144,6 +151,7 @@ def load_rows(
 
 
 def summarize(rows: List[Dict[str, object]]) -> List[Dict[str, object]]:
+    """对逐折实验记录做聚合，生成均值、标准差和运行统计。"""
     keys = sorted(set((r["dataset"], r["model"], r["sweep_name"], str(r["sweep_value"])) for r in rows))
     summary_rows: List[Dict[str, object]] = []
     for dataset, model, sweep_name, sweep_value in keys:
@@ -176,6 +184,7 @@ def summarize(rows: List[Dict[str, object]]) -> List[Dict[str, object]]:
 
 
 def write_csv(rows: List[Dict[str, object]], target: Path) -> None:
+    """把结构化行写入 CSV 文件，并自动创建父目录。"""
     target.parent.mkdir(parents=True, exist_ok=True)
     if not rows:
         target.write_text("", encoding="utf-8")
@@ -187,6 +196,7 @@ def write_csv(rows: List[Dict[str, object]], target: Path) -> None:
 
 
 def main() -> None:
+    """脚本主入口，串联参数解析、数据读取、处理和结果写出。"""
     args = parse_args()
     version = normalize_version(args.version)
     rows = load_rows(

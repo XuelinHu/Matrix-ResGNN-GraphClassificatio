@@ -1,3 +1,4 @@
+"""模型包入口，导出所有残差拓扑图分类模型。"""
 from .horizontal_res import HorizontalResGNN
 from .matrix_res import MatrixResGNN
 from .matrix_res_gated import MatrixResGatedGNN

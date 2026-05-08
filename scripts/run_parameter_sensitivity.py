@@ -1,3 +1,4 @@
+"""批量运行 MatrixRes 和 MatrixResGated 的参数灵敏度实验。"""
 from __future__ import annotations
 
 import argparse
@@ -6,6 +7,7 @@ import subprocess
 import sys
 from pathlib import Path
 
+# 仓库根目录：用于把脚本中的相对路径统一定位到项目根路径。
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
@@ -24,6 +26,7 @@ SWEEP_VALUES = {
 
 
 def parse_args() -> argparse.Namespace:
+    """解析命令行参数，返回当前脚本需要的实验配置。"""
     parser = argparse.ArgumentParser(description="Run first-batch parameter sensitivity scans.")
     parser.add_argument("--datasets", nargs="+", default=["PROTEINS", "DD"])
     parser.add_argument("--models", nargs="+", default=["MatrixRes", "MatrixResGated"])
@@ -37,12 +40,14 @@ def parse_args() -> argparse.Namespace:
 
 
 def model_supports_sweep(model: str, sweep_name: str) -> bool:
+    """判断指定模型是否支持当前参数扫描项。"""
     if sweep_name in {"sparse_lambda", "gate_init"}:
         return model == "MatrixResGated"
     return True
 
 
 def build_jobs(args: argparse.Namespace) -> list[list[str]]:
+    """根据实验网格构造待运行任务列表。"""
     jobs: list[list[str]] = []
     for dataset in args.datasets:
         for model in args.models:
@@ -77,11 +82,13 @@ def build_jobs(args: argparse.Namespace) -> list[list[str]]:
 
 
 def main() -> None:
+    """脚本主入口，串联参数解析、数据读取、处理和结果写出。"""
     args = parse_args()
     ensure_version_manifest(ROOT)
     jobs = build_jobs(args)
 
     def run_job(cmd: list[str]) -> tuple[int, str]:
+        """run_job 函数的职责说明。"""
         proc = subprocess.run(cmd, capture_output=True, text=True, cwd=ROOT)
         tail = "\n".join(proc.stdout.strip().splitlines()[-4:]) if proc.stdout else ""
         if proc.returncode != 0:

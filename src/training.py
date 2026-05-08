@@ -1,3 +1,4 @@
+"""实现数据加载、划分、训练、评估、机制分析导出和单配置实验执行。"""
 from __future__ import annotations
 
 import csv
@@ -31,12 +32,16 @@ from src.models import HorizontalResGNN, MatrixResGNN, MatrixResGatedGNN, PlainG
 from src.models.common import ResidualConfig
 
 
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
+PROJECT_# 仓库根目录：用于把脚本中的相对路径统一定位到项目根路径。
+ROOT = Path(__file__).resolve().parents[1]
+# 数据根目录：PyG/TUDataset 等数据集会缓存在该目录下。
 DATA_ROOT = PROJECT_ROOT / "data"
+# 训练设备：优先使用 CUDA，否则自动回退到 CPU。
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
 def ensure_dirs(version: str = DEFAULT_EXPERIMENT_VERSION) -> None:
+    """创建数据、日志、运行记录、检查点和分析输出目录。"""
     paths = [
         DATA_ROOT,
         record_dir(PROJECT_ROOT, version),
@@ -51,6 +56,7 @@ def ensure_dirs(version: str = DEFAULT_EXPERIMENT_VERSION) -> None:
 
 
 def set_seed(seed: int) -> None:
+    """设置 Python、NumPy 和 PyTorch 随机种子，保证实验可复现。"""
     torch.manual_seed(seed)
     np.random.seed(seed)
     random.seed(seed)
@@ -60,16 +66,19 @@ def set_seed(seed: int) -> None:
 
 
 def timestamp() -> str:
+    """生成用于日志和产物文件名的时间戳。"""
     return datetime.now().strftime("%Y%m%d_%H%M%S")
 
 
 def prepare_batch(data: torch.Tensor) -> torch.Tensor:
+    """补齐缺失节点特征，并把 batch 移动到当前设备。"""
     if data.x is None:
         data.x = torch.ones((data.num_nodes, 1), dtype=torch.float)
     return data.to(DEVICE)
 
 
 def load_dataset(dataset_name: str) -> object:
+    """根据数据集名称加载图分类数据集。"""
     family = dataset_family(dataset_name)
     if family == "tu":
         dataset = TUDataset(root=str(DATA_ROOT / "TUDataset"), name=dataset_name)
@@ -78,14 +87,17 @@ def load_dataset(dataset_name: str) -> object:
 
 
 def graph_target(graph: torch.Tensor) -> torch.Tensor:
+    """把图标签整理成交叉熵训练需要的一维 long tensor。"""
     return graph.y.view(-1).long()
 
 
 def dataset_labels(dataset: Iterable[torch.Tensor]) -> List[int]:
+    """提取数据集中每个图的整数标签。"""
     return [int(graph_target(graph)[0]) for graph in dataset]
 
 
 def stratified_kfold_indices(labels: List[int], n_splits: int, seed: int) -> List[Tuple[List[int], List[int]]]:
+    """按标签分层构造 K 折训练和测试索引。"""
     rng = random.Random(seed)
     label_to_indices: Dict[int, List[int]] = {}
     for index, label in enumerate(labels):
@@ -108,6 +120,7 @@ def stratified_kfold_indices(labels: List[int], n_splits: int, seed: int) -> Lis
 
 
 def stratified_train_val_indices(labels: List[int], val_ratio: float, seed: int) -> Tuple[List[int], List[int]]:
+    """在训练集内部按标签分层划分训练和验证索引。"""
     rng = random.Random(seed)
     label_to_indices: Dict[int, List[int]] = {}
     for index, label in enumerate(labels):
@@ -133,6 +146,7 @@ def split_dataset(
     fold: int,
     dataset_name: str,
 ) -> Tuple[Sequence[torch.Tensor], Sequence[torch.Tensor], Optional[Sequence[torch.Tensor]], Dict[str, object]]:
+    """按数据集协议生成训练集、测试集和可选官方验证集。"""
     family = dataset_family(dataset_name)
     if family == "tu":
         graph_list = list(dataset)
@@ -155,6 +169,7 @@ def split_train_val_dataset(
     val_ratio: float,
     seed: int,
 ) -> Tuple[Sequence[torch.Tensor], Sequence[torch.Tensor]]:
+    """从训练集内部切分验证集，用于早停和模型选择。"""
     if not train_dataset or val_ratio <= 0.0 or len(train_dataset) <= 1:
         return train_dataset, []
     labels = dataset_labels(train_dataset)
@@ -167,10 +182,12 @@ def split_train_val_dataset(
 
 
 def build_loader(dataset_slice: Sequence[torch.Tensor], batch_size: int, shuffle: bool) -> DataLoader:
+    """根据图样本切片构造 PyG DataLoader。"""
     return DataLoader(dataset_slice, batch_size=batch_size, shuffle=shuffle)
 
 
 def dataset_statistics(dataset: object, dataset_name: str) -> Dict[str, object]:
+    """统计图数量、类别数、节点数、边数、度和类别分布。"""
     node_counts: List[int] = []
     edge_counts: List[float] = []
     avg_degrees: List[float] = []
@@ -199,6 +216,7 @@ def dataset_statistics(dataset: object, dataset_name: str) -> Dict[str, object]:
 
 
 def count_parameters(model: nn.Module) -> Dict[str, int]:
+    """统计模型总参数、可训练参数和冻结参数数量。"""
     total_params = sum(param.numel() for param in model.parameters())
     trainable_params = sum(param.numel() for param in model.parameters() if param.requires_grad)
     return {
@@ -209,6 +227,7 @@ def count_parameters(model: nn.Module) -> Dict[str, int]:
 
 
 def gradient_norm(model: nn.Module) -> float:
+    """计算当前模型梯度的全局 L2 范数。"""
     squared_norm = 0.0
     for parameter in model.parameters():
         if parameter.grad is None:
@@ -219,6 +238,7 @@ def gradient_norm(model: nn.Module) -> float:
 
 
 def tensor_stats(tensor: torch.Tensor) -> Dict[str, float]:
+    """计算张量均值、标准差和最大值，用于训练诊断。"""
     if tensor.numel() == 0:
         return {"mean": 0.0, "std": 0.0, "max": 0.0}
     detached = tensor.detach()
@@ -230,6 +250,7 @@ def tensor_stats(tensor: torch.Tensor) -> Dict[str, float]:
 
 
 def collect_gate_values(model: nn.Module) -> Dict[str, float]:
+    """收集模型中门控模块的当前数值。"""
     gate_values: Dict[str, float] = {}
     for module_name, module in model.named_modules():
         if hasattr(module, "forward") and module.__class__.__name__ in {"LearnableGate", "FixedGate"}:
@@ -238,6 +259,7 @@ def collect_gate_values(model: nn.Module) -> Dict[str, float]:
 
 
 def evaluate(model: nn.Module, loader: DataLoader, criterion: nn.Module) -> Dict[str, float]:
+    """在验证或测试 loader 上计算平均 loss 和 accuracy。"""
     model.eval()
     total_correct = 0
     total_loss = 0.0
@@ -260,6 +282,7 @@ def evaluate(model: nn.Module, loader: DataLoader, criterion: nn.Module) -> Dict
 
 
 def build_model(args, dataset: object) -> nn.Module:
+    """根据命令行参数实例化对应残差拓扑模型。"""
     config = ResidualConfig(
         hidden_dim=args.dim,
         num_layers=args.h_layer,
@@ -287,16 +310,19 @@ def build_model(args, dataset: object) -> nn.Module:
 
 
 def save_json(payload: Dict[str, object], target: Path) -> None:
+    """把字典写入 JSON 文件，并自动创建父目录。"""
     target.parent.mkdir(parents=True, exist_ok=True)
     target.write_text(json.dumps(payload, indent=2), encoding="utf-8")
 
 
 def save_checkpoint(payload: Dict[str, object], target: Path) -> None:
+    """保存模型、优化器和调度器状态到检查点文件。"""
     target.parent.mkdir(parents=True, exist_ok=True)
     torch.save(payload, target)
 
 
 def save_rows(rows: List[Dict[str, object]], target: Path) -> None:
+    """把字典行写入 CSV 文件，并自动创建父目录。"""
     target.parent.mkdir(parents=True, exist_ok=True)
     if not rows:
         target.write_text("", encoding="utf-8")
@@ -309,6 +335,7 @@ def save_rows(rows: List[Dict[str, object]], target: Path) -> None:
 
 
 def save_matrix_csv(matrix: np.ndarray, row_labels: List[str], col_labels: List[str], target: Path) -> None:
+    """把矩阵连同行列标签写入 CSV 文件。"""
     target.parent.mkdir(parents=True, exist_ok=True)
     with target.open("w", encoding="utf-8", newline="") as handle:
         writer = csv.writer(handle)
@@ -318,6 +345,7 @@ def save_matrix_csv(matrix: np.ndarray, row_labels: List[str], col_labels: List[
 
 
 def collect_test_outputs(model: nn.Module, loader: DataLoader) -> Dict[str, np.ndarray]:
+    """收集测试集 embedding、logits、标签和预测结果。"""
     model.eval()
     embeddings: List[np.ndarray] = []
     logits_list: List[np.ndarray] = []
@@ -340,6 +368,7 @@ def collect_test_outputs(model: nn.Module, loader: DataLoader) -> Dict[str, np.n
 
 
 def cosine_similarity_matrix(vectors: Sequence[torch.Tensor]) -> np.ndarray:
+    """计算一组表示向量之间的余弦相似度矩阵。"""
     if not vectors:
         return np.zeros((0, 0), dtype=float)
     matrix = np.stack([tensor.detach().cpu().numpy().reshape(-1) for tensor in vectors], axis=0)
@@ -350,6 +379,7 @@ def cosine_similarity_matrix(vectors: Sequence[torch.Tensor]) -> np.ndarray:
 
 
 def linear_cka(x: np.ndarray, y: np.ndarray) -> float:
+    """计算两个表示矩阵之间的线性 CKA 相似度。"""
     x = x - x.mean(axis=0, keepdims=True)
     y = y - y.mean(axis=0, keepdims=True)
     hsic_xy = np.linalg.norm(x.T @ y, ord="fro") ** 2
@@ -360,6 +390,7 @@ def linear_cka(x: np.ndarray, y: np.ndarray) -> float:
 
 
 def cka_matrix(states: Sequence[torch.Tensor]) -> np.ndarray:
+    """计算一组表示之间两两线性 CKA 矩阵。"""
     if not states:
         return np.zeros((0, 0), dtype=float)
     arrays = [tensor.detach().cpu().numpy() for tensor in states]
@@ -372,6 +403,7 @@ def cka_matrix(states: Sequence[torch.Tensor]) -> np.ndarray:
 
 
 def branch_diversity(branch_embeddings: Sequence[torch.Tensor]) -> Dict[str, object]:
+    """计算最终分支图表示之间的平均和最大 L2 距离。"""
     arrays = [tensor.detach().cpu().numpy() for tensor in branch_embeddings]
     if not arrays:
         return {"mean_pairwise_distance": 0.0, "max_pairwise_distance": 0.0, "pairwise_distances": []}
@@ -398,6 +430,7 @@ def representative_gradient_rows(
     batch_data: torch.Tensor,
     criterion: nn.Module,
 ) -> List[Dict[str, object]]:
+    """在代表 batch 上反传一次并导出各参数梯度范数。"""
     model.zero_grad(set_to_none=True)
     logits, _ = model(batch_data.x, batch_data.edge_index, batch_data.batch)
     loss = criterion(logits, graph_target(batch_data))
@@ -417,6 +450,7 @@ def representative_gradient_rows(
 
 
 def train_one_config(args) -> Dict[str, object]:
+    """训练、早停、测试并导出单个实验配置的全部结果产物。"""
     version = normalize_version(getattr(args, "version", DEFAULT_EXPERIMENT_VERSION))
     ensure_dirs(version)
     set_seed(args.seed)

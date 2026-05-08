@@ -1,1 +1,1 @@
-"""Core package for Matrix-ResGNN graph-classification experiments."""
+"""核心实验包入口，暴露 Matrix-ResGNN 图分类实验所需的主要模块。"""

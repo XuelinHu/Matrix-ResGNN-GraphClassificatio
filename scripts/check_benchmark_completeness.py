@@ -1,3 +1,4 @@
+"""检查预期 benchmark 组合是否已经生成对应的 result JSON 日志。"""
 from __future__ import annotations
 
 import argparse
@@ -6,6 +7,7 @@ import sys
 from pathlib import Path
 from typing import Dict, List
 
+# 仓库根目录：用于把脚本中的相对路径统一定位到项目根路径。
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
@@ -16,6 +18,7 @@ from src.experiment_paths import DEFAULT_EXPERIMENT_VERSION, log_dir, normalize_
 
 
 def parse_args() -> argparse.Namespace:
+    """解析命令行参数，返回当前脚本需要的实验配置。"""
     parser = argparse.ArgumentParser(description="Check benchmark completeness for expected dataset/model/operator/fold combinations.")
     parser.add_argument("--version", default=DEFAULT_EXPERIMENT_VERSION)
     parser.add_argument("--datasets", nargs="+", default=MAIN_DATASETS)
@@ -26,6 +29,7 @@ def parse_args() -> argparse.Namespace:
 
 
 def latest_results(active_log_dir: Path) -> Dict[str, Path]:
+    """扫描日志目录，按实验配置键保留最新的 result JSON 文件路径。"""
     latest: Dict[str, Path] = {}
     for path in sorted(active_log_dir.glob("result_*.json")):
         key = path.stem.rsplit("__", 1)[0]
@@ -34,6 +38,7 @@ def latest_results(active_log_dir: Path) -> Dict[str, Path]:
 
 
 def main() -> None:
+    """脚本主入口，串联参数解析、数据读取、处理和结果写出。"""
     args = parse_args()
     active_log_dir = log_dir(ROOT, normalize_version(args.version))
     latest = latest_results(active_log_dir)

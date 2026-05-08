@@ -1,9 +1,11 @@
+"""运行单个图分类实验配置，是其他批处理脚本的执行入口。"""
 from __future__ import annotations
 
 import argparse
 import sys
 from pathlib import Path
 
+# 仓库根目录：用于把脚本中的相对路径统一定位到项目根路径。
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
@@ -13,6 +15,7 @@ from src.training import train_one_config
 
 
 def parse_args() -> argparse.Namespace:
+    """解析命令行参数，返回当前脚本需要的实验配置。"""
     parser = argparse.ArgumentParser(description="Run one Matrix-ResGNN graph-classification experiment.")
     parser.add_argument("--dataset", default="PROTEINS")
     parser.add_argument("--model", default="Plain", choices=["Plain", "VerticalRes", "HorizontalRes", "MatrixRes", "MatrixResGated"])
@@ -45,6 +48,7 @@ def parse_args() -> argparse.Namespace:
 
 
 def main() -> None:
+    """脚本主入口，串联参数解析、数据读取、处理和结果写出。"""
     result = train_one_config(parse_args())
     print(result)
 

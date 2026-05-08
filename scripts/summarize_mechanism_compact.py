@@ -1,3 +1,4 @@
+"""合并各类机制指标，生成论文可直接使用的 compact 机制汇总表。"""
 from __future__ import annotations
 
 import argparse
@@ -7,6 +8,7 @@ import sys
 from pathlib import Path
 from typing import Dict, List, Tuple
 
+# 仓库根目录：用于把脚本中的相对路径统一定位到项目根路径。
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
@@ -18,6 +20,7 @@ BASE_KEYS = ["dataset", "model", "operator", "fold", "branches", "residual_mode"
 
 
 def parse_args() -> argparse.Namespace:
+    """解析命令行参数，返回当前脚本需要的实验配置。"""
     parser = argparse.ArgumentParser(description="Aggregate mechanism summaries into compact tables.")
     parser.add_argument("--version", default=DEFAULT_EXPERIMENT_VERSION)
     parser.add_argument("--datasets", nargs="+", default=["PROTEINS", "DD", "ENZYMES"])
@@ -26,6 +29,7 @@ def parse_args() -> argparse.Namespace:
 
 
 def read_csv(path: Path) -> List[Dict[str, str]]:
+    """读取 CSV 文件并返回字典行列表，供绘图或汇总使用。"""
     if not path.exists():
         return []
     with path.open("r", encoding="utf-8", newline="") as handle:
@@ -33,6 +37,7 @@ def read_csv(path: Path) -> List[Dict[str, str]]:
 
 
 def latest_by_signature(rows: List[Dict[str, str]]) -> List[Dict[str, str]]:
+    """按数据集、模型、分支数和残差模式保留最新机制汇总记录。"""
     latest: Dict[Tuple[str, ...], Dict[str, str]] = {}
     for row in rows:
         key = tuple(row.get(k, "") for k in BASE_KEYS)
@@ -43,6 +48,7 @@ def latest_by_signature(rows: List[Dict[str, str]]) -> List[Dict[str, str]]:
 
 
 def index_metric(rows: List[Dict[str, str]], metric_columns: List[str]) -> Dict[Tuple[str, ...], Dict[str, float]]:
+    """把机制指标表转换为按签名索引的字典，便于合并。"""
     indexed: Dict[Tuple[str, ...], Dict[str, float]] = {}
     for row in latest_by_signature(rows):
         key = tuple(row.get(k, "") for k in BASE_KEYS)
@@ -57,10 +63,12 @@ def index_metric(rows: List[Dict[str, str]], metric_columns: List[str]) -> Dict[
 
 
 def safe_mean(values: List[float]) -> float:
+    """计算数值列表均值，空列表时返回 0，避免汇总报错。"""
     return st.mean(values) if values else 0.0
 
 
 def main() -> None:
+    """脚本主入口，串联参数解析、数据读取、处理和结果写出。"""
     args = parse_args()
     version = normalize_version(args.version)
     base = record_dir(ROOT, version) / "mechanism_summaries"

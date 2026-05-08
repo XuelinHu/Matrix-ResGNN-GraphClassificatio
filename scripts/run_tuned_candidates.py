@@ -1,3 +1,4 @@
+"""运行挑选出的调参候选配置并生成完整折实验。"""
 from __future__ import annotations
 
 import argparse
@@ -6,6 +7,7 @@ import subprocess
 import sys
 from pathlib import Path
 
+# 仓库根目录：用于把脚本中的相对路径统一定位到项目根路径。
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
@@ -14,6 +16,7 @@ from src.benchmark_protocols import build_protocol
 from src.experiment_paths import DEFAULT_EXPERIMENT_VERSION, ensure_version_manifest
 
 
+# 已确认调参候选：这些配置会被重新按五折完整验证。
 TUNED_CANDIDATES = [
     {
         "label": "PROTEINS_sparse_lambda_0.02",
@@ -47,6 +50,7 @@ TUNED_CANDIDATES = [
 
 
 def parse_args() -> argparse.Namespace:
+    """解析命令行参数，返回当前脚本需要的实验配置。"""
     parser = argparse.ArgumentParser(description="Run five-fold confirmations for selected tuned MatrixResGated candidates.")
     parser.add_argument("--folds", nargs="+", type=int, default=[0, 1, 2, 3, 4])
     parser.add_argument("--version", default=DEFAULT_EXPERIMENT_VERSION)
@@ -55,6 +59,7 @@ def parse_args() -> argparse.Namespace:
 
 
 def build_jobs(args: argparse.Namespace) -> list[list[str]]:
+    """根据实验网格构造待运行任务列表。"""
     jobs: list[list[str]] = []
     for candidate in TUNED_CANDIDATES:
         for fold in args.folds:
@@ -84,11 +89,13 @@ def build_jobs(args: argparse.Namespace) -> list[list[str]]:
 
 
 def main() -> None:
+    """脚本主入口，串联参数解析、数据读取、处理和结果写出。"""
     args = parse_args()
     ensure_version_manifest(ROOT)
     jobs = build_jobs(args)
 
     def run_job(cmd: list[str]) -> tuple[int, str]:
+        """run_job 函数的职责说明。"""
         proc = subprocess.run(cmd, capture_output=True, text=True, cwd=ROOT)
         tail = "\n".join(proc.stdout.strip().splitlines()[-4:]) if proc.stdout else ""
         if proc.returncode != 0:
