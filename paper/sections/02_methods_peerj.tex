@@ -22,7 +22,7 @@ Let \(B\) be the number of branches and \(L\) be the number of message-passing l
 \begin{equation}
 \mathbf{Z}^{(\ell)}_{b} = \phi^{(\ell)}_{b}\left(\mathbf{H}^{(\ell-1)}_{b}, \mathbf{A}\right),
 \end{equation}
-where \(\phi\) is instantiated as GCNConv in the main benchmark. The residual-enhanced update is
+where \(\phi\) is instantiated as one of four standard operators: GCNConv \cite{kipf2017gcn}, GATConv \cite{velivckovic2017graph}, SAGEConv \cite{hamilton2017inductive}, or GINConv \cite{xu2019gin}. The residual-enhanced update is
 \begin{equation}
 \mathbf{H}^{(\ell)}_{b} =
 \mathbf{Z}^{(\ell)}_{b} +
@@ -32,7 +32,7 @@ where \(\phi\) is instantiated as GCNConv in the main benchmark. The residual-en
 \end{equation}
 The only term that changes across architectures is the residual neighborhood \(\mathcal{N}(b,\ell)\) and the residual transform \(\mathcal{R}\).
 
-After the final message-passing layer, each branch is pooled to a graph-level vector and the branch vectors are combined before classification. The classifier is trained with cross-entropy loss. This keeps the comparison focused on residual topology rather than on architecture-specific readout heads.
+After the final message-passing layer, each branch is pooled to a graph-level vector by global mean pooling and the branch vectors are combined before classification. We intentionally avoid architecture-specific pooling heads such as differentiable pooling or self-attention pooling \cite{ying2018hierarchical,lee2019self}, because the purpose is to isolate residual topology rather than to compare readout mechanisms. The classifier is trained with cross-entropy loss.
 
 \subsection{Residual neighborhoods}
 \label{sec:model}
@@ -73,7 +73,7 @@ In the main benchmark, Plain, VerticalRes, HorizontalRes, and MatrixRes use iden
 \subsection{Datasets and evaluation protocol}
 \label{sec:datasets}
 
-The main benchmark uses six datasets from TUDataset \cite{morris2020tudataset}: PROTEINS, DD, ENZYMES, MUTAG, AIDS, and Mutagenicity. PROTEINS and DD are binary protein-structure graph classification benchmarks, ENZYMES is a six-class enzyme classification benchmark, and MUTAG, AIDS, and Mutagenicity provide supplementary molecular-graph robustness checks. All experiments use the raw benchmark features and graph structures without task-specific feature engineering.
+The main benchmark uses six datasets from TUDataset \cite{morris2020tudataset}: PROTEINS, DD, ENZYMES, MUTAG, AIDS, and Mutagenicity. PROTEINS and DD are binary protein-structure graph classification benchmarks, ENZYMES is a six-class enzyme classification benchmark, and MUTAG, AIDS, and Mutagenicity provide supplementary molecular-graph robustness checks. All datasets are loaded through PyTorch Geometric \cite{fey2019fast}. All experiments use the raw benchmark features and graph structures without task-specific feature engineering, graph augmentation, or edge redesign.
 
 All main results use graph-level five-fold evaluation. For fold \(k\), the test accuracy is
 \begin{equation}
@@ -90,7 +90,7 @@ and the fold-level standard deviation.
 
 \subsection{Training configuration}
 
-All main benchmark runs use the default branch count \(B=3\). The benchmark is repeated under four message-passing operators: GCNConv, GATConv, SAGEConv, and GINConv. The hidden dimension is 64 unless a sensitivity setting changes it, and all model families use the same optimizer, early-stopping logic, graph pooling, and fold protocol. The branch-count ablation evaluates \(B=1,\ldots,8\) for HorizontalRes, MatrixRes, and MatrixResGated on PROTEINS and DD under GCNConv. The sensitivity scan evaluates MatrixRes and MatrixResGated on fold 0 at \(B=3\), varying learning rate, dropout, hidden dimension, sparsity strength, and gate initialization. Selected MatrixResGated candidates are then rerun across all five folds.
+All main benchmark runs use the default branch count \(B=3\). The benchmark is repeated under four message-passing operators: GCNConv, GATConv, SAGEConv, and GINConv. The hidden dimension is 64 unless a sensitivity setting changes it, and all model families use the same optimizer, early-stopping logic, graph pooling, and fold protocol. Models are optimized with Adam \cite{kingma2014adam}; the checkpoint with the lowest validation loss is retained for test evaluation. The branch-count ablation evaluates \(B=1,\ldots,8\) for HorizontalRes, MatrixRes, and MatrixResGated on PROTEINS and DD under GCNConv. The sensitivity scan evaluates MatrixRes and MatrixResGated on fold 0 at \(B=3\), varying learning rate, dropout, hidden dimension, sparsity strength, and gate initialization. Selected MatrixResGated candidates are then rerun across all five folds.
 
 \begin{table}[h]
 \centering

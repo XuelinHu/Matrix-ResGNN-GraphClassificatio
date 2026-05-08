@@ -6,17 +6,23 @@ This section answers the research questions in light of the six-dataset, four-op
 
 The main benchmark argues against a universal residual topology. Across 24 dataset--operator combinations, MatrixRes is the most frequent winner and has the best mean rank, but all five model families win at least two combinations. Under GCNConv alone, Plain is strongest on PROTEINS, HorizontalRes is strongest on DD, MatrixResGated is strongest on ENZYMES, and MatrixRes is strongest on MUTAG, AIDS, and Mutagenicity. These outcomes indicate that the useful residual neighborhood depends on dataset-specific tolerance for branch specialization, residual traffic, and optimization complexity.
 
+This conclusion is consistent with the broader GNN literature: changing the propagation operator, normalization, or pooling design often shifts the preferred architecture \cite{xu2019gin,hamilton2017inductive,velivckovic2017graph,ying2018hierarchical}. The present study adds that residual topology itself is another source of this shift. Matrix-style reuse can be read as a local residual stencil over the branch-by-layer grid, analogous in spirit to structured neighborhood mixing \cite{abu2019mixhop}, but applied to hidden-state reuse rather than to graph adjacency. Its advantage is therefore architectural organization, not a new message-passing primitive.
+
 \textbf{Answer:} MatrixRes is the strongest overall topology in the current full benchmark, but residual topology is still dataset- and operator-dependent. A graph-classification benchmark should compare vertical, horizontal, matrix-style, and sparse/gated reuse rather than assuming that one residual direction is universally best.
 
 \subsection{RQ2: How does branch count change residual behavior?}
 
 The branch-count ablation shows that \(B\) is not only a capacity parameter. Increasing \(B\) adds branches, residual paths, and optimization interactions. On PROTEINS, moderate expansion is useful: HorizontalRes peaks at \(B=4\), MatrixRes at \(B=6\), and MatrixResGated at \(B=3\). On DD, smaller budgets are preferable, with peaks at \(B=1\) or \(B=2\). The mechanism summaries explain this split. Branch diversity may increase with \(B\), but if branch cosine remains high or gradients weaken, the extra branches do not translate into better classification.
 
+This rise-then-fall behavior is also a practical warning for residual GNN design. Residual connections are often introduced to make deeper or wider models easier to optimize \cite{he2016deep,li2019deepgcns,li2021training}, but a multi-branch residual model changes both capacity and routing density. A larger \(B\) increases the number of paths through which hidden states can be reinjected, so the useful regime is governed by the balance between functional diversity and residual interference. The branch-count results suggest that this balance differs sharply between PROTEINS and DD, even though both are commonly treated as protein-structure graph benchmarks.
+
 \textbf{Answer:} Branch count helps when it creates useful functional diversity, and hurts when residual complexity grows faster than branch separation or optimization quality.
 
 \subsection{RQ3: Why include sparse/gated matrix reuse?}
 
 MatrixResGated tests whether matrix residual traffic should be filtered before injection. The main benchmark shows that sparse/gated reuse is not uniformly better than dense matrix reuse: MatrixRes wins more dataset--operator combinations overall. However, MatrixResGated is still useful because it wins several combinations, including the difficult ENZYMES GCNConv setting, and it provides a controlled way to reduce weak residual coefficients. This distinction is important. The value of MatrixResGated is not that sparsity always improves accuracy, but that sparse residual control can be beneficial when matrix-style reuse would otherwise inject too much low-value residual traffic.
+
+This places sparse/gated residual reuse between two familiar design ideas. Like residual gated graph networks, it learns how strongly historical information should be injected \cite{bresson2017residual}; like sparsification and regularization methods, it reduces the influence of weak or noisy pathways \cite{rong2019dropedge,cangea2018towards}. The present implementation is deliberately simple: it uses a scalar gate and soft-shrink filtering rather than a large routing network. This keeps the ablation interpretable and prevents the gated variant from becoming a separate high-capacity model.
 
 \textbf{Answer:} Sparse/gated matrix reuse is a control mechanism for residual traffic. It is complementary to dense MatrixRes rather than a strict replacement.
 
@@ -29,6 +35,8 @@ MatrixResGated defines a tunable family rather than a plug-and-play winner. The 
 \subsection{Limitations}
 
 Several limitations bound the generality of these findings. First, although the main benchmark includes four message-passing operators, it still uses a fixed graph-level pooling and classification head; alternative readout designs may interact with residual topology. Second, the sensitivity scan is fold-0 only; although selected candidates were rerun across five folds, that follow-up is limited to MatrixResGated on PROTEINS and DD. Third, ENZYMES has low absolute accuracy and high variability, so its result should be interpreted cautiously. Finally, the mechanism analysis is correlational. Branch diversity, cosine similarity, and gradient norms support a coherent explanation, but they do not prove causality.
+
+Another limitation is that the benchmark intentionally avoids task-specific chemical or biological feature engineering. This makes the residual-topology comparison cleaner, but it also means that the absolute accuracies should not be interpreted as optimized state-of-the-art molecular prediction results. The paper's contribution is methodological: it identifies when different residual pathways are helpful under matched conditions.
 
 \subsection{Future directions}
 
