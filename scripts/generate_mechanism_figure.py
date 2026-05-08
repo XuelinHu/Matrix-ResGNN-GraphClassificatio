@@ -35,11 +35,12 @@ def main() -> None:
         ("mean_best_test_acc", "Accuracy", branch_rows, "num_branches"),
         ("mean_pairwise_distance", "Branch Diversity", mech_rows, "branches"),
         ("mean_cosine_branch", "Branch Cosine", mech_rows, "branches"),
+        ("mean_cka_branch", "Branch CKA", mech_rows, "branches"),
         ("mean_grad_norm", "Mean Gradient Norm", mech_rows, "branches"),
     ]
     datasets = ["PROTEINS", "DD"]
     apply_paper_style()
-    fig, axes = plt.subplots(2, 4, figsize=(16, 7.2), sharex="col")
+    fig, axes = plt.subplots(2, 5, figsize=(18, 7.2), sharex="col")
 
     for row_idx, dataset in enumerate(datasets):
         for col_idx, (metric, title, source_rows, branch_key) in enumerate(metric_specs):
@@ -71,8 +72,7 @@ def main() -> None:
 
     handles, labels = axes[0, 0].get_legend_handles_labels()
     fig.legend(handles, labels, loc="upper center", ncol=3, bbox_to_anchor=(0.5, 1.02))
-    fig.suptitle("Branch-count dynamics: accuracy, diversity, redundancy, and optimization", y=1.08, fontweight="bold")
-    fig.tight_layout()
+    fig.tight_layout(rect=(0, 0, 1, 0.94), pad=1.1)
 
     out_dir = ROOT / "figures" / "exp"
     out_dir.mkdir(parents=True, exist_ok=True)

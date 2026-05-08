@@ -5,7 +5,7 @@ All results are reported as five-fold mean best test accuracy \(\pm\) fold-level
 
 \subsection{Overall benchmark performance}
 
-The main benchmark asks whether residual topology has a stable winner across datasets and message-passing operators. It does not. Across the 24 dataset--operator combinations, MatrixRes is the strongest overall topology, with 9 wins and the best mean rank (2.12). MatrixResGated and Plain each win 5 combinations, HorizontalRes wins 3, and VerticalRes wins 2. Thus, matrix-style reuse is the best general design in this benchmark, but every topology has a setting in which it is the strongest choice.
+The main benchmark asks whether residual topology has a stable winner across datasets and message-passing operators. It does not. Table~\ref{tab:operator_wins} summarizes the full benchmark: across the 24 dataset--operator combinations, MatrixRes is the strongest overall topology, with 9 wins and the best mean rank (2.12). MatrixResGated and Plain each win 5 combinations, HorizontalRes wins 3, and VerticalRes wins 2. Thus, matrix-style reuse is the best general design in this benchmark, but every topology has a setting in which it is the strongest choice.
 
 \begin{table}[h]
 \centering
@@ -32,7 +32,7 @@ MatrixResGated & 5 & 2.92 & Useful when sparse control helps residual traffic \\
 \label{fig:model_win_counts}
 \end{figure}
 
-Table~\ref{tab:winners_by_operator} shows the winning model for each dataset--operator pair. The matrix family is most prominent on MUTAG, AIDS, and Mutagenicity, where MatrixRes or MatrixResGated wins most operator settings. The protein-oriented datasets are more mixed: PROTEINS alternates between Plain and HorizontalRes, while DD alternates among HorizontalRes, MatrixRes, and VerticalRes. ENZYMES remains difficult and does not produce a stable residual-topology preference.
+Table~\ref{tab:winners_by_operator} gives the cell-level evidence behind the win counts in Table~\ref{tab:operator_wins}. The matrix family is most prominent on MUTAG, AIDS, and Mutagenicity, where MatrixRes or MatrixResGated wins most operator settings. The protein-oriented datasets are more mixed: PROTEINS alternates between Plain and HorizontalRes, while DD alternates among HorizontalRes, MatrixRes, and VerticalRes. ENZYMES remains difficult and does not produce a stable residual-topology preference.
 
 \begin{table}[h]
 \centering
@@ -115,7 +115,7 @@ DD & MatrixResGated & 1 & \(0.7283\pm0.0244\) & 7 & \(0.7053\pm0.0456\) \\
 \label{fig:branch_ablation}
 \end{figure}
 
-The ablation shows that branch count should not be read as a simple capacity knob. Increasing \(B\) changes the residual graph itself: it adds branches, residual paths, residual traffic, and optimization interactions. PROTEINS tolerates moderate branch expansion, while DD is more sensitive to redundant branch expansion.
+Table~\ref{tab:branch_best} and Figure~\ref{fig:branch_ablation} show that branch count should not be read as a simple capacity knob. Increasing \(B\) changes the residual graph itself: it adds branches, residual paths, residual traffic, and optimization interactions. PROTEINS tolerates moderate branch expansion, while DD is more sensitive to redundant branch expansion.
 
 \subsection{Mechanism analysis: diversity, similarity, gradients, and residual traffic}
 
@@ -149,7 +149,7 @@ The sparse/gated model clarifies the role of residual control. MatrixResGated ha
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.92\linewidth]{figures/exp/fig_mechanism_branch_dynamics.pdf}
-\caption{Mechanism summary linking branch-count accuracy to branch diversity, branch cosine similarity, and mean gradient norm.}
+\caption{Mechanism summary linking branch-count accuracy to branch diversity, branch cosine similarity, branch CKA, and mean gradient norm.}
 \label{fig:mechanism}
 \end{figure}
 

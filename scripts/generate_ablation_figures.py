@@ -27,7 +27,12 @@ def read_csv(path: Path) -> list[dict[str, str]]:
 
 def generate_branch_count_figure(branch_rows: list[dict[str, str]], target: Path) -> None:
     apply_paper_style()
-    fig, axes = plt.subplots(1, 2, figsize=(12, 4.8), sharey=True)
+    fig, axes = plt.subplots(1, 2, figsize=(14, 5.6), sharey=True)
+    label_offsets = {
+        "HorizontalRes": 0.018,
+        "MatrixRes": 0.000,
+        "MatrixResGated": -0.018,
+    }
     for ax, dataset in zip(axes, ["PROTEINS", "DD"]):
         subset = [r for r in branch_rows if r["dataset"] == dataset]
         for model in ["HorizontalRes", "MatrixRes", "MatrixResGated"]:
@@ -51,13 +56,27 @@ def generate_branch_count_figure(branch_rows: list[dict[str, str]], target: Path
                 elinewidth=0.8,
                 capthick=0.8,
             )
+            for x, y in zip(xs, ys):
+                ax.text(
+                    x + 0.03,
+                    y + label_offsets[model],
+                    f"{y:.3f}",
+                    rotation=35,
+                    ha="left",
+                    va="center",
+                    fontsize=9.5,
+                    color=MODEL_COLORS[model],
+                )
         ax.set_title(dataset, fontweight="bold")
         ax.set_xlabel("Branch count B")
+        ax.set_ylim(0.2, 0.8)
+        ax.set_yticks([0.2, 0.4, 0.6, 0.8])
+        ax.set_xlim(0.7, 8.55)
         style_axis(ax)
     axes[0].set_ylabel("Mean best test accuracy")
-    axes[1].legend(loc="lower left")
-    fig.suptitle("Branch-count ablation on PROTEINS and DD", y=1.03, fontweight="bold")
-    fig.tight_layout()
+    handles, labels = axes[0].get_legend_handles_labels()
+    fig.legend(handles, labels, loc="upper center", ncol=3, bbox_to_anchor=(0.5, 1.01))
+    fig.tight_layout(rect=(0, 0, 1, 0.90), pad=1.2)
     target.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(target)
     fig.savefig(target.with_suffix(".png"))

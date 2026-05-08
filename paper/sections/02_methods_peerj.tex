@@ -115,4 +115,4 @@ Early stopping & Validation loss, patience 60 or 80 \\
 
 \subsection{Mechanism metrics}
 
-To interpret branch-count behavior, we track three mechanism indicators. Branch diversity measures the mean pairwise distance between branch representations. Branch cosine similarity measures whether branches remain redundant. Mean gradient norm tracks optimization weakening as branch count and residual traffic grow. CKA and residual-traffic summaries are retained as supplementary diagnostics.
+To interpret branch-count behavior, we track five mechanism indicators. Branch diversity measures the mean pairwise distance between branch representations. Branch cosine similarity and branch CKA measure whether branches remain redundant or highly aligned. Mean gradient norm tracks optimization weakening as branch count and residual traffic grow. Residual-count and active-ratio summaries measure how much residual traffic is actually injected, especially in the sparse/gated variant.
