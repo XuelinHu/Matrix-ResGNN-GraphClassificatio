@@ -1,0 +1,488 @@
+\documentclass[UTF8,10pt]{ctexart}
+
+\usepackage[a4paper,margin=2.2cm]{geometry}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{placeins}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{url}
+\usepackage[authoryear,round]{natbib}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+\let\cite\citep
+\graphicspath{{../}{figures/}{../figures/}}
+
+\title{\textbf{用于图分类的矩阵残差图神经网络}\\{\large 中文确认稿}}
+\author{胡雪林\quad 付晓琴}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+\textbf{背景：} 残差连接被广泛用于稳定图神经网络训练，但现有残差设计通常被简化为沿深度方向的一维选择。对于多分支图分类器，残差信息不仅可以沿层深方向流动，也可以在分支之间横向交换，或者在分支--层二维局部邻域中复用。
+
+\textbf{方法：} 本文提出矩阵残差图神经网络（Matrix-Residual Graph Neural Networks），将其作为图分类中残差拓扑的受控研究框架。模型族比较五种信息流设计：普通消息传递、纵向残差复用、横向分支交换、局部矩阵残差复用，以及稀疏/门控矩阵残差复用。主实验覆盖六个数据集（PROTEINS、DD、ENZYMES、MUTAG、AIDS 和 Mutagenicity）、四种消息传递算子（GCNConv、GATConv、SAGEConv 和 GINConv）、五类模型和五折图级评估。进一步地，本文在 PROTEINS 和 DD 上进行分支数消融，对 MatrixRes 和 MatrixResGated 进行 fold-0 灵敏度扫描，对选定的 MatrixResGated 候选配置进行五折复验，并从分支多样性、分支余弦相似度、分支 CKA、梯度范数、残差活跃度和学习门控等方面开展机制分析。
+
+\textbf{结果：} 没有一种残差拓扑在所有数据集和算子上都占优。在 24 个数据集--算子组合中，MatrixRes 获得最多胜出次数（9/24）和最佳平均排名，其次是 MatrixResGated。在 GCNConv 下，不同数据集的优胜模型不同：PROTEINS 上 Plain 最强，DD 上 HorizontalRes 最强，ENZYMES 上 MatrixResGated 最强，MUTAG、AIDS 和 Mutagenicity 上 MatrixRes 最强。分支数消融呈现非单调的“先升后降”规律：PROTEINS 能够容忍适度分支扩展，而 DD 更偏好较小分支预算。机制指标表明，有效的分支扩展需要产生表示分离，同时避免过量残差流量或梯度信号削弱。五折候选复验显示，在 DD 上较小隐藏维度的 MatrixResGated 能减少参数并保持竞争性准确率；PROTEINS 上的稀疏候选在各折之间仍不稳定。
+
+\textbf{结论：} 残差拓扑、分支数和残差过滤应联合选择。额外分支只有在产生有用功能多样性时才有帮助；否则，残差流量和分支冗余会抵消额外容量。矩阵式复用更适合被理解为一个可调残差族，而不是对简单纵向或横向残差路径的通用替代。
+\end{abstract}
+
+\section{引言}
+
+图神经网络（GNN）通过反复聚合局部邻域信息来学习图表示 \cite{gori2005new,kipf2017gcn}。这种消息传递视角已经成为图分类中的标准工具，因为它能够在一个可微模型中同时结合节点属性、局部连接和图级结构 \cite{gilmer2017neural,wu2020comprehensive}。在分子图和蛋白质相关 benchmark 中，图标签可能同时依赖局部 motif 和全局结构组织，因此有用的中间证据必须在图级池化之前被保留下来 \cite{duvenaud2015convolutional,ying2018hierarchical}。
+
+增加深度或引入并行分支可以扩大模型容量，但同时也会改变信息在网络中的传输方式。深层 GNN 可能出现过平滑，即传播过程中节点表示变得过于相似 \cite{li2018deeper,oono2020simple}。它们也可能出现过压缩，即远距离信息被压缩进有限维度的消息中 \cite{alon2020bottleneck,topping2021understanding}。这些问题对图级预测尤其重要，因为最终 readout 依赖于到达池化阶段的中间表示质量。
+
+残差连接是应对这些困难的常见方法。它们能够改善梯度流并允许早期表示被复用，这一原则首先在深层卷积网络中确立，随后被引入图结构模型 \cite{he2016deep,bresson2017residual}。其他深度控制策略，包括 DropEdge、Jumping Knowledge 聚合和图特定归一化，也试图在传播过程中保留有用信息 \cite{rong2019dropedge,xu2018representation}。然而，残差连接在很多图分类模型中仍被视为默认的逐层组件，而不是研究对象本身。多数残差图分类器只沿同一条分支的深度方向复用信息。
+
+一旦模型包含多个分支，沿深度方向的残差复用就只是众多可能路径之一。残差信息还可以在同一深度的相邻分支之间移动，或者通过分支--深度的对角邻域传递。已有图分类研究探索了更强的消息传递算子、层次化池化、注意力以及高阶邻域混合 \cite{abu2019mixhop,bianchi2020graph}。这些设计提升了 GNN 的表达能力或聚合能力，但没有隔离残差路由问题：如果某一深度上存在多个分支状态，模型应该只复用同分支上一层状态，还是横向交换分支状态，或者同时结合两个方向形成局部二维残差邻域？
+
+本文将残差复用视为分支--层网格上的结构化设计问题。核心问题不是是否需要 skip connection，而是残差信号应该流向哪里。网格视角暴露出三个可控邻域：沿深度方向的纵向复用、相邻分支之间的横向交换，以及同时结合同分支、邻分支和对角路径的矩阵式复用。稀疏/门控矩阵变体进一步检验矩阵残差流量在注入前是否需要过滤。该框架遵循受控 benchmark 的思想：目标不是加入大量无关架构组件，而是把一个设计轴显式化到可以评估的程度 \cite{keriven2020benchmark,morris2020tudataset}。
+
+本研究刻意采用受控设置。每个比较都固定图分类流程，在若干经典消息传递算子下评估同一架构族，并且只改变残差拓扑和残差控制机制。这种分离使经验比较聚焦于信息流设计，而不是 readout 结构、任务特定特征工程或算子特定调参的混合影响。近年的图模型可能通过同时改变多个组件取得更强绝对性能；本文有意固定这些组件，以便识别残差拓扑本身的作用。
+
+本文围绕三个研究问题展开：
+\begin{enumerate}
+    \item \textbf{在共享图分类协议下，哪种残差拓扑最强？} 在保持其他流程固定的前提下，比较普通消息传递、纵向残差复用、横向分支交换、局部矩阵残差复用和稀疏/门控矩阵残差复用。
+    \item \textbf{分支数如何改变残差行为？} 检验额外分支是否单调提升准确率，还是只在某一有效工作区间内有益，并将这些趋势与多样性、相似度、梯度和残差流量联系起来。
+    \item \textbf{受控矩阵复用在什么情况下有帮助？} 检验矩阵残差流量应当密集传递还是被过滤，并检验候选残差控制设置在完整五折复验后是否仍然成立。
+\end{enumerate}
+
+主要贡献如下：
+\begin{itemize}
+    \item \textbf{提出图分类残差模型的分支--层表述。} 纵向、横向、矩阵和稀疏/门控矩阵残差族被统一表达为同一网格上的局部邻域，使其信息流差异更加明确。
+    \item \textbf{对残差拓扑而非新消息传递算子进行受控评估。} benchmark 保持分类器、readout、折划分协议和 backbone 选择一致，使性能差异能够归因于残差路由。
+    \item \textbf{从机制角度解释分支扩展。} 本文将准确率与分支多样性、分支余弦相似度、分支 CKA、梯度范数和残差活跃度联合分析，说明额外分支何时产生有用分离、何时只增加冗余流量。
+    \item \textbf{为残差控制设置提供保守验证协议。} 灵敏度扫描仅用于发现候选设置，选出的候选必须跨折复验后才被视为经验证据。
+\end{itemize}
+
+\section{材料与方法}
+\label{sec:methods}
+
+本节定义图分类任务、矩阵残差架构族、benchmark 协议和机制指标。基本原则是在固定其余学习流程的同时隔离残差拓扑。
+
+\subsection{问题定义与符号}
+
+设 \(\mathcal{G}=(\mathcal{V},\mathcal{E})\) 为一个图，节点特征矩阵为 \(\mathbf{X}\in\mathbb{R}^{n\times d_{\mathrm{in}}}\)，邻接结构为 \(\mathbf{A}\)。对于数据集 \(\mathcal{D}=\{(\mathcal{G}_i,y_i)\}_{i=1}^{N}\)，目标是学习 \(f_{\theta}:\mathcal{G}\rightarrow \hat{y}\)，其中 \(\hat{y}\) 是预测图标签。
+
+比较的模型族共享同一个图分类 wrapper：
+\begin{itemize}
+    \item \textbf{Plain}：堆叠消息传递，不使用显式残差复用。
+    \item \textbf{VerticalRes}：从上一层复用同一分支的残差。
+    \item \textbf{HorizontalRes}：在同一深度的相邻分支之间进行跨分支交换。
+    \item \textbf{MatrixRes}：在纵向、横向和对角邻居上进行局部二维复用。
+    \item \textbf{MatrixResGated}：带门控或稀疏残差过滤的矩阵复用。
+\end{itemize}
+
+\subsection{共享图分类流程}
+
+令 \(B\) 为分支数，\(L\) 为消息传递层数。第 \(b\) 个分支在第 \(\ell\) 层的隐藏状态记为 \(\mathbf{H}^{(\ell)}_{b}\)，其中 \(b\in\{1,\ldots,B\}\)。分支局部传播步骤为
+\begin{equation}
+\mathbf{Z}^{(\ell)}_{b} = \phi^{(\ell)}_{b}\left(\mathbf{H}^{(\ell-1)}_{b}, \mathbf{A}\right),
+\end{equation}
+其中 \(\phi\) 被实例化为四种标准算子之一：GCNConv \cite{kipf2017gcn}、GATConv \cite{velivckovic2017graph}、SAGEConv \cite{hamilton2017inductive} 或 GINConv \cite{xu2019gin}。带残差增强的更新为
+\begin{equation}
+\mathbf{H}^{(\ell)}_{b} =
+\mathbf{Z}^{(\ell)}_{b} +
+\sum_{(b',\ell')\in\mathcal{N}(b,\ell)}
+\mathcal{R}_{(b',\ell')\rightarrow(b,\ell)}
+\left(\mathbf{H}^{(\ell')}_{b'}\right).
+\end{equation}
+不同架构之间唯一变化的项是残差邻域 \(\mathcal{N}(b,\ell)\) 和残差变换 \(\mathcal{R}\)。
+
+在最后一层消息传递后，每个分支通过 global mean pooling 得到图级向量，然后合并分支向量用于分类。本文有意避免使用差异化池化或自注意力池化等架构特定 readout \cite{ying2018hierarchical,lee2019self}，因为目标是隔离残差拓扑，而不是比较 readout 机制。分类器使用交叉熵损失训练。
+
+\subsection{残差邻域}
+\label{sec:model}
+
+\textbf{Plain.} Plain 基线没有残差邻域：
+\begin{equation}
+\mathcal{N}(b,\ell)=\emptyset.
+\end{equation}
+
+\textbf{VerticalRes.} 纵向残差复用注入同一分支上一层状态：
+\begin{equation}
+\mathcal{N}(b,\ell)=\{(b,\ell-1)\}.
+\end{equation}
+
+\textbf{HorizontalRes.} 横向残差复用在同一深度的相邻分支之间交换信息：
+\begin{equation}
+\mathcal{N}(b,\ell)=\{(b-1,\ell),(b+1,\ell)\},
+\end{equation}
+边界分支只使用合法邻居。
+
+\textbf{MatrixRes.} 矩阵残差复用结合纵向、横向和对角邻域：
+\begin{equation}
+\mathcal{N}(b,\ell)=
+\{(b,\ell-1),(b-1,\ell),(b+1,\ell),(b-1,\ell-1),(b+1,\ell-1)\}.
+\end{equation}
+该局部 stencil 有意不采用密集 all-to-all 混合，从而在分支--层网格上保留可解释的残差结构。
+
+\textbf{MatrixResGated.} MatrixResGated 使用与 MatrixRes 相同的邻域，但残差变换控制注入信号：
+\begin{equation}
+\mathcal{R}(\mathbf{U}) =
+\begin{cases}
+\alpha \mathbf{U}, & \text{带门控的恒等残差过滤},\\
+\alpha\,\mathrm{softshrink}_{\lambda}(\mathbf{U}), & \text{带门控的稀疏残差过滤}.
+\end{cases}
+\end{equation}
+主 benchmark 中，Plain、VerticalRes、HorizontalRes 和 MatrixRes 使用恒等残差过滤。MatrixResGated 使用 \(\lambda=0.05\) 的稀疏残差过滤，并使用初始值为 0.8 的可学习标量门控。实现中也支持 top-\(k\) 残差过滤和固定门控，但这些不是主结果的默认设置。
+
+\subsection{数据集与评估协议}
+\label{sec:datasets}
+
+主 benchmark 使用六个 TUDataset 数据集 \cite{morris2020tudataset}：PROTEINS、DD、ENZYMES、MUTAG、AIDS 和 Mutagenicity。PROTEINS 和 DD 是二分类蛋白质结构图分类 benchmark，ENZYMES 是六分类酶分类 benchmark，MUTAG、AIDS 和 Mutagenicity 作为补充分子图稳健性检查。所有数据集通过 PyTorch Geometric 加载 \cite{fey2019fast}。所有实验使用原始 benchmark 特征和图结构，不加入任务特定特征工程、图增强或边重设计。
+
+所有主结果采用图级五折评估。对于第 \(k\) 折，测试准确率为
+\begin{equation}
+\mathrm{Acc}_{k}=
+\frac{1}{|\mathcal{T}_{k}|}
+\sum_{(\mathcal{G}_{i},y_{i})\in\mathcal{T}_{k}}
+\mathbf{1}[\hat{y}_{i}=y_{i}].
+\end{equation}
+跨折结果报告为
+\begin{equation}
+\overline{\mathrm{Acc}}=\frac{1}{5}\sum_{k=1}^{5}\mathrm{Acc}_{k},
+\end{equation}
+并同时报告折级标准差。
+
+\subsection{训练配置}
+
+所有主 benchmark 运行使用默认分支数 \(B=3\)。benchmark 在四种消息传递算子下重复：GCNConv、GATConv、SAGEConv 和 GINConv。除灵敏度设置改变外，隐藏维度为 64；所有模型族使用相同优化器、早停逻辑、图池化和折划分协议。模型使用 Adam 优化 \cite{kingma2014adam}；保留验证损失最低的 checkpoint 用于测试评估。分支数消融在 PROTEINS 和 DD 上、GCNConv 下，对 HorizontalRes、MatrixRes 和 MatrixResGated 评估 \(B=1,\ldots,8\)。灵敏度扫描在 fold 0、\(B=3\) 下评估 MatrixRes 和 MatrixResGated，变化学习率、dropout、隐藏维度、稀疏强度和门控初始化。选定的 MatrixResGated 候选随后在五折上复验。
+
+\begin{table}[h]
+\centering
+\small
+\caption{主 benchmark 共享的关键实验设置。}
+\label{tab:hyperparams}
+\begin{tabular}{l c}
+\toprule
+参数 & 取值 \\
+\midrule
+消息传递算子 & GCNConv, GATConv, SAGEConv, GINConv \\
+默认分支数 & 3 \\
+默认隐藏维度 & 64 \\
+评估方式 & 五折图分类 \\
+分支数消融 & \(B=1,\ldots,8\) \\
+主要指标 & 平均最佳测试准确率 \\
+灵敏度范围 & Fold 0, \(B=3\) \\
+早停策略 & 验证损失，patience 为 60 或 80 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{机制指标}
+
+为解释分支数行为，本文跟踪五类机制指标。分支多样性度量分支表示之间的平均成对距离。分支余弦相似度和分支 CKA 衡量分支是否冗余或高度对齐。平均梯度范数跟踪分支数和残差流量增长时优化信号是否削弱。残差计数和活跃比例汇总实际注入的残差流量，尤其用于解释稀疏/门控变体。
+
+\section{结果}
+\label{sec:results}
+
+除非另有说明，所有结果均报告五折平均最佳测试准确率 \(\pm\) 折级标准差。源表来自 \texttt{records/LATEST} 下的 summaries；主 benchmark 包含 600 个已完成运行。
+
+\subsection{整体 benchmark 性能}
+
+主 benchmark 检验残差拓扑在不同数据集和消息传递算子上是否存在稳定赢家。结果显示并不存在。表~\ref{tab:operator_wins} 总结完整 benchmark：在 24 个数据集--算子组合中，MatrixRes 是整体最强拓扑，胜出 9 次并取得最佳平均排名（2.12）。MatrixResGated 和 Plain 各胜出 5 次，HorizontalRes 胜出 3 次，VerticalRes 胜出 2 次。因此，矩阵式复用是本 benchmark 中最强的一般设计，但每种拓扑都有自己最强的场景。
+
+\begin{table}[h]
+\centering
+\small
+\caption{24 个数据集--算子组合上的胜出次数和平均排名。平均排名越低越好。}
+\label{tab:operator_wins}
+\begin{tabular}{l c c l}
+\toprule
+模型 & 胜出次数 & 平均排名 & 解释 \\
+\midrule
+Plain & 5 & 3.04 & 在部分小规模或较容易设置上表现强 \\
+VerticalRes & 2 & 3.38 & 深度方向复用选择性有益 \\
+HorizontalRes & 3 & 3.54 & 横向交换足够时具有竞争力 \\
+MatrixRes & \(\mathbf{9}\) & \(\mathbf{2.12}\) & 整体最强残差拓扑 \\
+MatrixResGated & 5 & 2.92 & 稀疏控制有助于残差流量时有效 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.82\linewidth]{figures/exp/fig_model_win_counts.pdf}
+\caption{六个数据集和四种消息传递算子上的模型级胜出次数。}
+\label{fig:model_win_counts}
+\end{figure}
+
+表~\ref{tab:winners_by_operator} 给出了表~\ref{tab:operator_wins} 胜出统计背后的逐单元证据。矩阵族在 MUTAG、AIDS 和 Mutagenicity 上最突出，其中多数算子设置由 MatrixRes 或 MatrixResGated 胜出。蛋白质相关数据集更加混合：PROTEINS 在 Plain 和 HorizontalRes 之间交替，DD 在 HorizontalRes、MatrixRes 和 VerticalRes 之间交替。ENZYMES 仍然较困难，没有形成稳定的残差拓扑偏好。
+
+\begin{table}[h]
+\centering
+\scriptsize
+\caption{每个数据集和消息传递算子下的优胜模型。括号中为平均最佳测试准确率。}
+\label{tab:winners_by_operator}
+\begin{tabular}{l c c c c}
+\toprule
+数据集 & GCNConv & GATConv & SAGEConv & GINConv \\
+\midrule
+PROTEINS & Plain (0.7044) & HorizontalRes (0.7116) & Plain (0.6999) & HorizontalRes (0.7080) \\
+DD & HorizontalRes (0.7181) & MatrixRes (0.7164) & MatrixRes (0.7198) & VerticalRes (0.7224) \\
+ENZYMES & MatrixResGated (0.2933) & Plain (0.2717) & VerticalRes (0.2883) & Plain (0.3100) \\
+MUTAG & MatrixRes (0.7609) & MatrixResGated (0.7555) & MatrixRes (0.7504) & MatrixResGated (0.8081) \\
+AIDS & MatrixRes (0.8365) & MatrixRes (0.8875) & Plain (0.8850) & MatrixResGated (0.9280) \\
+Mutagenicity & MatrixRes (0.7784) & MatrixRes (0.7909) & MatrixResGated (0.8031) & MatrixRes (0.8024) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{GCNConv benchmark 切片}
+
+表~\ref{tab:main_benchmark} 报告默认分支数 \(B=3\) 下完整 GCNConv 切片。该受控切片有助于固定算子，仅改变残差拓扑。Plain 在 PROTEINS 上最强，HorizontalRes 在 DD 上最强，MatrixResGated 在 ENZYMES 上最强，MatrixRes 在 MUTAG、AIDS 和 Mutagenicity 上最强。
+
+\begin{table}[h]
+\centering
+\scriptsize
+\caption{默认分支数 \(B=3\) 下的 GCNConv benchmark 结果。}
+\label{tab:main_benchmark}
+\begin{tabular}{l c c c c c}
+\toprule
+数据集 & Plain & VerticalRes & HorizontalRes & MatrixRes & MatrixResGated \\
+\midrule
+PROTEINS & \(\mathbf{0.7044\pm0.0387}\) & \(0.6993\pm0.0340\) & \(0.6992\pm0.0399\) & \(0.6973\pm0.0324\) & \(0.6886\pm0.0397\) \\
+DD & \(0.7053\pm0.0517\) & \(0.7143\pm0.0260\) & \(\mathbf{0.7181\pm0.0296}\) & \(0.7127\pm0.0365\) & \(0.7141\pm0.0359\) \\
+ENZYMES & \(0.2683\pm0.0343\) & \(0.2550\pm0.0455\) & \(0.2633\pm0.0584\) & \(0.2750\pm0.0577\) & \(\mathbf{0.2933\pm0.0470}\) \\
+MUTAG & \(0.7556\pm0.0439\) & \(0.7451\pm0.0695\) & \(0.7343\pm0.0433\) & \(\mathbf{0.7609\pm0.0715}\) & \(0.7556\pm0.0721\) \\
+AIDS & \(0.8215\pm0.0046\) & \(0.8210\pm0.0233\) & \(0.8130\pm0.0297\) & \(\mathbf{0.8365\pm0.0412}\) & \(0.8150\pm0.0231\) \\
+Mutagenicity & \(0.7644\pm0.0188\) & \(0.7667\pm0.0212\) & \(0.7738\pm0.0134\) & \(\mathbf{0.7784\pm0.0185}\) & \(0.7701\pm0.0165\) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.92\linewidth]{figures/exp/fig_main_benchmark_gcnconv.pdf}
+\caption{\(B=3\) 下的 GCNConv benchmark。柱状图表示五折平均最佳测试准确率，误差线表示折级标准差。}
+\label{fig:main_benchmark}
+\end{figure}
+
+GCNConv 切片支持与完整 benchmark 相同的结论：残差拓扑很重要，但最佳拓扑依赖数据集。MatrixRes 是六个 GCNConv 数据集中三个数据集的最强默认选择，但在 PROTEINS 和 DD 上，更简单的残差路径仍然更优。
+
+\subsection{分支数消融}
+
+分支数具有非单调影响。表~\ref{tab:branch_best} 报告分支数消融中每种拓扑的最佳和最差分支数。在 PROTEINS 上，有效区域是中等分支数：HorizontalRes 在 \(B=4\) 达峰，MatrixRes 在 \(B=6\) 达峰，MatrixResGated 在 \(B=3\) 达峰。在 DD 上，有效区域更小：HorizontalRes 和 MatrixRes 在 \(B=2\) 达峰，而 MatrixResGated 在 \(B=1\) 时已经最强。
+
+\begin{table}[h]
+\centering
+\small
+\caption{消融实验中的最佳和最差分支数设置。}
+\label{tab:branch_best}
+\begin{tabular}{l l c c c c}
+\toprule
+数据集 & 模型 & 最佳 \(B\) & 最佳准确率 & 最差 \(B\) & 最差准确率 \\
+\midrule
+PROTEINS & HorizontalRes & 4 & \(0.7125\pm0.0286\) & 1 & \(0.6801\pm0.0518\) \\
+PROTEINS & MatrixRes & 6 & \(0.7062\pm0.0210\) & 1 & \(0.6909\pm0.0586\) \\
+PROTEINS & MatrixResGated & 3 & \(0.7098\pm0.0219\) & 4 & \(0.6711\pm0.0471\) \\
+DD & HorizontalRes & 2 & \(0.7275\pm0.0304\) & 4 & \(0.7071\pm0.0302\) \\
+DD & MatrixRes & 2 & \(0.7206\pm0.0411\) & 7 & \(0.7071\pm0.0390\) \\
+DD & MatrixResGated & 1 & \(0.7283\pm0.0244\) & 7 & \(0.7053\pm0.0456\) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.92\linewidth]{figures/exp/fig_branch_count_ablation.pdf}
+\caption{HorizontalRes、MatrixRes 和 MatrixResGated 在 PROTEINS 与 DD 上的分支数消融。准确率只在有效工作区间内提升，随后饱和或下降。}
+\label{fig:branch_ablation}
+\end{figure}
+
+表~\ref{tab:branch_best} 和图~\ref{fig:branch_ablation} 表明，分支数不应被简单理解为容量旋钮。增加 \(B\) 会改变残差图本身：它会增加分支、残差路径、残差流量和优化交互。PROTEINS 能容忍适度分支扩展，而 DD 对冗余分支扩展更加敏感。
+
+\subsection{机制分析：多样性、相似度、梯度与残差流量}
+
+为解释分支扩展为何先有益后有害，本文分析分支多样性、分支余弦相似度、分支 CKA 相似度、代表性梯度范数、残差计数总量、活跃比例和门控值。表~\ref{tab:mechanism_snapshot} 报告每个消融目标在最佳分支数处的机制指标。多样性衡量分支表示之间的距离；分支余弦和分支 CKA 衡量表示冗余或对齐；梯度范数刻画优化信号；残差计数和活跃比例描述注入模型的残差流量。
+
+\begin{table}[h]
+\centering
+\scriptsize
+\caption{各消融目标最佳分支数处的机制指标。}
+\label{tab:mechanism_snapshot}
+\begin{tabular}{l l c c c c c c c c c}
+\toprule
+数据集 & 模型 & \(B\) & Acc. & Diversity & Cosine & CKA & Grad. & Residuals & Active & Gate \\
+\midrule
+PROTEINS & HorizontalRes & 4 & 0.7125 & 1.1450 & 0.8417 & 0.9797 & 0.0157 & 24.0 & 0.2519 & 0.7911 \\
+PROTEINS & MatrixRes & 6 & 0.7062 & 3.7755 & 0.9173 & 0.9634 & 0.0182 & 88.0 & 0.4273 & 0.7757 \\
+PROTEINS & MatrixResGated & 3 & 0.7098 & 1.3555 & 0.9790 & 0.9988 & 0.0316 & 37.0 & 0.3121 & 0.7833 \\
+DD & HorizontalRes & 2 & 0.7275 & 0.1687 & 0.9969 & 1.0000 & 0.0732 & 6.0 & 0.3492 & 0.8375 \\
+DD & MatrixRes & 2 & 0.7206 & 0.1834 & 0.9991 & 1.0000 & 0.0796 & 14.0 & 0.5384 & 0.8222 \\
+DD & MatrixResGated & 1 & 0.7283 & 0.0000 & 1.0000 & 1.0000 & 0.0821 & 2.0 & 0.2352 & 0.8221 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+PROTEINS 消融显示，适度分支分离是有用的。HorizontalRes 从 \(B=1\) 到 \(B=4\) 提升时，分支多样性从 0.0000 增加到 1.1450，分支余弦从 1.0000 降至 0.8417。然而，多样性本身并不保证准确率提升：在 \(B=8\) 时，多样性进一步升至 1.5441，但准确率降至 0.6881。MatrixRes 在更大尺度上呈现类似规律。它在 \(B=6\) 达峰，此时分支多样性达到 3.7755，但继续增加分支并不能进一步提升准确率。
+
+DD 更保守。HorizontalRes 在 \(B=2\) 达到最佳，此时分支多样性仅为 0.1687，分支余弦仍为 0.9969。MatrixRes 也在 \(B=2\) 达峰，并具有类似的高分支余弦（0.9991）。在 DD 上，较大分支数会提高多样性，但性能不提升。这说明 DD 不会奖励更大的残差邻域，除非新增分支产生足够有用的功能分离。
+
+稀疏/门控模型进一步说明了残差控制的作用。MatrixResGated 在 PROTEINS 最佳设置上的活跃比例为 0.3121，在 DD 最佳设置上为 0.2352。这说明稀疏过滤确实抑制了部分残差项，而不是退化为密集残差路径。同时，MatrixResGated 并不整体支配 MatrixRes，因此稀疏控制应被视为有用的流量控制机制，而不是普遍改进。
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.92\linewidth]{figures/exp/fig_mechanism_branch_dynamics.pdf}
+\caption{机制摘要：连接分支数准确率、分支多样性、分支余弦相似度、分支 CKA 和平均梯度范数。}
+\label{fig:mechanism}
+\end{figure}
+
+\subsection{MatrixRes 与 MatrixResGated 灵敏度}
+
+fold-0 灵敏度扫描用于识别 MatrixRes 和 MatrixResGated 的候选工作区域。这些扫描用于诊断，而不是最终性能声明。在 PROTEINS 上，MatrixRes 在测试 sweep 中没有超过其 fold-0 基线，而 MatrixResGated 受益于轻度稀疏化：\(\lambda=0.02\) 将 fold-0 准确率从 0.6726 提升到 0.6951。更强稀疏化是有害的。在 DD 上，MatrixRes 和 MatrixResGated 在 fold-0 扫描中都偏好较小隐藏维度：MatrixRes 在 \(d=32\) 时达到 0.7595，MatrixResGated 在 \(d=32\) 时达到 0.7511。MatrixResGated 在 \(lr=0.001\) 和 \(gate\_init=0.2\) 时也达到 0.7511。
+
+\begin{table}[h]
+\centering
+\small
+\caption{MatrixRes 和 MatrixResGated 的最佳 fold-0 灵敏度设置。}
+\label{tab:sensitivity}
+\begin{tabular}{l l c c l}
+\toprule
+数据集 & 模型 & 基线 & 最佳设置 & 最佳准确率 \\
+\midrule
+DD & MatrixRes & 0.7468 & \(dim=32\) & 0.7595 \\
+DD & MatrixResGated & 0.7300 & \(dim=32\) & 0.7511 \\
+PROTEINS & MatrixRes & 0.6637 & baseline & 0.6637 \\
+PROTEINS & MatrixResGated & 0.6726 & \(\lambda=0.02\) & 0.6951 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.92\linewidth]{figures/exp/fig_matrixresgated_sensitivity.pdf}
+\caption{\(B=3\) 下 fold-0 MatrixResGated 灵敏度扫描。该扫描用于识别候选工作区域，不被视为最终超参数证据。}
+\label{fig:sensitivity}
+\end{figure}
+
+\subsection{调参候选五折复验}
+
+为区分候选发现和最终评估，选定的 MatrixResGated 设置被重新运行五折。表~\ref{tab:tuned_candidates} 报告这些后续复验。最强实践候选是 \texttt{DD\_dim\_32}，它将参数量从 42,371 降至 15,043，同时保持竞争力。较低学习率接近默认 MatrixResGated benchmark，较低门控初始化较弱。在 PROTEINS 上，\(\lambda=0.02\) 没有在五折中保持其 fold-0 优势。
+
+\begin{table}[h]
+\centering
+\small
+\caption{选定 MatrixResGated 候选的五折复验。}
+\label{tab:tuned_candidates}
+\begin{tabular}{l l c c c}
+\toprule
+候选 & 数据集 & 准确率 & 平均损失 & 参数量 \\
+\midrule
+\texttt{DD\_dim\_32} & DD & \(\mathbf{0.7215\pm0.0330}\) & 0.5717 & 15,043 \\
+\texttt{DD\_gate\_init\_0.2} & DD & \(0.7131\pm0.0213\) & 0.5820 & 42,371 \\
+\texttt{DD\_lr\_0.001} & DD & \(0.7181\pm0.0336\) & 0.5737 & 42,371 \\
+\texttt{PROTEINS\_sparse\_lambda\_0.02} & PROTEINS & \(0.6909\pm0.0447\) & 0.6104 & 38,339 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+调参候选复验避免了从 fold-0 灵敏度结果过度宣称。它支持 DD 上较小且参数更高效的 MatrixResGated 配置，但不支持 PROTEINS 上强五折稀疏收益声明。
+
+\section{讨论}
+
+本节结合六数据集、四算子 benchmark、分支数消融、调参候选复验和机制证据回答研究问题。
+
+\subsection{RQ1：哪种残差拓扑最强？}
+
+主 benchmark 反对存在通用残差拓扑的假设。在 24 个数据集--算子组合中，MatrixRes 是最频繁胜出的模型，并具有最佳平均排名，但五个模型族都至少胜出两次。仅在 GCNConv 下，Plain 在 PROTEINS 上最强，HorizontalRes 在 DD 上最强，MatrixResGated 在 ENZYMES 上最强，MatrixRes 在 MUTAG、AIDS 和 Mutagenicity 上最强。这些结果说明，有用残差邻域取决于数据集对分支专门化、残差流量和优化复杂度的容忍度。
+
+这一结论与更广泛的 GNN 文献一致：改变传播算子、归一化或池化设计通常会改变偏好的架构 \cite{xu2019gin,hamilton2017inductive,velivckovic2017graph,ying2018hierarchical}。本文进一步说明残差拓扑本身也是这种变化的来源。矩阵式复用可以被理解为分支--层网格上的局部残差 stencil，其思想类似结构化邻域混合 \cite{abu2019mixhop}，但作用对象是隐藏状态复用而不是图邻接。它的优势因此来自架构组织，而不是新的消息传递 primitive。
+
+\textbf{回答：} 在当前完整 benchmark 中，MatrixRes 是整体最强拓扑，但残差拓扑仍然依赖数据集和算子。图分类 benchmark 应同时比较纵向、横向、矩阵式和稀疏/门控复用，而不应假设某一个残差方向普遍最优。
+
+\subsection{RQ2：分支数如何改变残差行为？}
+
+分支数消融显示，\(B\) 不只是容量参数。增加 \(B\) 会增加分支、残差路径和优化交互。在 PROTEINS 上，适度扩展有用：HorizontalRes 在 \(B=4\) 达峰，MatrixRes 在 \(B=6\) 达峰，MatrixResGated 在 \(B=3\) 达峰。在 DD 上，更小预算更优，峰值出现在 \(B=1\) 或 \(B=2\)。机制摘要解释了这种差异。在 PROTEINS 上，\(B=6\) 的 MatrixRes 产生最大分支多样性，而 HorizontalRes 保持较低分支余弦和较小残差 footprint。在 DD 上，所有最佳分支设置都具有接近饱和的分支余弦和 CKA，因此额外残差流量不太可能产生新的有用功能。分支多样性可能随 \(B\) 增加，但如果分支相似度仍高或梯度削弱，额外分支不会转化为更好分类。
+
+这种“先升后降”行为也是残差 GNN 设计中的实践警告。残差连接常被用于使更深或更宽模型更易优化 \cite{he2016deep,li2019deepgcns,li2021training}，但多分支残差模型同时改变容量和路由密度。更大的 \(B\) 增加隐藏状态被重新注入的路径数，因此有效区间由功能多样性和残差干扰之间的平衡决定。分支数结果显示，PROTEINS 和 DD 的这种平衡明显不同，尽管二者都常被视为蛋白质结构图 benchmark。
+
+\textbf{回答：} 分支数在产生有用功能多样性时有帮助；当残差复杂度增长快于分支分离或优化质量时会造成伤害。
+
+\subsection{RQ3：受控矩阵复用何时有帮助？}
+
+MatrixResGated 检验矩阵残差流量在注入前是否应被过滤。主 benchmark 显示，稀疏/门控复用并不总是优于密集矩阵复用：MatrixRes 在更多数据集--算子组合中胜出。然而，MatrixResGated 仍然有用，因为它在多个组合中胜出，包括困难的 ENZYMES GCNConv 设置，并提供了减少弱残差系数的受控方式。机制表支持这一解释：门控变体通常比密集 MatrixRes 保持更少活跃残差路径，而学习门控保持在中等范围，并未塌缩为零。这一区分很重要。MatrixResGated 的价值不是稀疏性总能提升准确率，而是当矩阵式复用会注入过多低价值残差流量时，稀疏残差控制可能有益。
+
+稀疏/门控残差复用位于两类熟悉设计之间。类似 residual gated graph networks，它学习历史信息应以多强程度注入 \cite{bresson2017residual}；类似稀疏化和正则化方法，它降低弱或噪声路径影响 \cite{rong2019dropedge,cangea2018towards}。当前实现有意保持简单：使用标量门控和 soft-shrink 过滤，而不是大型路由网络。这保持了消融的可解释性，也避免门控变体变成另一个高容量模型。
+
+MatrixResGated 定义的是一个可调家族，而不是即插即用的赢家。fold-0 灵敏度扫描提示 PROTEINS 可能受益于轻度稀疏化，而 DD 受益于保守优化、较小隐藏维度和较低初始门控。五折候选复验进一步修正了这一解释。在 DD 上，较小隐藏维度仍然有益且参数高效。在 PROTEINS 上，轻度稀疏候选未能跨所有折保持 fold-0 优势。
+
+\textbf{回答：} 稀疏/门控矩阵复用是残差流量控制机制。它是密集 MatrixRes 的补充，而非严格替代；候选设置必须跨折验证后才应被视为性能声明。当前证据支持 DD 上较小的受控矩阵模型，并将 PROTEINS 稀疏化保留为有前景但尚不稳定的方向。
+
+\subsection{局限性}
+
+这些发现的泛化性受到若干限制。第一，尽管主 benchmark 包含四种消息传递算子，它仍使用固定图级池化和分类头；其他 readout 设计可能与残差拓扑发生交互。第二，比较的算子是经典消息传递 backbone，而不是近年的 graph transformer 或 local-global hybrid 架构 \cite{dwivedi2020generalization}。这是有意的控制选择，但意味着本文不应被解读为 state-of-the-art 模型比较。第三，灵敏度扫描仅为 fold-0；虽然选定候选已跨五折复验，但该复验仅限于 PROTEINS 和 DD 上的 MatrixResGated。第四，ENZYMES 的绝对准确率较低且波动较高，因此应谨慎解释。最后，机制分析是相关性的。分支多样性、余弦相似度、CKA 和梯度范数支持一个一致解释，但不能证明因果关系。
+
+另一个限制是 benchmark 有意避免任务特定的化学或生物特征工程。这使残差拓扑比较更干净，但也意味着绝对准确率不应被解释为优化后的 state-of-the-art 分子预测结果。本文贡献是方法论层面的：它识别在匹配条件下不同残差路径何时有帮助。
+
+\subsection{未来方向}
+
+未来工作应将比较扩展到更大图分类数据集、更丰富 readout 机制、近年 local-global backbone，以及自适应残差邻域选择。自然的下一步是用学习得到的局部残差策略替代人工选择的纵向、横向或矩阵 stencil。调参候选验证也应扩展到当前 MatrixResGated 检查之外，以确定是否可以可靠地选择数据集特定残差控制。
+
+\section{结论}
+\label{sec:conclusion}
+
+本文将图分类中的残差连接研究为一个结构化分支--层设计问题。在六个数据集和四种消息传递算子上，残差拓扑确实重要，但其价值取决于数据集、算子和分支预算。MatrixRes 按胜出次数和平均排名是整体最强拓扑，但 GCNConv 下逐数据集赢家仍然混合：PROTEINS 上 Plain 最强，DD 上 HorizontalRes 最强，ENZYMES 上 MatrixResGated 最强，MUTAG、AIDS 和 Mutagenicity 上 MatrixRes 最强。分支数消融进一步显示，增加分支只在有限工作区间内有用。
+
+机制分析解释了为什么分支扩展并不自动有益。额外分支可以增加表示多样性，但也会增加残差流量，并可能保留冗余分支相似性或削弱优化。矩阵式复用因此更适合被看作一个受控残差家族，其有效性依赖分支预算和残差过滤策略。
+
+实践含义是，残差拓扑、分支数、算子选择和残差控制应联合评估。在将灵敏度结果作为性能声明之前，候选设置应跨折复验。在当前实验中，该验证支持 DD 上更小且参数更高效的 MatrixResGated 模型，而 PROTEINS 稀疏候选仍不够稳定。
+
+\section{致谢}
+
+作者感谢开源图学习社区以及本研究所用 benchmark 资源的维护者。作者也感谢审稿人和编辑投入时间并提出反馈。
+
+\appendix
+
+\section{附录}
+\label{sec:appendix}
+
+\subsection{结果来源}
+
+本文使用以下汇总文件作为结果依据。主 benchmark 汇总包含 120 个模型级行：六个数据集、四种算子、五个模型族，以及每个组合的五折聚合结果。
+\begin{itemize}
+    \item \texttt{records/LATEST/summaries/benchmark\_summary.csv}
+    \item \texttt{records/LATEST/summaries/branch\_ablation\_summary.csv}
+    \item \texttt{records/LATEST/summaries/parameter\_sensitivity\_summary.csv}
+    \item \texttt{records/LATEST/summaries/tuned\_candidate\_summary.csv}
+    \item \texttt{records/LATEST/summaries/mechanism\_compact\_summary.csv}
+\end{itemize}
+
+\subsection{补充诊断}
+
+额外逐折行、CKA 汇总、残差流量汇总和完整灵敏度表保留在仓库 records 目录中，可用于补充材料转换。
+
+\subsection{证据映射}
+
+表~\ref{tab:evidence_map} 总结每个主要经验结论在正文中的证据来源。该紧凑表用于保持正文可读性，同时明确结果与结论之间的对应关系。
+
+\begin{table}[h]
+\centering
+\small
+\caption{经验结论与论文证据之间的紧凑映射。}
+\label{tab:evidence_map}
+\begin{tabular}{p{0.42\linewidth} p{0.44\linewidth}}
+\toprule
+结论 & 主要证据 \\
+\midrule
+MatrixRes 是整体最强拓扑，但不是通用赢家。 & 表~\ref{tab:operator_wins}、表~\ref{tab:winners_by_operator} 和图~\ref{fig:model_win_counts}。 \\
+在固定算子下，GCNConv 结果仍然依赖数据集。 & 表~\ref{tab:main_benchmark} 和图~\ref{fig:main_benchmark}。 \\
+分支数呈现“先升后降”，不是单调改进。 & 表~\ref{tab:branch_best} 和图~\ref{fig:branch_ablation}。 \\
+有效分支扩展需要表示分离，同时避免过量残差流量。 & 表~\ref{tab:mechanism_snapshot} 和图~\ref{fig:mechanism}。 \\
+fold-0 灵敏度不应被当作最终证据。 & 表~\ref{tab:sensitivity}、图~\ref{fig:sensitivity} 和表~\ref{tab:tuned_candidates}。 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\bibliographystyle{plainnat}
+\bibliography{references}
+
+\end{document}
