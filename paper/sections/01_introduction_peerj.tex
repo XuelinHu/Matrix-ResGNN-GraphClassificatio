@@ -14,7 +14,7 @@ The study is deliberately controlled. It fixes the graph-classification pipeline
 
 The work is organized around three research questions:
 \begin{enumerate}
-    \item \textbf{Which residual topology is strongest under a shared graph-classification protocol?} We compare plain message passing, vertical residual reuse, horizontal branch-wise exchange, local matrix residual reuse, and sparse/gated matrix reuse while holding the remaining pipeline fixed.
+    \item \textbf{Which residual topologies are preferred under a shared graph-classification protocol?} We compare plain message passing, vertical residual reuse, horizontal branch-wise exchange, local matrix residual reuse, and sparse/gated matrix reuse while holding the remaining pipeline fixed.
     \item \textbf{How does branch count change residual behavior?} We test whether additional branches improve accuracy monotonically or only within a useful operating region, and we relate these trends to diversity, similarity, gradients, and residual traffic.
     \item \textbf{When does controlled matrix reuse help?} We test whether matrix residual traffic should be passed densely or filtered, and whether candidate residual-control settings remain valid after full-fold reruns.
 \end{enumerate}
@@ -23,6 +23,6 @@ The main contributions are:
 \begin{itemize}
     \item \textbf{A branch-by-layer formulation of residual graph classifiers.} Vertical, horizontal, matrix, and sparse/gated matrix residual families are expressed as local neighborhoods on the same grid, making their information-flow differences explicit.
     \item \textbf{A controlled evaluation of residual topology rather than a new message-passing operator.} The benchmark keeps the classifier, readout, fold protocol, and backbone choices matched so that performance differences can be attributed to residual routing.
-    \item \textbf{A mechanism-based interpretation of branch expansion.} Accuracy is analyzed together with branch diversity, branch cosine similarity, branch CKA, gradient norms, and residual activity, showing when extra branches create useful separation and when they add redundant traffic.
+    \item \textbf{A mechanism-based interpretation of branch expansion.} Accuracy is analyzed together with branch diversity, branch cosine similarity, branch CKA, gradient norms, and residual activity, linking performance changes to branch separation, residual traffic, and optimization behavior.
     \item \textbf{A conservative validation protocol for residual-control settings.} Sensitivity scans are used only to identify candidates, and selected settings are rerun across folds before being treated as empirical evidence.
 \end{itemize}

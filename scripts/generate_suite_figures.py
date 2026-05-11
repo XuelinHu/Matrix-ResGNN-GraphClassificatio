@@ -15,7 +15,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from src.experiment_catalog import MAIN_DATASETS, MODEL_DISPLAY
+from src.experiment_catalog import ALL_ACTIVE_DATASETS, MODEL_DISPLAY
 from src.experiment_paths import DEFAULT_EXPERIMENT_VERSION, normalize_version, record_dir
 from scripts.plot_style import MODEL_COLORS, apply_paper_style, style_axis
 
@@ -52,14 +52,14 @@ def filtered_rows(rows: List[Dict[str, object]]) -> List[Dict[str, object]]:
 
 def plot_main_bar(rows: List[Dict[str, object]], out_dir: Path) -> None:
     """绘制 GCNConv 主 benchmark 柱状图。"""
-    datasets = MAIN_DATASETS
+    datasets = ALL_ACTIVE_DATASETS
     models = list(MODEL_DISPLAY.keys())
     x = np.arange(len(datasets))
     width = 0.9 / len(models)
     offsets = np.linspace(-(len(models) - 1) / 2, (len(models) - 1) / 2, len(models)) * width
 
     apply_paper_style()
-    fig, ax = plt.subplots(figsize=(12, 5.8))
+    fig, ax = plt.subplots(figsize=(14.2, 6.2))
     for offset, model in zip(offsets, models):
         means = []
         stds = []
@@ -80,25 +80,27 @@ def plot_main_bar(rows: List[Dict[str, object]], out_dir: Path) -> None:
             error_kw={"elinewidth": 0.8, "capthick": 0.8},
             zorder=3,
         )
-        for bar in bars:
+        for bar, std in zip(bars, stds):
             ax.text(
                 bar.get_x() + bar.get_width() / 2,
-                bar.get_height() + 0.005,
+                bar.get_height() + std + 0.008,
                 f"{bar.get_height():.3f}",
                 ha="center",
                 va="bottom",
-                fontsize=8,
-                rotation=90,
+                fontsize=9,
+                rotation=75,
+                rotation_mode="anchor",
             )
 
     ax.set_xticks(x)
     ax.set_xticklabels(datasets)
     ax.set_ylabel("Mean best test accuracy")
     ax.set_title("Main benchmark comparison (GCNConv)", fontweight="bold")
-    ax.legend(ncol=3, loc="upper center", bbox_to_anchor=(0.5, 1.16))
-    ax.set_ylim(0.0, max([row["mean_best_test_acc"] for row in rows], default=1.0) + 0.1)
+    ax.legend(ncol=5, loc="upper center", bbox_to_anchor=(0.5, -0.14), columnspacing=1.1, handlelength=1.6)
+    y_upper = max([row["mean_best_test_acc"] + row["std_best_test_acc"] for row in rows], default=0.8) + 0.04
+    ax.set_ylim(0.2, max(0.86, y_upper))
     style_axis(ax)
-    fig.tight_layout()
+    fig.tight_layout(rect=[0, 0.09, 1, 1])
     fig.savefig(out_dir / "fig_main_benchmark_gcnconv.pdf")
     fig.savefig(out_dir / "fig_main_benchmark_gcnconv.png")
     plt.close(fig)
@@ -107,9 +109,9 @@ def plot_main_bar(rows: List[Dict[str, object]], out_dir: Path) -> None:
 def plot_model_wins(rows: List[Dict[str, object]], out_dir: Path) -> None:
     """绘制不同模型在数据集-算子组合上的胜出次数图。"""
     win_counts = {model: 0 for model in MODEL_DISPLAY}
-    datasets = sorted(set(row["dataset"] for row in rows))
-    for dataset in datasets:
-        matched = [row for row in rows if row["dataset"] == dataset]
+    combo_keys = sorted({(row["dataset"], row["operator"]) for row in rows})
+    for dataset, operator in combo_keys:
+        matched = [row for row in rows if row["dataset"] == dataset and row["operator"] == operator]
         if not matched:
             continue
         best = max(matched, key=lambda row: row["mean_best_test_acc"])
@@ -136,9 +138,10 @@ def plot_model_wins(rows: List[Dict[str, object]], out_dir: Path) -> None:
             va="bottom",
             fontsize=10,
         )
-    ax.set_ylabel("Datasets won")
-    ax.set_title("Model win counts across summarized datasets", fontweight="bold")
-    ax.tick_params(axis="x", rotation=20)
+    ax.set_ylabel("Dataset-operator combinations won")
+    ax.set_title("Winner counts across 24 benchmark combinations", fontweight="bold")
+    ax.tick_params(axis="x", rotation=18)
+    ax.set_ylim(0, max(values, default=0) + 1.2)
     style_axis(ax)
     fig.tight_layout()
     fig.savefig(out_dir / "fig_model_win_counts.pdf")
@@ -151,11 +154,12 @@ def main() -> None:
     args = parse_args()
     version = normalize_version(args.version)
     summary_path = record_dir(ROOT, version) / "summaries" / "benchmark_summary.csv"
-    rows = filtered_rows(load_rows(summary_path))
+    all_rows = load_rows(summary_path)
+    gcn_rows = filtered_rows(all_rows)
     out_dir = ROOT / "figures" / "exp"
     out_dir.mkdir(parents=True, exist_ok=True)
-    plot_main_bar(rows, out_dir)
-    plot_model_wins(rows, out_dir)
+    plot_main_bar(gcn_rows, out_dir)
+    plot_model_wins(all_rows, out_dir)
     print(out_dir)
 
 

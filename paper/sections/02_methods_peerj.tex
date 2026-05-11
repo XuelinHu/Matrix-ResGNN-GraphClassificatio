@@ -32,7 +32,14 @@ where \(\phi\) is instantiated as one of four standard operators: GCNConv \cite{
 \end{equation}
 The only term that changes across architectures is the residual neighborhood \(\mathcal{N}(b,\ell)\) and the residual transform \(\mathcal{R}\).
 
-After the final message-passing layer, each branch is pooled to a graph-level vector by global mean pooling and the branch vectors are combined before classification. We intentionally avoid architecture-specific pooling heads such as differentiable pooling or self-attention pooling \cite{ying2018hierarchical,lee2019self}, because the purpose is to isolate residual topology rather than to compare readout mechanisms. The classifier is trained with cross-entropy loss.
+After the final message-passing layer, each branch is pooled to a graph-level vector by global mean pooling and the branch vectors are combined before classification. We intentionally avoid architecture-specific pooling heads such as differentiable pooling or self-attention pooling \cite{ying2018hierarchical,lee2019self}, because the purpose is to isolate residual topology rather than to compare readout mechanisms. The classifier is trained with cross-entropy loss. Figure~\ref{fig:architecture} summarizes the shared pipeline and the residual routes compared in the study.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.95\linewidth]{figures/cr_gnn_graph_architecture.pdf}
+\caption{Architecture overview of the compared residual neighborhoods on the branch-by-layer grid. The same message-passing backbone and graph-level readout are kept fixed while the residual routes are changed.}
+\label{fig:architecture}
+\end{figure}
 
 \subsection{Residual neighborhoods}
 \label{sec:model}
@@ -51,14 +58,14 @@ After the final message-passing layer, each branch is pooled to a graph-level ve
 \begin{equation}
 \mathcal{N}(b,\ell)=\{(b-1,\ell),(b+1,\ell)\},
 \end{equation}
-with boundary branches using only valid neighbors.
+with boundary branches using only valid neighbors. When \(B=1\), this horizontal neighborhood is empty.
 
 \textbf{MatrixRes.} Matrix residual reuse combines vertical, horizontal, and diagonal neighborhoods:
 \begin{equation}
 \mathcal{N}(b,\ell)=
 \{(b,\ell-1),(b-1,\ell),(b+1,\ell),(b-1,\ell-1),(b+1,\ell-1)\}.
 \end{equation}
-This local stencil is intentionally not dense all-to-all mixing. It preserves an interpretable residual structure over the branch-by-layer grid.
+This local stencil is intentionally not dense all-to-all mixing. It preserves an interpretable residual structure over the branch-by-layer grid. Invalid boundary neighbors are removed; therefore, when \(B=1\), MatrixRes keeps the same-branch vertical residual path after the first layer but has no branch-neighbor routes.
 
 \textbf{MatrixResGated.} MatrixResGated uses the same neighborhood as MatrixRes, but the residual transform controls the injected signal:
 \begin{equation}
@@ -68,7 +75,7 @@ This local stencil is intentionally not dense all-to-all mixing. It preserves an
 \alpha\,\mathrm{softshrink}_{\lambda}(\mathbf{U}), & \text{sparse residual filtering with a gate}.
 \end{cases}
 \end{equation}
-In the main benchmark, Plain, VerticalRes, HorizontalRes, and MatrixRes use identity residual filtering. MatrixResGated uses sparse residual filtering with \(\lambda=0.05\) and a learnable scalar gate initialized at 0.8. The implementation also supports top-\(k\) residual filtering and fixed gates, but these are not the default settings used for the main reported results.
+In the main benchmark, Plain, VerticalRes, HorizontalRes, and MatrixRes use identity residual filtering. MatrixResGated uses sparse residual filtering with \(\lambda=0.05\) and a learnable scalar gate initialized at 0.8. When \(B=1\), MatrixResGated still applies gated sparse filtering to the remaining matrix-residual paths. The implementation also supports top-\(k\) residual filtering and fixed gates, but these are not the default settings used for the main reported results.
 
 \subsection{Datasets and evaluation protocol}
 \label{sec:datasets}
@@ -90,29 +97,34 @@ and the fold-level standard deviation.
 
 \subsection{Training configuration}
 
-All main benchmark runs use the default branch count \(B=3\). The benchmark is repeated under four message-passing operators: GCNConv, GATConv, SAGEConv, and GINConv. The hidden dimension is 64 unless a sensitivity setting changes it, and all model families use the same optimizer, early-stopping logic, graph pooling, and fold protocol. Models are optimized with Adam \cite{kingma2014adam}; the checkpoint with the lowest validation loss is retained for test evaluation. The branch-count ablation evaluates \(B=1,\ldots,8\) for HorizontalRes, MatrixRes, and MatrixResGated on PROTEINS and DD under GCNConv. The sensitivity scan evaluates MatrixRes and MatrixResGated on fold 0 at \(B=3\), varying learning rate, dropout, hidden dimension, sparsity strength, and gate initialization. Selected MatrixResGated candidates are then rerun across all five folds.
+All main benchmark runs use the default branch count \(B=3\). The benchmark is repeated under four message-passing operators: GCNConv, GATConv, SAGEConv, and GINConv. The hidden dimension is 64 unless a sensitivity setting changes it. The default depth is \(L=4\) message-passing layers, except DD, where \(L=3\) is used for the main benchmark. All models use ReLU nonlinearities and the default PyTorch/PyTorch Geometric parameter initialization for the corresponding layers. Models are optimized with Adam \cite{kingma2014adam}; the checkpoint with the lowest validation loss is retained for test evaluation. Early stopping monitors validation loss, and all runs use ReduceLROnPlateau with factor 0.5, patience 15, and minimum learning rate \(10^{-5}\). Gradients are clipped at norm 2.0. The branch-count ablation evaluates \(B=1,\ldots,8\) for HorizontalRes, MatrixRes, and MatrixResGated on PROTEINS and DD under GCNConv. The sensitivity scan evaluates MatrixRes and MatrixResGated on fold 0 at \(B=3\), varying learning rate, dropout, hidden dimension, sparsity strength, and gate initialization. Selected MatrixResGated candidates are then rerun across all five folds.
 
 \begin{table}[h]
 \centering
 \small
 \caption{Key experimental settings shared by the main benchmark.}
 \label{tab:hyperparams}
-\begin{tabular}{l c}
+\begin{tabular}{l p{0.62\linewidth}}
 \toprule
 Parameter & Value \\
 \midrule
 Message-passing operators & GCNConv, GATConv, SAGEConv, GINConv \\
 Default branch count & 3 \\
+Default layers & 4, except DD uses 3 \\
 Default hidden dimension & 64 \\
 Evaluation & Five-fold graph classification \\
 Branch-count ablation & \(B=1,\ldots,8\) \\
 Primary metric & Mean best test accuracy \\
 Sensitivity scope & Fold 0, \(B=3\) \\
-Early stopping & Validation loss, patience 60 or 80 \\
+Plain/VerticalRes/HorizontalRes & 200 epochs, patience 60, learning rate 0.005, weight decay \(10^{-4}\), dropout 0.5 \\
+MatrixRes/MatrixResGated & 240 epochs, patience 80, learning rate 0.003, weight decay \(5\times10^{-5}\), dropout 0.3 \\
+Dataset-specific settings & DD uses dropout 0.3; ENZYMES uses batch size 128 \\
+Learning-rate schedule & ReduceLROnPlateau, factor 0.5, patience 15, min lr \(10^{-5}\) \\
+Gradient clipping & Norm 2.0 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
 \subsection{Mechanism metrics}
 
-To interpret branch-count behavior, we track five mechanism indicators. Branch diversity measures the mean pairwise distance between branch representations. Branch cosine similarity and branch CKA measure whether branches remain redundant or highly aligned. Mean gradient norm tracks optimization weakening as branch count and residual traffic grow. Residual-count and active-ratio summaries measure how much residual traffic is actually injected, especially in the sparse/gated variant.
+To interpret branch-count behavior, we track several mechanism indicators on the final branch-level graph embeddings. Branch diversity is the mean pairwise Euclidean distance between branch embeddings. Branch cosine similarity is the mean pairwise cosine similarity, and branch CKA is linear centered-kernel alignment computed on the same branch-embedding set. For \(B=1\), there is no branch pair; we report diversity as 0 and cosine and CKA as 1 under the single-branch self-similarity convention. Mean gradient norm is the representative parameter-gradient norm recorded during training. Residual-count totals summarize how many residual inputs are available across residual sites, active ratio measures the fraction of nonzero residual entries after filtering, and the gate statistic reports the learned scalar gate used by MatrixResGated. These metrics are used as correlational diagnostics rather than as causal tests.
