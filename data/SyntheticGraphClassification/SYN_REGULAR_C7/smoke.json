@@ -1,0 +1,14 @@
+{
+  "profile": "smoke",
+  "dataset": "SYN_REGULAR_C7",
+  "base_dataset": "SYN_REGULAR",
+  "num_graphs": 84,
+  "num_classes": 7,
+  "num_features": 8,
+  "graphs_per_class": 12,
+  "min_nodes": 16,
+  "max_nodes": 28,
+  "seed": 20260527,
+  "graph_distribution": "randomly permuted regular ring lattice",
+  "label_rule": "7 classes use monotonically increasing fixed degrees"
+}

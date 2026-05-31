@@ -1,0 +1,67 @@
+{
+  "config": {
+    "dataset": "SYN_ER_C3",
+    "model": "Plain",
+    "operator": "GCNConv",
+    "version": "SYN_MULTI_CHECK",
+    "synthetic_profile": "smoke",
+    "fold": 0,
+    "seed": 1024,
+    "ep": 1,
+    "lr": 0.005,
+    "weight_decay": 0.0001,
+    "drop": 0.5,
+    "dim": 8,
+    "h_layer": 2,
+    "num_branches": 2,
+    "batch_size": 4,
+    "val_ratio": 0.1,
+    "patience": 1,
+    "min_delta": 0.0,
+    "grad_clip": 2.0,
+    "lr_factor": 0.5,
+    "lr_patience": 15,
+    "min_lr": 1e-05,
+    "gate_init": 0.8,
+    "gate_mode": "learnable",
+    "fixed_gate_value": 0.8,
+    "residual_mode": "identity",
+    "topk_ratio": 0.5,
+    "sparse_lambda": 0.05
+  },
+  "version": "SYN_MULTI_CHECK",
+  "dataset_stats": {
+    "dataset": "SYN_ER_C3",
+    "dataset_family": "synthetic",
+    "graphs": 9,
+    "classes": 3,
+    "num_features": 8,
+    "avg_nodes": 11.666666666666666,
+    "avg_edges": 11.222222222222221,
+    "avg_degree": 1.9415991415991414,
+    "class_hist": {
+      "2": 3,
+      "0": 3,
+      "1": 3
+    }
+  },
+  "split_context": {
+    "dataset_family": "synthetic",
+    "split_protocol": "stratified_5fold_cv",
+    "repeat_id": 0,
+    "official_split": false
+  },
+  "parameter_stats": {
+    "total_params": 316,
+    "trainable_params": 316,
+    "frozen_params": 0
+  },
+  "best_epoch": 0,
+  "best_val_loss": 1.1063580513000488,
+  "best_val_acc": 0.3333333333333333,
+  "best_test_acc": 0.3333333333333333,
+  "test_macro_f1": 0.16666666666666666,
+  "test_normalized_acc": 0.0,
+  "test_loss": 1.1051784753799438,
+  "runtime_seconds": 0.369213342666626
+}

@@ -1,0 +1,45 @@
+{
+  "queue_name": "synthetic_full_5dist_4ops_5folds",
+  "version": "SYN_FULL",
+  "datasets": [
+    "SYN_ER",
+    "SYN_BA",
+    "SYN_SBM",
+    "SYN_WS",
+    "SYN_REGULAR"
+  ],
+  "models": [
+    "Plain",
+    "VerticalRes",
+    "HorizontalRes",
+    "MatrixRes",
+    "MatrixResGated"
+  ],
+  "operators": [
+    "GCNConv",
+    "GATConv",
+    "SAGEConv",
+    "GINConv"
+  ],
+  "folds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "expected": 500,
+  "completed_before": 0,
+  "pending_at_start": 500,
+  "max_workers": 4,
+  "pid": 444003,
+  "started_at": "2026-05-27T22:30:11",
+  "completed_now": 500,
+  "failed": 0,
+  "remaining": 0,
+  "complete_in_logs": 500,
+  "state": "completed",
+  "finished_at": "2026-05-27T23:41:06",
+  "events_path": "records/SYN_FULL/queue/synthetic_full_5dist_4ops_5folds_events.jsonl",
+  "plan_path": "records/SYN_FULL/queue/synthetic_full_5dist_4ops_5folds_plan.json"
+}

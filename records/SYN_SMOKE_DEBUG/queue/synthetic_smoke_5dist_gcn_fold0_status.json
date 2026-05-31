@@ -1,0 +1,37 @@
+{
+  "queue_name": "synthetic_smoke_5dist_gcn_fold0",
+  "version": "SYN_SMOKE_DEBUG",
+  "datasets": [
+    "SYN_ER",
+    "SYN_BA",
+    "SYN_SBM",
+    "SYN_WS",
+    "SYN_REGULAR"
+  ],
+  "models": [
+    "Plain",
+    "VerticalRes",
+    "HorizontalRes",
+    "MatrixRes",
+    "MatrixResGated"
+  ],
+  "operators": [
+    "GCNConv"
+  ],
+  "folds": [
+    0
+  ],
+  "expected": 25,
+  "completed_before": 0,
+  "pending_at_start": 25,
+  "max_workers": 1,
+  "pid": 440966,
+  "started_at": "2026-05-27T22:25:45",
+  "completed_now": 5,
+  "failed": 0,
+  "remaining": 20,
+  "state": "running",
+  "updated_at": "2026-05-27T22:26:01",
+  "events_path": "records/SYN_SMOKE_DEBUG/queue/synthetic_smoke_5dist_gcn_fold0_events.jsonl",
+  "plan_path": "records/SYN_SMOKE_DEBUG/queue/synthetic_smoke_5dist_gcn_fold0_plan.json"
+}

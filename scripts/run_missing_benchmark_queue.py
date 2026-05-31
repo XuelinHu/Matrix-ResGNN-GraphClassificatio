@@ -32,6 +32,14 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--folds", nargs="+", type=int, default=[0, 1, 2, 3, 4])
     parser.add_argument("--max_workers", type=int, default=4)
     parser.add_argument("--queue_name", default="full_benchmark_6datasets_4ops")
+    parser.add_argument("--synthetic_profile", default="paper")
+    parser.add_argument("--override_ep", type=int, default=None)
+    parser.add_argument("--override_dim", type=int, default=None)
+    parser.add_argument("--override_h_layer", type=int, default=None)
+    parser.add_argument("--override_num_branches", type=int, default=None)
+    parser.add_argument("--override_patience", type=int, default=None)
+    parser.add_argument("--override_batch_size", type=int, default=None)
+    parser.add_argument("--force_rerun", action="store_true")
     parser.add_argument("--dry_run", action="store_true")
     return parser.parse_args()
 
@@ -45,17 +53,34 @@ def latest_results(active_log_dir: Path) -> Dict[str, Path]:
     return latest
 
 
-def expected_key(dataset: str, model: str, operator: str, fold: int) -> str:
+def apply_protocol_overrides(protocol: Dict[str, object], args: argparse.Namespace) -> Dict[str, object]:
+    """应用命令行覆盖项，主要用于短时 smoke 测试。"""
+    result = dict(protocol)
+    override_map = {
+        "ep": args.override_ep,
+        "dim": args.override_dim,
+        "h_layer": args.override_h_layer,
+        "num_branches": args.override_num_branches,
+        "patience": args.override_patience,
+        "batch_size": args.override_batch_size,
+    }
+    for key, value in override_map.items():
+        if value is not None:
+            result[key] = value
+    return result
+
+
+def expected_key(dataset: str, model: str, operator: str, fold: int, args: argparse.Namespace) -> str:
     """根据数据集、模型、算子和折号构造预期日志键。"""
-    protocol = build_protocol(dataset=dataset, model=model, operator=operator)
+    protocol = apply_protocol_overrides(build_protocol(dataset=dataset, model=model, operator=operator), args)
     residual_mode = str(protocol.get("residual_mode", "identity"))
     num_branches = int(protocol.get("num_branches", 3))
     return f"result_{dataset}__{model}__{operator}__fold{fold}__B{num_branches}__{residual_mode}"
 
 
-def build_command(dataset: str, model: str, operator: str, fold: int, version: str) -> List[str]:
+def build_command(dataset: str, model: str, operator: str, fold: int, version: str, args: argparse.Namespace) -> List[str]:
     """把任务配置转换为可执行的 run_single 命令。"""
-    protocol = build_protocol(dataset=dataset, model=model, operator=operator)
+    protocol = apply_protocol_overrides(build_protocol(dataset=dataset, model=model, operator=operator), args)
     cmd = [
         sys.executable,
         str(ROOT / "scripts" / "run_single.py"),
@@ -69,6 +94,8 @@ def build_command(dataset: str, model: str, operator: str, fold: int, version: s
         str(fold),
         "--version",
         version,
+        "--synthetic_profile",
+        args.synthetic_profile,
     ]
     for key, value in protocol.items():
         cmd.extend([f"--{key}", str(value)])
@@ -82,7 +109,7 @@ def build_jobs(args: argparse.Namespace, completed: Dict[str, Path]) -> List[Dic
         for model in args.models:
             for operator in args.operators:
                 for fold in args.folds:
-                    key = expected_key(dataset, model, operator, fold)
+                    key = expected_key(dataset, model, operator, fold, args)
                     if key in completed:
                         continue
                     jobs.append(
@@ -92,7 +119,7 @@ def build_jobs(args: argparse.Namespace, completed: Dict[str, Path]) -> List[Dic
                             "model": model,
                             "operator": operator,
                             "fold": fold,
-                            "cmd": build_command(dataset, model, operator, fold, normalize_version(args.version)),
+                            "cmd": build_command(dataset, model, operator, fold, normalize_version(args.version), args),
                         }
                     )
     return jobs
@@ -164,7 +191,7 @@ def main() -> None:
     events_path = queue_dir / f"{args.queue_name}_events.jsonl"
     plan_path = queue_dir / f"{args.queue_name}_plan.json"
 
-    completed = latest_results(log_dir(ROOT, version))
+    completed = {} if args.force_rerun else latest_results(log_dir(ROOT, version))
     jobs = build_jobs(args, completed)
     status = summarize_scope(args, completed_before=len(completed), pending=len(jobs))
     write_json(plan_path, {"scope": status, "jobs": [{k: v for k, v in job.items() if k != "cmd"} for job in jobs]})

@@ -1,0 +1,1289 @@
+{
+  "scope": {
+    "queue_name": "synthetic_multiclass_smoke_5dist_c2c8_gcn_fold0",
+    "version": "SYN_MULTI_SMOKE",
+    "datasets": [
+      "SYN_ER_C2",
+      "SYN_ER_C3",
+      "SYN_ER_C4",
+      "SYN_ER_C5",
+      "SYN_ER_C6",
+      "SYN_ER_C7",
+      "SYN_ER_C8",
+      "SYN_BA_C2",
+      "SYN_BA_C3",
+      "SYN_BA_C4",
+      "SYN_BA_C5",
+      "SYN_BA_C6",
+      "SYN_BA_C7",
+      "SYN_BA_C8",
+      "SYN_SBM_C2",
+      "SYN_SBM_C3",
+      "SYN_SBM_C4",
+      "SYN_SBM_C5",
+      "SYN_SBM_C6",
+      "SYN_SBM_C7",
+      "SYN_SBM_C8",
+      "SYN_WS_C2",
+      "SYN_WS_C3",
+      "SYN_WS_C4",
+      "SYN_WS_C5",
+      "SYN_WS_C6",
+      "SYN_WS_C7",
+      "SYN_WS_C8",
+      "SYN_REGULAR_C2",
+      "SYN_REGULAR_C3",
+      "SYN_REGULAR_C4",
+      "SYN_REGULAR_C5",
+      "SYN_REGULAR_C6",
+      "SYN_REGULAR_C7",
+      "SYN_REGULAR_C8"
+    ],
+    "models": [
+      "Plain",
+      "VerticalRes",
+      "HorizontalRes",
+      "MatrixRes",
+      "MatrixResGated"
+    ],
+    "operators": [
+      "GCNConv"
+    ],
+    "folds": [
+      0
+    ],
+    "expected": 175,
+    "completed_before": 0,
+    "pending_at_start": 175,
+    "max_workers": 4,
+    "pid": 1519543,
+    "started_at": "2026-05-30T10:14:59"
+  },
+  "jobs": [
+    {
+      "key": "result_SYN_ER_C2__Plain__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_ER_C2",
+      "model": "Plain",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_ER_C2__VerticalRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_ER_C2",
+      "model": "VerticalRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_ER_C2__HorizontalRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_ER_C2",
+      "model": "HorizontalRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_ER_C2__MatrixRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_ER_C2",
+      "model": "MatrixRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_ER_C2__MatrixResGated__GCNConv__fold0__B3__sparse",
+      "dataset": "SYN_ER_C2",
+      "model": "MatrixResGated",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_ER_C3__Plain__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_ER_C3",
+      "model": "Plain",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_ER_C3__VerticalRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_ER_C3",
+      "model": "VerticalRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_ER_C3__HorizontalRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_ER_C3",
+      "model": "HorizontalRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_ER_C3__MatrixRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_ER_C3",
+      "model": "MatrixRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_ER_C3__MatrixResGated__GCNConv__fold0__B3__sparse",
+      "dataset": "SYN_ER_C3",
+      "model": "MatrixResGated",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_ER_C4__Plain__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_ER_C4",
+      "model": "Plain",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_ER_C4__VerticalRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_ER_C4",
+      "model": "VerticalRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_ER_C4__HorizontalRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_ER_C4",
+      "model": "HorizontalRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_ER_C4__MatrixRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_ER_C4",
+      "model": "MatrixRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_ER_C4__MatrixResGated__GCNConv__fold0__B3__sparse",
+      "dataset": "SYN_ER_C4",
+      "model": "MatrixResGated",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_ER_C5__Plain__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_ER_C5",
+      "model": "Plain",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_ER_C5__VerticalRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_ER_C5",
+      "model": "VerticalRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_ER_C5__HorizontalRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_ER_C5",
+      "model": "HorizontalRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_ER_C5__MatrixRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_ER_C5",
+      "model": "MatrixRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_ER_C5__MatrixResGated__GCNConv__fold0__B3__sparse",
+      "dataset": "SYN_ER_C5",
+      "model": "MatrixResGated",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_ER_C6__Plain__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_ER_C6",
+      "model": "Plain",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_ER_C6__VerticalRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_ER_C6",
+      "model": "VerticalRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_ER_C6__HorizontalRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_ER_C6",
+      "model": "HorizontalRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_ER_C6__MatrixRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_ER_C6",
+      "model": "MatrixRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_ER_C6__MatrixResGated__GCNConv__fold0__B3__sparse",
+      "dataset": "SYN_ER_C6",
+      "model": "MatrixResGated",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_ER_C7__Plain__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_ER_C7",
+      "model": "Plain",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_ER_C7__VerticalRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_ER_C7",
+      "model": "VerticalRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_ER_C7__HorizontalRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_ER_C7",
+      "model": "HorizontalRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_ER_C7__MatrixRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_ER_C7",
+      "model": "MatrixRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_ER_C7__MatrixResGated__GCNConv__fold0__B3__sparse",
+      "dataset": "SYN_ER_C7",
+      "model": "MatrixResGated",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_ER_C8__Plain__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_ER_C8",
+      "model": "Plain",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_ER_C8__VerticalRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_ER_C8",
+      "model": "VerticalRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_ER_C8__HorizontalRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_ER_C8",
+      "model": "HorizontalRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_ER_C8__MatrixRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_ER_C8",
+      "model": "MatrixRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_ER_C8__MatrixResGated__GCNConv__fold0__B3__sparse",
+      "dataset": "SYN_ER_C8",
+      "model": "MatrixResGated",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_BA_C2__Plain__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_BA_C2",
+      "model": "Plain",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_BA_C2__VerticalRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_BA_C2",
+      "model": "VerticalRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_BA_C2__HorizontalRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_BA_C2",
+      "model": "HorizontalRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_BA_C2__MatrixRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_BA_C2",
+      "model": "MatrixRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_BA_C2__MatrixResGated__GCNConv__fold0__B3__sparse",
+      "dataset": "SYN_BA_C2",
+      "model": "MatrixResGated",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_BA_C3__Plain__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_BA_C3",
+      "model": "Plain",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_BA_C3__VerticalRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_BA_C3",
+      "model": "VerticalRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_BA_C3__HorizontalRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_BA_C3",
+      "model": "HorizontalRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_BA_C3__MatrixRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_BA_C3",
+      "model": "MatrixRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_BA_C3__MatrixResGated__GCNConv__fold0__B3__sparse",
+      "dataset": "SYN_BA_C3",
+      "model": "MatrixResGated",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_BA_C4__Plain__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_BA_C4",
+      "model": "Plain",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_BA_C4__VerticalRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_BA_C4",
+      "model": "VerticalRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_BA_C4__HorizontalRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_BA_C4",
+      "model": "HorizontalRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_BA_C4__MatrixRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_BA_C4",
+      "model": "MatrixRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_BA_C4__MatrixResGated__GCNConv__fold0__B3__sparse",
+      "dataset": "SYN_BA_C4",
+      "model": "MatrixResGated",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_BA_C5__Plain__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_BA_C5",
+      "model": "Plain",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_BA_C5__VerticalRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_BA_C5",
+      "model": "VerticalRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_BA_C5__HorizontalRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_BA_C5",
+      "model": "HorizontalRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_BA_C5__MatrixRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_BA_C5",
+      "model": "MatrixRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_BA_C5__MatrixResGated__GCNConv__fold0__B3__sparse",
+      "dataset": "SYN_BA_C5",
+      "model": "MatrixResGated",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_BA_C6__Plain__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_BA_C6",
+      "model": "Plain",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_BA_C6__VerticalRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_BA_C6",
+      "model": "VerticalRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_BA_C6__HorizontalRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_BA_C6",
+      "model": "HorizontalRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_BA_C6__MatrixRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_BA_C6",
+      "model": "MatrixRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_BA_C6__MatrixResGated__GCNConv__fold0__B3__sparse",
+      "dataset": "SYN_BA_C6",
+      "model": "MatrixResGated",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_BA_C7__Plain__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_BA_C7",
+      "model": "Plain",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_BA_C7__VerticalRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_BA_C7",
+      "model": "VerticalRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_BA_C7__HorizontalRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_BA_C7",
+      "model": "HorizontalRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_BA_C7__MatrixRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_BA_C7",
+      "model": "MatrixRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_BA_C7__MatrixResGated__GCNConv__fold0__B3__sparse",
+      "dataset": "SYN_BA_C7",
+      "model": "MatrixResGated",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_BA_C8__Plain__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_BA_C8",
+      "model": "Plain",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_BA_C8__VerticalRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_BA_C8",
+      "model": "VerticalRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_BA_C8__HorizontalRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_BA_C8",
+      "model": "HorizontalRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_BA_C8__MatrixRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_BA_C8",
+      "model": "MatrixRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_BA_C8__MatrixResGated__GCNConv__fold0__B3__sparse",
+      "dataset": "SYN_BA_C8",
+      "model": "MatrixResGated",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_SBM_C2__Plain__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_SBM_C2",
+      "model": "Plain",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_SBM_C2__VerticalRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_SBM_C2",
+      "model": "VerticalRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_SBM_C2__HorizontalRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_SBM_C2",
+      "model": "HorizontalRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_SBM_C2__MatrixRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_SBM_C2",
+      "model": "MatrixRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_SBM_C2__MatrixResGated__GCNConv__fold0__B3__sparse",
+      "dataset": "SYN_SBM_C2",
+      "model": "MatrixResGated",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_SBM_C3__Plain__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_SBM_C3",
+      "model": "Plain",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_SBM_C3__VerticalRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_SBM_C3",
+      "model": "VerticalRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_SBM_C3__HorizontalRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_SBM_C3",
+      "model": "HorizontalRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_SBM_C3__MatrixRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_SBM_C3",
+      "model": "MatrixRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_SBM_C3__MatrixResGated__GCNConv__fold0__B3__sparse",
+      "dataset": "SYN_SBM_C3",
+      "model": "MatrixResGated",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_SBM_C4__Plain__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_SBM_C4",
+      "model": "Plain",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_SBM_C4__VerticalRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_SBM_C4",
+      "model": "VerticalRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_SBM_C4__HorizontalRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_SBM_C4",
+      "model": "HorizontalRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_SBM_C4__MatrixRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_SBM_C4",
+      "model": "MatrixRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_SBM_C4__MatrixResGated__GCNConv__fold0__B3__sparse",
+      "dataset": "SYN_SBM_C4",
+      "model": "MatrixResGated",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_SBM_C5__Plain__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_SBM_C5",
+      "model": "Plain",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_SBM_C5__VerticalRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_SBM_C5",
+      "model": "VerticalRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_SBM_C5__HorizontalRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_SBM_C5",
+      "model": "HorizontalRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_SBM_C5__MatrixRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_SBM_C5",
+      "model": "MatrixRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_SBM_C5__MatrixResGated__GCNConv__fold0__B3__sparse",
+      "dataset": "SYN_SBM_C5",
+      "model": "MatrixResGated",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_SBM_C6__Plain__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_SBM_C6",
+      "model": "Plain",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_SBM_C6__VerticalRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_SBM_C6",
+      "model": "VerticalRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_SBM_C6__HorizontalRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_SBM_C6",
+      "model": "HorizontalRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_SBM_C6__MatrixRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_SBM_C6",
+      "model": "MatrixRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_SBM_C6__MatrixResGated__GCNConv__fold0__B3__sparse",
+      "dataset": "SYN_SBM_C6",
+      "model": "MatrixResGated",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_SBM_C7__Plain__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_SBM_C7",
+      "model": "Plain",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_SBM_C7__VerticalRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_SBM_C7",
+      "model": "VerticalRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_SBM_C7__HorizontalRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_SBM_C7",
+      "model": "HorizontalRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_SBM_C7__MatrixRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_SBM_C7",
+      "model": "MatrixRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_SBM_C7__MatrixResGated__GCNConv__fold0__B3__sparse",
+      "dataset": "SYN_SBM_C7",
+      "model": "MatrixResGated",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_SBM_C8__Plain__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_SBM_C8",
+      "model": "Plain",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_SBM_C8__VerticalRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_SBM_C8",
+      "model": "VerticalRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_SBM_C8__HorizontalRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_SBM_C8",
+      "model": "HorizontalRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_SBM_C8__MatrixRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_SBM_C8",
+      "model": "MatrixRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_SBM_C8__MatrixResGated__GCNConv__fold0__B3__sparse",
+      "dataset": "SYN_SBM_C8",
+      "model": "MatrixResGated",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_WS_C2__Plain__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_WS_C2",
+      "model": "Plain",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_WS_C2__VerticalRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_WS_C2",
+      "model": "VerticalRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_WS_C2__HorizontalRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_WS_C2",
+      "model": "HorizontalRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_WS_C2__MatrixRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_WS_C2",
+      "model": "MatrixRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_WS_C2__MatrixResGated__GCNConv__fold0__B3__sparse",
+      "dataset": "SYN_WS_C2",
+      "model": "MatrixResGated",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_WS_C3__Plain__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_WS_C3",
+      "model": "Plain",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_WS_C3__VerticalRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_WS_C3",
+      "model": "VerticalRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_WS_C3__HorizontalRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_WS_C3",
+      "model": "HorizontalRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_WS_C3__MatrixRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_WS_C3",
+      "model": "MatrixRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_WS_C3__MatrixResGated__GCNConv__fold0__B3__sparse",
+      "dataset": "SYN_WS_C3",
+      "model": "MatrixResGated",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_WS_C4__Plain__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_WS_C4",
+      "model": "Plain",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_WS_C4__VerticalRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_WS_C4",
+      "model": "VerticalRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_WS_C4__HorizontalRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_WS_C4",
+      "model": "HorizontalRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_WS_C4__MatrixRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_WS_C4",
+      "model": "MatrixRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_WS_C4__MatrixResGated__GCNConv__fold0__B3__sparse",
+      "dataset": "SYN_WS_C4",
+      "model": "MatrixResGated",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_WS_C5__Plain__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_WS_C5",
+      "model": "Plain",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_WS_C5__VerticalRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_WS_C5",
+      "model": "VerticalRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_WS_C5__HorizontalRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_WS_C5",
+      "model": "HorizontalRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_WS_C5__MatrixRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_WS_C5",
+      "model": "MatrixRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_WS_C5__MatrixResGated__GCNConv__fold0__B3__sparse",
+      "dataset": "SYN_WS_C5",
+      "model": "MatrixResGated",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_WS_C6__Plain__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_WS_C6",
+      "model": "Plain",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_WS_C6__VerticalRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_WS_C6",
+      "model": "VerticalRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_WS_C6__HorizontalRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_WS_C6",
+      "model": "HorizontalRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_WS_C6__MatrixRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_WS_C6",
+      "model": "MatrixRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_WS_C6__MatrixResGated__GCNConv__fold0__B3__sparse",
+      "dataset": "SYN_WS_C6",
+      "model": "MatrixResGated",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_WS_C7__Plain__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_WS_C7",
+      "model": "Plain",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_WS_C7__VerticalRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_WS_C7",
+      "model": "VerticalRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_WS_C7__HorizontalRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_WS_C7",
+      "model": "HorizontalRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_WS_C7__MatrixRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_WS_C7",
+      "model": "MatrixRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_WS_C7__MatrixResGated__GCNConv__fold0__B3__sparse",
+      "dataset": "SYN_WS_C7",
+      "model": "MatrixResGated",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_WS_C8__Plain__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_WS_C8",
+      "model": "Plain",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_WS_C8__VerticalRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_WS_C8",
+      "model": "VerticalRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_WS_C8__HorizontalRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_WS_C8",
+      "model": "HorizontalRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_WS_C8__MatrixRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_WS_C8",
+      "model": "MatrixRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_WS_C8__MatrixResGated__GCNConv__fold0__B3__sparse",
+      "dataset": "SYN_WS_C8",
+      "model": "MatrixResGated",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_REGULAR_C2__Plain__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_REGULAR_C2",
+      "model": "Plain",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_REGULAR_C2__VerticalRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_REGULAR_C2",
+      "model": "VerticalRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_REGULAR_C2__HorizontalRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_REGULAR_C2",
+      "model": "HorizontalRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_REGULAR_C2__MatrixRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_REGULAR_C2",
+      "model": "MatrixRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_REGULAR_C2__MatrixResGated__GCNConv__fold0__B3__sparse",
+      "dataset": "SYN_REGULAR_C2",
+      "model": "MatrixResGated",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_REGULAR_C3__Plain__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_REGULAR_C3",
+      "model": "Plain",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_REGULAR_C3__VerticalRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_REGULAR_C3",
+      "model": "VerticalRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_REGULAR_C3__HorizontalRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_REGULAR_C3",
+      "model": "HorizontalRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_REGULAR_C3__MatrixRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_REGULAR_C3",
+      "model": "MatrixRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_REGULAR_C3__MatrixResGated__GCNConv__fold0__B3__sparse",
+      "dataset": "SYN_REGULAR_C3",
+      "model": "MatrixResGated",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_REGULAR_C4__Plain__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_REGULAR_C4",
+      "model": "Plain",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_REGULAR_C4__VerticalRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_REGULAR_C4",
+      "model": "VerticalRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_REGULAR_C4__HorizontalRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_REGULAR_C4",
+      "model": "HorizontalRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_REGULAR_C4__MatrixRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_REGULAR_C4",
+      "model": "MatrixRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_REGULAR_C4__MatrixResGated__GCNConv__fold0__B3__sparse",
+      "dataset": "SYN_REGULAR_C4",
+      "model": "MatrixResGated",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_REGULAR_C5__Plain__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_REGULAR_C5",
+      "model": "Plain",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_REGULAR_C5__VerticalRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_REGULAR_C5",
+      "model": "VerticalRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_REGULAR_C5__HorizontalRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_REGULAR_C5",
+      "model": "HorizontalRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_REGULAR_C5__MatrixRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_REGULAR_C5",
+      "model": "MatrixRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_REGULAR_C5__MatrixResGated__GCNConv__fold0__B3__sparse",
+      "dataset": "SYN_REGULAR_C5",
+      "model": "MatrixResGated",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_REGULAR_C6__Plain__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_REGULAR_C6",
+      "model": "Plain",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_REGULAR_C6__VerticalRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_REGULAR_C6",
+      "model": "VerticalRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_REGULAR_C6__HorizontalRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_REGULAR_C6",
+      "model": "HorizontalRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_REGULAR_C6__MatrixRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_REGULAR_C6",
+      "model": "MatrixRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_REGULAR_C6__MatrixResGated__GCNConv__fold0__B3__sparse",
+      "dataset": "SYN_REGULAR_C6",
+      "model": "MatrixResGated",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_REGULAR_C7__Plain__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_REGULAR_C7",
+      "model": "Plain",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_REGULAR_C7__VerticalRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_REGULAR_C7",
+      "model": "VerticalRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_REGULAR_C7__HorizontalRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_REGULAR_C7",
+      "model": "HorizontalRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_REGULAR_C7__MatrixRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_REGULAR_C7",
+      "model": "MatrixRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_REGULAR_C7__MatrixResGated__GCNConv__fold0__B3__sparse",
+      "dataset": "SYN_REGULAR_C7",
+      "model": "MatrixResGated",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_REGULAR_C8__Plain__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_REGULAR_C8",
+      "model": "Plain",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_REGULAR_C8__VerticalRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_REGULAR_C8",
+      "model": "VerticalRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_REGULAR_C8__HorizontalRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_REGULAR_C8",
+      "model": "HorizontalRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_REGULAR_C8__MatrixRes__GCNConv__fold0__B3__identity",
+      "dataset": "SYN_REGULAR_C8",
+      "model": "MatrixRes",
+      "operator": "GCNConv",
+      "fold": 0
+    },
+    {
+      "key": "result_SYN_REGULAR_C8__MatrixResGated__GCNConv__fold0__B3__sparse",
+      "dataset": "SYN_REGULAR_C8",
+      "model": "MatrixResGated",
+      "operator": "GCNConv",
+      "fold": 0
+    }
+  ]
+}

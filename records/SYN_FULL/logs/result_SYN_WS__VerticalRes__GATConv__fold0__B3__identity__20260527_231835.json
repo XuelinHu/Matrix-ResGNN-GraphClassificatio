@@ -1,0 +1,64 @@
+{
+  "config": {
+    "dataset": "SYN_WS",
+    "model": "VerticalRes",
+    "operator": "GATConv",
+    "version": "SYN_FULL",
+    "synthetic_profile": "paper",
+    "fold": 0,
+    "seed": 1024,
+    "ep": 200,
+    "lr": 0.005,
+    "weight_decay": 0.0001,
+    "drop": 0.5,
+    "dim": 64,
+    "h_layer": 4,
+    "num_branches": 3,
+    "batch_size": 256,
+    "val_ratio": 0.1,
+    "patience": 60,
+    "min_delta": 0.0,
+    "grad_clip": 2.0,
+    "lr_factor": 0.5,
+    "lr_patience": 15,
+    "min_lr": 1e-05,
+    "gate_init": 0.8,
+    "gate_mode": "learnable",
+    "fixed_gate_value": 0.8,
+    "residual_mode": "identity",
+    "topk_ratio": 0.5,
+    "sparse_lambda": 0.05
+  },
+  "version": "SYN_FULL",
+  "dataset_stats": {
+    "dataset": "SYN_WS",
+    "dataset_family": "synthetic",
+    "graphs": 400,
+    "classes": 2,
+    "num_features": 8,
+    "avg_nodes": 55.38,
+    "avg_edges": 110.7625,
+    "avg_degree": 4.000083333333333,
+    "class_hist": {
+      "0": 200,
+      "1": 200
+    }
+  },
+  "split_context": {
+    "dataset_family": "synthetic",
+    "split_protocol": "stratified_5fold_cv",
+    "repeat_id": 0,
+    "official_split": false
+  },
+  "parameter_stats": {
+    "total_params": 40835,
+    "trainable_params": 40835,
+    "frozen_params": 0
+  },
+  "best_epoch": 44,
+  "best_val_loss": 0.3042382597923279,
+  "best_val_acc": 0.875,
+  "best_test_acc": 0.8,
+  "test_loss": 0.5461879968643188,
+  "runtime_seconds": 19.94214415550232
+}

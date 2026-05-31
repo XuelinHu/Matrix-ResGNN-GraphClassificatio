@@ -1,0 +1,34 @@
+{
+  "queue_name": "synthetic_smoke_dry",
+  "version": "SYN_SMOKE_DRY",
+  "datasets": [
+    "SYN_ER",
+    "SYN_BA",
+    "SYN_SBM",
+    "SYN_WS",
+    "SYN_REGULAR"
+  ],
+  "models": [
+    "Plain",
+    "VerticalRes",
+    "HorizontalRes",
+    "MatrixRes",
+    "MatrixResGated"
+  ],
+  "operators": [
+    "GCNConv"
+  ],
+  "folds": [
+    0
+  ],
+  "expected": 25,
+  "completed_before": 0,
+  "pending_at_start": 25,
+  "max_workers": 2,
+  "pid": 440251,
+  "started_at": "2026-05-27T22:24:09",
+  "completed_now": 0,
+  "failed": 0,
+  "remaining": 25,
+  "state": "dry_run"
+}

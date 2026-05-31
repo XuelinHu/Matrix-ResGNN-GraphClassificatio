@@ -14,7 +14,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from src.experiment_catalog import ALL_ACTIVE_DATASETS, MAIN_MODELS
+from src.experiment_catalog import ACTIVE_OPERATORS, ALL_ACTIVE_DATASETS, MAIN_MODELS
 from src.experiment_paths import DEFAULT_EXPERIMENT_VERSION, log_dir, normalize_version, record_dir
 
 
@@ -22,6 +22,9 @@ def parse_args() -> argparse.Namespace:
     """解析命令行参数，返回当前脚本需要的实验配置。"""
     parser = argparse.ArgumentParser(description="Summarize benchmark result JSON files into stable CSV tables.")
     parser.add_argument("--version", default=DEFAULT_EXPERIMENT_VERSION)
+    parser.add_argument("--datasets", nargs="+", default=ALL_ACTIVE_DATASETS)
+    parser.add_argument("--models", nargs="+", default=MAIN_MODELS)
+    parser.add_argument("--operators", nargs="+", default=ACTIVE_OPERATORS)
     return parser.parse_args()
 
 
@@ -43,17 +46,23 @@ def load_rows(active_log_dir: Path) -> List[Dict[str, object]]:
     for path in latest_results(active_log_dir).values():
         payload = json.loads(path.read_text(encoding="utf-8"))
         config = payload["config"]
+        dataset_stats = payload.get("dataset_stats", {})
+        test_macro_f1 = payload.get("test_macro_f1")
+        test_normalized_acc = payload.get("test_normalized_acc")
         rows.append(
             {
                 "dataset": config["dataset"],
                 "model": config["model"],
                 "operator": config["operator"],
                 "fold": int(config["fold"]),
+                "num_classes": int(dataset_stats.get("classes", 0)),
                 "num_branches": int(config["num_branches"]),
                 "residual_mode": config["residual_mode"],
                 "best_epoch": int(payload["best_epoch"]) + 1,
                 "best_val_acc": float(payload["best_val_acc"]),
                 "best_test_acc": float(payload["best_test_acc"]),
+                "test_macro_f1": float(test_macro_f1) if test_macro_f1 is not None else "",
+                "test_normalized_acc": float(test_normalized_acc) if test_normalized_acc is not None else "",
                 "test_loss": float(payload["test_loss"]),
                 "runtime_seconds": float(payload["runtime_seconds"]),
                 "total_params": int(payload["parameter_stats"]["total_params"]),
@@ -62,12 +71,17 @@ def load_rows(active_log_dir: Path) -> List[Dict[str, object]]:
     return rows
 
 
-def summarize(rows: List[Dict[str, object]]) -> List[Dict[str, object]]:
+def summarize(
+    rows: List[Dict[str, object]],
+    datasets: List[str],
+    models: List[str],
+    operators: List[str],
+) -> List[Dict[str, object]]:
     """对逐折实验记录做聚合，生成均值、标准差和运行统计。"""
     summary_rows: List[Dict[str, object]] = []
-    for dataset in ALL_ACTIVE_DATASETS:
-        for model in MAIN_MODELS:
-            for operator in ["GCNConv", "GATConv", "SAGEConv", "GINConv"]:
+    for dataset in datasets:
+        for model in models:
+            for operator in operators:
                 subset = [
                     row
                     for row in rows
@@ -76,6 +90,12 @@ def summarize(rows: List[Dict[str, object]]) -> List[Dict[str, object]]:
                 if not subset:
                     continue
                 accs = [float(row["best_test_acc"]) for row in subset]
+                macro_f1s = [float(row["test_macro_f1"]) for row in subset if row["test_macro_f1"] != ""]
+                normalized_accs = [
+                    float(row["test_normalized_acc"])
+                    for row in subset
+                    if row["test_normalized_acc"] != ""
+                ]
                 losses = [float(row["test_loss"]) for row in subset]
                 epochs = [int(row["best_epoch"]) for row in subset]
                 runtimes = [float(row["runtime_seconds"]) for row in subset]
@@ -85,8 +105,13 @@ def summarize(rows: List[Dict[str, object]]) -> List[Dict[str, object]]:
                         "model": model,
                         "operator": operator,
                         "folds": len(subset),
+                        "num_classes": int(subset[0]["num_classes"]),
                         "mean_best_test_acc": st.mean(accs),
                         "std_best_test_acc": st.pstdev(accs) if len(accs) > 1 else 0.0,
+                        "mean_test_macro_f1": st.mean(macro_f1s) if macro_f1s else "",
+                        "std_test_macro_f1": st.pstdev(macro_f1s) if len(macro_f1s) > 1 else "",
+                        "mean_test_normalized_acc": st.mean(normalized_accs) if normalized_accs else "",
+                        "std_test_normalized_acc": st.pstdev(normalized_accs) if len(normalized_accs) > 1 else "",
                         "mean_test_loss": st.mean(losses),
                         "mean_best_epoch": st.mean(epochs),
                         "mean_runtime_seconds": st.mean(runtimes),
@@ -114,8 +139,12 @@ def main() -> None:
     """脚本主入口，串联参数解析、数据读取、处理和结果写出。"""
     args = parse_args()
     version = normalize_version(args.version)
-    rows = load_rows(log_dir(ROOT, version))
-    summary_rows = summarize(rows)
+    rows = [
+        row
+        for row in load_rows(log_dir(ROOT, version))
+        if row["dataset"] in args.datasets and row["model"] in args.models and row["operator"] in args.operators
+    ]
+    summary_rows = summarize(rows, datasets=args.datasets, models=args.models, operators=args.operators)
     out_dir = record_dir(ROOT, version) / "summaries"
     write_csv(rows, out_dir / "benchmark_fold_rows.csv")
     write_csv(summary_rows, out_dir / "benchmark_summary.csv")

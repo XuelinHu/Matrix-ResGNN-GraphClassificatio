@@ -1,0 +1,14 @@
+{
+  "profile": "smoke",
+  "dataset": "SYN_SBM_C4",
+  "base_dataset": "SYN_SBM",
+  "num_graphs": 48,
+  "num_classes": 4,
+  "num_features": 8,
+  "graphs_per_class": 12,
+  "min_nodes": 16,
+  "max_nodes": 28,
+  "seed": 20260527,
+  "graph_distribution": "two-block stochastic block model",
+  "label_rule": "4 classes use monotonically increasing community separation"
+}

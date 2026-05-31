@@ -1,0 +1,14 @@
+{
+  "profile": "paper",
+  "dataset": "SYN_ER_C8",
+  "base_dataset": "SYN_ER",
+  "num_graphs": 1600,
+  "num_classes": 8,
+  "num_features": 8,
+  "graphs_per_class": 200,
+  "min_nodes": 30,
+  "max_nodes": 80,
+  "seed": 20260527,
+  "graph_distribution": "Erdos-Renyi G(n,p)",
+  "label_rule": "8 classes use monotonically increasing Bernoulli edge probabilities"
+}

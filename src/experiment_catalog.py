@@ -8,6 +8,15 @@ from typing import Dict, List
 MAIN_DATASETS: List[str] = ["PROTEINS", "DD", "ENZYMES"]
 # 补充数据集：用于验证残差拓扑在分子图任务上的稳健性。
 SUPPLEMENTARY_DATASETS: List[str] = ["MUTAG", "AIDS", "Mutagenicity"]
+# 合成分布数据集：用于分布可控的 residual-topology 机制补充实验。
+SYNTHETIC_BASE_DATASETS: List[str] = ["SYN_ER", "SYN_BA", "SYN_SBM", "SYN_WS", "SYN_REGULAR"]
+SYNTHETIC_CLASS_COUNTS: List[int] = list(range(2, 9))
+SYNTHETIC_DATASETS: List[str] = list(SYNTHETIC_BASE_DATASETS)
+SYNTHETIC_MULTICLASS_DATASETS: List[str] = [
+    f"{dataset_name}_C{num_classes}"
+    for dataset_name in SYNTHETIC_BASE_DATASETS
+    for num_classes in SYNTHETIC_CLASS_COUNTS
+]
 # 当前启用的数据集全集：批量 benchmark 会遍历该列表。
 ALL_ACTIVE_DATASETS: List[str] = [*MAIN_DATASETS, *SUPPLEMENTARY_DATASETS]
 
@@ -76,7 +85,51 @@ DATASET_METADATA: Dict[str, Dict[str, str]] = {
         "task_type": "graph classification",
         "split_protocol": "stratified 5-fold CV + inner validation split",
     },
+    "SYN_ER": {
+        "source": "generated synthetic graph dataset",
+        "family": "synthetic",
+        "role": "distribution-controlled synthetic benchmark",
+        "task_type": "graph classification",
+        "split_protocol": "stratified 5-fold CV + inner validation split",
+    },
+    "SYN_BA": {
+        "source": "generated synthetic graph dataset",
+        "family": "synthetic",
+        "role": "distribution-controlled synthetic benchmark",
+        "task_type": "graph classification",
+        "split_protocol": "stratified 5-fold CV + inner validation split",
+    },
+    "SYN_SBM": {
+        "source": "generated synthetic graph dataset",
+        "family": "synthetic",
+        "role": "distribution-controlled synthetic benchmark",
+        "task_type": "graph classification",
+        "split_protocol": "stratified 5-fold CV + inner validation split",
+    },
+    "SYN_WS": {
+        "source": "generated synthetic graph dataset",
+        "family": "synthetic",
+        "role": "distribution-controlled synthetic benchmark",
+        "task_type": "graph classification",
+        "split_protocol": "stratified 5-fold CV + inner validation split",
+    },
+    "SYN_REGULAR": {
+        "source": "generated synthetic graph dataset",
+        "family": "synthetic",
+        "role": "distribution-controlled synthetic benchmark",
+        "task_type": "graph classification",
+        "split_protocol": "stratified 5-fold CV + inner validation split",
+    },
 }
+
+for synthetic_dataset in SYNTHETIC_MULTICLASS_DATASETS:
+    DATASET_METADATA[synthetic_dataset] = {
+        "source": "generated synthetic graph dataset",
+        "family": "synthetic",
+        "role": "multi-class distribution-controlled synthetic benchmark",
+        "task_type": "graph classification",
+        "split_protocol": "stratified 5-fold CV + inner validation split",
+    }
 
 
 def dataset_family(dataset_name: str) -> str:

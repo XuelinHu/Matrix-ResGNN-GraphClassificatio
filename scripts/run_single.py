@@ -21,6 +21,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--model", default="Plain", choices=["Plain", "VerticalRes", "HorizontalRes", "MatrixRes", "MatrixResGated"])
     parser.add_argument("--operator", default="GCNConv", choices=["GCNConv", "GATConv", "SAGEConv", "GINConv"])
     parser.add_argument("--version", default=DEFAULT_EXPERIMENT_VERSION)
+    parser.add_argument("--synthetic_profile", default="paper")
     parser.add_argument("--fold", type=int, default=0)
     parser.add_argument("--seed", type=int, default=1024)
     parser.add_argument("--ep", type=int, default=200)

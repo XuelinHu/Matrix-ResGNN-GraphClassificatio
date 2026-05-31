@@ -1,0 +1,14 @@
+{
+  "profile": "paper",
+  "dataset": "SYN_WS_C3",
+  "base_dataset": "SYN_WS",
+  "num_graphs": 600,
+  "num_classes": 3,
+  "num_features": 8,
+  "graphs_per_class": 200,
+  "min_nodes": 30,
+  "max_nodes": 80,
+  "seed": 20260527,
+  "graph_distribution": "Watts-Strogatz small-world graph",
+  "label_rule": "3 classes use monotonically increasing rewiring probabilities"
+}

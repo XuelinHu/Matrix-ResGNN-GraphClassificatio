@@ -30,10 +30,11 @@ from src.experiment_paths import (
 )
 from src.models import HorizontalResGNN, MatrixResGNN, MatrixResGatedGNN, PlainGNN, VerticalResGNN
 from src.models.common import ResidualConfig
+from src.synthetic_graphs import SyntheticGraphDataset
 
 
-PROJECT_# 仓库根目录：用于把脚本中的相对路径统一定位到项目根路径。
-ROOT = Path(__file__).resolve().parents[1]
+# 仓库根目录：用于把脚本中的相对路径统一定位到项目根路径。
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
 # 数据根目录：PyG/TUDataset 等数据集会缓存在该目录下。
 DATA_ROOT = PROJECT_ROOT / "data"
 # 训练设备：优先使用 CUDA，否则自动回退到 CPU。
@@ -77,11 +78,18 @@ def prepare_batch(data: torch.Tensor) -> torch.Tensor:
     return data.to(DEVICE)
 
 
-def load_dataset(dataset_name: str) -> object:
+def load_dataset(dataset_name: str, synthetic_profile: str = "paper") -> object:
     """根据数据集名称加载图分类数据集。"""
     family = dataset_family(dataset_name)
     if family == "tu":
         dataset = TUDataset(root=str(DATA_ROOT / "TUDataset"), name=dataset_name)
+        return dataset.shuffle()
+    if family == "synthetic":
+        dataset = SyntheticGraphDataset(
+            root=DATA_ROOT / "SyntheticGraphClassification",
+            dataset_name=dataset_name,
+            profile=synthetic_profile,
+        )
         return dataset.shuffle()
     raise ValueError(f"Unsupported dataset family for {dataset_name}.")
 
@@ -148,7 +156,7 @@ def split_dataset(
 ) -> Tuple[Sequence[torch.Tensor], Sequence[torch.Tensor], Optional[Sequence[torch.Tensor]], Dict[str, object]]:
     """按数据集协议生成训练集、测试集和可选官方验证集。"""
     family = dataset_family(dataset_name)
-    if family == "tu":
+    if family in {"tu", "synthetic"}:
         graph_list = list(dataset)
         labels = dataset_labels(graph_list)
         folds = stratified_kfold_indices(labels, n_splits=5, seed=0)
@@ -258,12 +266,37 @@ def collect_gate_values(model: nn.Module) -> Dict[str, float]:
     return gate_values
 
 
-def evaluate(model: nn.Module, loader: DataLoader, criterion: nn.Module) -> Dict[str, float]:
-    """在验证或测试 loader 上计算平均 loss 和 accuracy。"""
+def macro_f1_score(labels: Sequence[int], predictions: Sequence[int], num_classes: int) -> float:
+    """根据整数标签和预测结果计算 macro-F1。"""
+    f1_values: List[float] = []
+    for class_id in range(int(num_classes)):
+        true_positive = sum(1 for label, pred in zip(labels, predictions) if label == class_id and pred == class_id)
+        false_positive = sum(1 for label, pred in zip(labels, predictions) if label != class_id and pred == class_id)
+        false_negative = sum(1 for label, pred in zip(labels, predictions) if label == class_id and pred != class_id)
+        precision_denom = true_positive + false_positive
+        recall_denom = true_positive + false_negative
+        precision = true_positive / precision_denom if precision_denom else 0.0
+        recall = true_positive / recall_denom if recall_denom else 0.0
+        f1_values.append(2.0 * precision * recall / (precision + recall) if precision + recall > 0.0 else 0.0)
+    return float(np.mean(f1_values)) if f1_values else 0.0
+
+
+def normalized_accuracy(acc: float, num_classes: int) -> float:
+    """把 accuracy 按随机猜测基线归一化，便于比较不同类别数任务。"""
+    if num_classes <= 1:
+        return float(acc)
+    chance = 1.0 / float(num_classes)
+    return float((acc - chance) / max(1.0 - chance, 1e-12))
+
+
+def evaluate(model: nn.Module, loader: DataLoader, criterion: nn.Module, num_classes: int) -> Dict[str, float]:
+    """在验证或测试 loader 上计算平均 loss、accuracy、macro-F1 和归一化 accuracy。"""
     model.eval()
     total_correct = 0
     total_loss = 0.0
     total_graphs = 0
+    all_labels: List[int] = []
+    all_predictions: List[int] = []
     with torch.no_grad():
         for batch_data in loader:
             batch_data = prepare_batch(batch_data)
@@ -275,9 +308,14 @@ def evaluate(model: nn.Module, loader: DataLoader, criterion: nn.Module) -> Dict
             total_correct += int((predictions == targets).sum())
             total_loss += float(loss.item()) * batch_size
             total_graphs += batch_size
+            all_labels.extend(int(value) for value in targets.detach().cpu().tolist())
+            all_predictions.extend(int(value) for value in predictions.detach().cpu().tolist())
+    acc = total_correct / max(total_graphs, 1)
     return {
         "loss": total_loss / max(total_graphs, 1),
-        "acc": total_correct / max(total_graphs, 1),
+        "acc": acc,
+        "macro_f1": macro_f1_score(all_labels, all_predictions, num_classes),
+        "normalized_acc": normalized_accuracy(acc, num_classes),
     }
 
 
@@ -454,8 +492,9 @@ def train_one_config(args) -> Dict[str, object]:
     version = normalize_version(getattr(args, "version", DEFAULT_EXPERIMENT_VERSION))
     ensure_dirs(version)
     set_seed(args.seed)
-    dataset = load_dataset(args.dataset)
+    dataset = load_dataset(args.dataset, synthetic_profile=getattr(args, "synthetic_profile", "paper"))
     stats = dataset_statistics(dataset, args.dataset)
+    num_classes = int(stats["classes"])
     train_dataset, test_dataset, official_val_dataset, split_context = split_dataset(dataset, args.fold, args.dataset)
     if official_val_dataset is None:
         train_dataset, val_dataset = split_train_val_dataset(train_dataset, args.val_ratio, seed=args.seed + args.fold)
@@ -535,7 +574,7 @@ def train_one_config(args) -> Dict[str, object]:
             "embedding_std": embedding_std_sum / max(total_graphs, 1),
             "embedding_abs_max": embedding_abs_max,
         }
-        val_metrics = evaluate(model, val_loader, criterion) if val_loader is not None else train_metrics
+        val_metrics = evaluate(model, val_loader, criterion, num_classes) if val_loader is not None else train_metrics
         scheduler.step(val_metrics["loss"])
         gate_values = collect_gate_values(model)
         improved = val_metrics["loss"] < (best_val_loss - args.min_delta)
@@ -557,6 +596,8 @@ def train_one_config(args) -> Dict[str, object]:
                 "train_acc": train_metrics["acc"],
                 "val_loss": val_metrics["loss"],
                 "val_acc": val_metrics["acc"],
+                "val_macro_f1": val_metrics.get("macro_f1", val_metrics["acc"]),
+                "val_normalized_acc": val_metrics.get("normalized_acc", val_metrics["acc"]),
                 "grad_norm": train_diagnostics["grad_norm"],
                 "embedding_abs_mean": train_diagnostics["embedding_abs_mean"],
                 "embedding_std": train_diagnostics["embedding_std"],
@@ -569,7 +610,7 @@ def train_one_config(args) -> Dict[str, object]:
             break
 
     model.load_state_dict(best_state_dict)
-    test_metrics = evaluate(model, test_loader, criterion)
+    test_metrics = evaluate(model, test_loader, criterion, num_classes)
     test_outputs = collect_test_outputs(model, test_loader)
 
     rep_loader = build_loader(test_dataset, batch_size=args.batch_size, shuffle=False)
@@ -617,6 +658,8 @@ def train_one_config(args) -> Dict[str, object]:
         "best_val_loss": best_val_loss,
         "best_val_acc": best_val_acc,
         "best_test_acc": test_metrics["acc"],
+        "test_macro_f1": test_metrics["macro_f1"],
+        "test_normalized_acc": test_metrics["normalized_acc"],
         "test_loss": test_metrics["loss"],
         "runtime_seconds": time.time() - started,
     }

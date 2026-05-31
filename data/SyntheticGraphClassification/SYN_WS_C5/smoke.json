@@ -1,0 +1,14 @@
+{
+  "profile": "smoke",
+  "dataset": "SYN_WS_C5",
+  "base_dataset": "SYN_WS",
+  "num_graphs": 60,
+  "num_classes": 5,
+  "num_features": 8,
+  "graphs_per_class": 12,
+  "min_nodes": 16,
+  "max_nodes": 28,
+  "seed": 20260527,
+  "graph_distribution": "Watts-Strogatz small-world graph",
+  "label_rule": "5 classes use monotonically increasing rewiring probabilities"
+}

@@ -1,0 +1,13 @@
+{
+  "profile": "smoke",
+  "dataset": "SYN_SBM",
+  "num_graphs": 24,
+  "num_classes": 2,
+  "num_features": 8,
+  "graphs_per_class": 12,
+  "min_nodes": 16,
+  "max_nodes": 28,
+  "seed": 20260527,
+  "graph_distribution": "two-block stochastic block model",
+  "label_rule": "class 0 has weak community separation; class 1 has strong community separation"
+}
