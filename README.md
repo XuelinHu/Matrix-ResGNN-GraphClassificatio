@@ -31,3 +31,10 @@ The core task remains graph classification. The initial benchmark package will r
 ## Immediate next step
 
 See [docs/WORK_PLAN.md](/ds1/workspace/ai/Matrix-ResGNN-GraphClassification/docs/WORK_PLAN.md:1).
+
+## format
+- https://peerj.com/articles/cs-3773/
+- https://peerj.com/articles/cs-3762/
+- https://www.overleaf.com/latex/templates/latex-template-for-peerj-journal-and-pre-print-submissions/ptdwfrqxqzbn
+- https://peerj.com/about/policies-and-procedures/#discipline-standards
+- https://peerj.com/about/author-instructions/#reference-format

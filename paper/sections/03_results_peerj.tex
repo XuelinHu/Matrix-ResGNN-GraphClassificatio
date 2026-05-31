@@ -1,7 +1,7 @@
 \section{Results}
 \label{sec:results}
 
-All results are reported as five-fold mean best test accuracy \(\pm\) fold-level standard deviation unless otherwise stated. The source tables are the summaries under \texttt{records/LATEST}; the main benchmark contains 600 completed runs.
+All results are reported as five-fold mean best test accuracy \(\pm\) fold-level standard deviation unless otherwise stated. The source tables are the summaries under \texttt{records/LATEST} for the real-data experiments and \texttt{records/SYN\_MULTI\_FULL} for the synthetic multi-class benchmark. The main benchmark contains 600 completed runs, and the synthetic multi-class benchmark contains 3,500 completed runs.
 
 \subsection{Overall benchmark performance}
 
@@ -86,6 +86,57 @@ Mutagenicity & \(0.7644\pm0.0188\) & \(0.7667\pm0.0212\) & \(0.7738\pm0.0134\) &
 \end{figure}
 
 The GCNConv slice supports the same conclusion as the full benchmark: residual topology matters, but the best topology depends on the dataset. MatrixRes is the strongest default choice on three of six GCNConv datasets, while simpler residual paths are still preferable on PROTEINS and DD. The ENZYMES winner is reported for completeness, but its low absolute accuracy limits the strength of that comparison.
+
+\subsection{Synthetic multi-class scaling}
+
+The synthetic benchmark asks a different question from the real-data benchmark: does residual topology behave differently when the structural class granularity is increased under controlled graph-generation rules? Table~\ref{tab:synthetic_class_scaling} summarizes the class-count trend after averaging over the five synthetic graph families and four message-passing operators. The two- and three-class settings do not favor matrix-style reuse: Plain is best at \(C=2\), and HorizontalRes is best at \(C=3\). From \(C=4\) onward, matrix-style reuse becomes more competitive. MatrixResGated is the strongest mean-accuracy model at \(C=4\), \(C=5\), \(C=6\), and \(C=8\), while VerticalRes is strongest at \(C=7\).
+
+\begin{table}[h]
+\centering
+\scriptsize
+\caption{Synthetic multi-class scaling averaged over five graph families and four operators. NAcc denotes chance-normalized accuracy.}
+\label{tab:synthetic_class_scaling}
+\begin{tabular}{c l c c c c c}
+\toprule
+Classes & Best model & Best Acc. & Plain Acc. & MatrixRes Acc. & MatrixResGated Acc. & Best NAcc \\
+\midrule
+2 & Plain & \(\mathbf{0.9585}\) & \(\mathbf{0.9585}\) & 0.9481 & 0.9578 & 0.9170 \\
+3 & HorizontalRes & \(\mathbf{0.8800}\) & 0.8774 & 0.8600 & 0.8772 & 0.8200 \\
+4 & MatrixResGated & \(\mathbf{0.8111}\) & 0.8002 & 0.8083 & \(\mathbf{0.8111}\) & 0.7481 \\
+5 & MatrixResGated & \(\mathbf{0.7296}\) & 0.7233 & 0.7280 & \(\mathbf{0.7296}\) & 0.6621 \\
+6 & MatrixResGated & \(\mathbf{0.6878}\) & 0.6719 & 0.6827 & \(\mathbf{0.6878}\) & 0.6254 \\
+7 & VerticalRes & \(\mathbf{0.6524}\) & 0.6314 & 0.6429 & 0.6395 & 0.5945 \\
+8 & MatrixResGated & \(\mathbf{0.6035}\) & 0.5865 & 0.6002 & \(\mathbf{0.6035}\) & 0.5469 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.92\linewidth]{figures/exp/fig_synthetic_multiclass_scaling.pdf}
+\caption{Synthetic multi-class scaling from two to eight classes. Each point averages five synthetic graph families and four message-passing operators.}
+\label{fig:synthetic_multiclass_scaling}
+\end{figure}
+
+Table~\ref{tab:synthetic_high_class} focuses on the higher-class regime \(C=4,\ldots,8\), where the task requires finer structural discrimination. MatrixResGated has the best mean accuracy and normalized accuracy in this regime, improving accuracy from 0.6827 for Plain to 0.6943. MatrixRes has the strongest macro-F1 among the compared models and is close to MatrixResGated in normalized accuracy. The class-scaling curve in Figure~\ref{fig:synthetic_multiclass_scaling} also shows a stability pattern: from \(C=2\) to \(C=8\), MatrixRes loses 0.3479 accuracy points, compared with 0.3720 for Plain. Thus, the synthetic benchmark supports a narrow but useful interpretation: matrix-style reuse is not necessary for easy low-class settings, but it becomes more favorable as the structural labels become more fine-grained.
+
+\begin{table}[h]
+\centering
+\small
+\caption{Synthetic high-class regime averaged over \(C=4,\ldots,8\), five graph families, and four operators.}
+\label{tab:synthetic_high_class}
+\begin{tabular}{l c c c}
+\toprule
+Model & Accuracy & Macro-F1 & NAcc \\
+\midrule
+Plain & 0.6827 & 0.6703 & 0.6183 \\
+VerticalRes & 0.6931 & 0.6834 & 0.6307 \\
+HorizontalRes & 0.6846 & 0.6722 & 0.6210 \\
+MatrixRes & 0.6924 & \(\mathbf{0.6880}\) & 0.6300 \\
+MatrixResGated & \(\mathbf{0.6943}\) & 0.6876 & \(\mathbf{0.6324}\) \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 \subsection{Branch-count ablation}
 

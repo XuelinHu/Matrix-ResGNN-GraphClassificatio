@@ -1,7 +1,7 @@
 \section{Materials and Methods}
 \label{sec:methods}
 
-This section defines the graph-classification task, the Matrix-Residual architecture family, the benchmark protocol, and the mechanism metrics. The guiding principle is to isolate residual topology while holding the remaining learning pipeline fixed.
+This section defines the graph-classification task, the Matrix-Residual architecture family, the benchmark protocol, the synthetic structural stress test, and the mechanism metrics. The guiding principle is to isolate residual topology while holding the remaining learning pipeline fixed.
 
 \subsection{Problem definition and notation}
 
@@ -95,6 +95,19 @@ Across folds, we report
 \end{equation}
 and the fold-level standard deviation.
 
+\subsection{Synthetic multi-class structural benchmark}
+\label{sec:synthetic}
+
+To test residual topology under controlled structural class granularity, we add a synthetic benchmark based on five random-graph families: Erdős--Rényi (ER), Barabási--Albert (BA), stochastic block model (SBM), Watts--Strogatz (WS), and random regular graphs. For each family, we generate seven multi-class datasets with class counts \(C\in\{2,3,4,5,6,7,8\}\). Each class contains 200 graphs, so each dataset contains \(200C\) graphs. Graph sizes are sampled between 30 and 80 nodes, and every node receives an eight-dimensional feature vector derived from normalized degree and random feature channels. The features are intentionally generic and do not encode the class label directly.
+
+The synthetic labels are controlled by family-specific structural parameters. ER classes differ by Bernoulli edge probability, BA classes differ by the attachment count, SBM classes differ by community separation, WS classes differ by rewiring probability, and random regular classes differ by fixed degree. These settings produce five complementary structural regimes: sparse random connectivity, long-tailed degree structure, community structure, local clustering with short paths, and degree-uniform structure. They are used as stress tests rather than as replacements for real graph-classification benchmarks.
+
+The synthetic benchmark uses the same five model families, four message-passing operators, branch count \(B=3\), and five-fold protocol as the main benchmark, producing 35 datasets and 3,500 completed model runs. Because accuracy values are not directly comparable across different class counts, we report macro-F1 and chance-normalized accuracy in addition to raw accuracy. For a \(C\)-class dataset, normalized accuracy is
+\begin{equation}
+\mathrm{NAcc}=\frac{\mathrm{Acc}-1/C}{1-1/C}.
+\end{equation}
+This metric maps chance-level accuracy to 0 and perfect accuracy to 1, making the two- to eight-class scaling trend easier to interpret.
+
 \subsection{Training configuration}
 
 All main benchmark runs use the default branch count \(B=3\). The benchmark is repeated under four message-passing operators: GCNConv, GATConv, SAGEConv, and GINConv. The hidden dimension is 64 unless a sensitivity setting changes it. The default depth is \(L=4\) message-passing layers, except DD, where \(L=3\) is used for the main benchmark. All models use ReLU nonlinearities and the default PyTorch/PyTorch Geometric parameter initialization for the corresponding layers. Models are optimized with Adam \cite{kingma2014adam}; the checkpoint with the lowest validation loss is retained for test evaluation. Early stopping monitors validation loss, and all runs use ReduceLROnPlateau with factor 0.5, patience 15, and minimum learning rate \(10^{-5}\). Gradients are clipped at norm 2.0. The branch-count ablation evaluates \(B=1,\ldots,8\) for HorizontalRes, MatrixRes, and MatrixResGated on PROTEINS and DD under GCNConv. The sensitivity scan evaluates MatrixRes and MatrixResGated on fold 0 at \(B=3\), varying learning rate, dropout, hidden dimension, sparsity strength, and gate initialization. Selected MatrixResGated candidates are then rerun across all five folds.
@@ -113,8 +126,9 @@ Default branch count & 3 \\
 Default layers & 4, except DD uses 3 \\
 Default hidden dimension & 64 \\
 Evaluation & Five-fold graph classification \\
+Synthetic stress test & ER, BA, SBM, WS, and regular graphs with \(C=2,\ldots,8\), 200 graphs per class \\
 Branch-count ablation & \(B=1,\ldots,8\) \\
-Primary metric & Mean best test accuracy \\
+Primary metrics & Mean best test accuracy; synthetic benchmark also reports macro-F1 and normalized accuracy \\
 Sensitivity scope & Fold 0, \(B=3\) \\
 Plain/VerticalRes/HorizontalRes & 200 epochs, patience 60, learning rate 0.005, weight decay \(10^{-4}\), dropout 0.5 \\
 MatrixRes/MatrixResGated & 240 epochs, patience 80, learning rate 0.003, weight decay \(5\times10^{-5}\), dropout 0.3 \\

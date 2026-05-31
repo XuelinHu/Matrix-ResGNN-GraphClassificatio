@@ -1,6 +1,6 @@
 \section{Discussion}
 
-This section answers the research questions in light of the six-dataset, four-operator benchmark, the branch-count ablation, the tuned-candidate checks, and the mechanism evidence.
+This section answers the research questions in light of the six-dataset, four-operator benchmark, the branch-count ablation, the tuned-candidate checks, the mechanism evidence, and the synthetic multi-class scaling benchmark.
 
 \subsection{RQ1: Which residual topologies are preferred?}
 
@@ -28,11 +28,19 @@ MatrixResGated defines a tunable family rather than a plug-and-play winner. The 
 
 \textbf{Answer:} Sparse/gated matrix reuse is a control mechanism for residual traffic. It is complementary to dense MatrixRes rather than a strict replacement, and candidate settings must be validated across folds before they are treated as performance claims. The current evidence supports a smaller controlled matrix model on DD and leaves PROTEINS sparsification as an unstable candidate rather than a confirmed gain.
 
+\subsection{RQ4: What changes when structural class granularity increases?}
+
+The synthetic multi-class benchmark separates class granularity from real-dataset idiosyncrasies. In the two- and three-class settings, simpler residual choices remain competitive: Plain is best at \(C=2\), and HorizontalRes is best at \(C=3\). This result is important because it prevents an overbroad claim that matrix-style reuse is always needed. When the class count increases, the pattern changes. In the \(C=4,\ldots,8\) regime, MatrixResGated has the best average accuracy and normalized accuracy, while MatrixRes has the best macro-F1. MatrixRes also has the smallest accuracy drop from \(C=2\) to \(C=8\), suggesting that dense local matrix reuse is relatively stable as the label space becomes finer.
+
+The distribution-level synthetic results refine this conclusion. MatrixRes is strongest in the higher-class BA, ER, and random-regular settings, where class labels are tied to degree growth, edge probability, or degree-uniform structural changes. The advantage is weaker on SBM and absent on WS, where community structure and small-world rewiring create different inductive pressures. Therefore, the synthetic benchmark supports a conditional claim: matrix-style residual reuse is most useful when the task requires separating several related structural regimes, but it does not solve every graph distribution.
+
+\textbf{Answer:} Synthetic class scaling shows that MatrixRes and MatrixResGated become more useful under finer structural discrimination, especially from four to eight classes. The effect is strongest on several controlled degree- and density-driven graph families, but it remains distribution-dependent.
+
 \subsection{Limitations}
 
 Several limitations bound the generality of these findings. First, although the main benchmark includes four message-passing operators, it still uses a fixed graph-level pooling and classification head; alternative readout designs may interact with residual topology. Second, the compared operators are canonical message-passing backbones rather than recent graph transformer or local-global hybrid architectures \cite{dwivedi2020generalization}. This is a deliberate control choice, but it means the paper should not be read as a state-of-the-art model comparison. Third, the sensitivity scan is fold-0 only; although selected candidates were rerun across five folds, that follow-up is limited to MatrixResGated on PROTEINS and DD. Fourth, ENZYMES has low absolute accuracy and high variability, so its result should be interpreted cautiously. Finally, the mechanism analysis is correlational. Branch diversity, cosine similarity, CKA, and gradient norms support a coherent explanation, but they do not prove causality.
 
-Another limitation is that the benchmark intentionally avoids task-specific chemical or biological feature engineering. This makes the residual-topology comparison cleaner, but it also means that the absolute accuracies should not be interpreted as optimized state-of-the-art molecular prediction results. The paper's contribution is methodological: it identifies when different residual pathways are helpful under matched conditions.
+Another limitation is that the benchmark intentionally avoids task-specific chemical or biological feature engineering. This makes the residual-topology comparison cleaner, but it also means that the absolute accuracies should not be interpreted as optimized state-of-the-art molecular prediction results. The synthetic benchmark has a related limitation: its labels are generated from controlled structural parameters, so it is useful for stress testing residual topology but cannot substitute for broader real multi-class graph benchmarks. The paper's contribution is methodological: it identifies when different residual pathways are helpful under matched conditions.
 
 \subsection{Future directions}
 

@@ -12,6 +12,7 @@ The manuscript uses the following summary files as the source of truth. The main
     \item \texttt{records/LATEST/summaries/parameter\_sensitivity\_summary.csv}
     \item \texttt{records/LATEST/summaries/tuned\_candidate\_summary.csv}
     \item \texttt{records/LATEST/summaries/mechanism\_compact\_summary.csv}
+    \item \texttt{records/SYN\_MULTI\_FULL/summaries/benchmark\_summary.csv}
 \end{itemize}
 
 \subsection{Supplementary diagnostics}
@@ -36,6 +37,29 @@ GCNConv results remain dataset-dependent under a fixed operator. & Table~\ref{ta
 Branch count produces a rise-then-fall pattern rather than monotonic improvement. & Table~\ref{tab:branch_best} and Figure~\ref{fig:branch_ablation}. \\
 Useful branch expansion is associated with separation without excessive residual traffic. & Table~\ref{tab:mechanism_snapshot} and Figure~\ref{fig:mechanism}. \\
 Fold-0 sensitivity should not be treated as final evidence. & Table~\ref{tab:sensitivity}, Figure~\ref{fig:sensitivity}, and Table~\ref{tab:tuned_candidates}. \\
+Matrix-style reuse becomes more favorable in higher-class synthetic structural discrimination. & Table~\ref{tab:synthetic_class_scaling}, Figure~\ref{fig:synthetic_multiclass_scaling}, Table~\ref{tab:synthetic_high_class}, and Table~\ref{tab:synthetic_distribution_high_class}. \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Synthetic distribution-level summary}
+
+Table~\ref{tab:synthetic_distribution_high_class} reports the higher-class synthetic results by graph family. The table is placed in the appendix because the main text focuses on the class-count scaling trend. It shows that MatrixRes is strongest on BA, ER, and random-regular graphs, while SBM and WS remain less favorable to matrix-style reuse.
+
+\begin{table}[h]
+\centering
+\scriptsize
+\caption{Synthetic high-class accuracy by graph family, averaged over \(C=4,\ldots,8\) and four operators.}
+\label{tab:synthetic_distribution_high_class}
+\begin{tabular}{l c c c c c}
+\toprule
+Family & Plain & VerticalRes & HorizontalRes & MatrixRes & MatrixResGated \\
+\midrule
+BA & 0.7874 & 0.8177 & 0.7855 & \(\mathbf{0.8271}\) & 0.8257 \\
+ER & 0.8777 & 0.8756 & 0.8728 & \(\mathbf{0.8807}\) & 0.8796 \\
+Regular & 0.7505 & 0.7923 & 0.7739 & \(\mathbf{0.8077}\) & 0.8057 \\
+SBM & 0.6268 & \(\mathbf{0.6286}\) & 0.6218 & 0.6264 & 0.6176 \\
+WS & \(\mathbf{0.3709}\) & 0.3511 & 0.3693 & 0.3202 & 0.3430 \\
 \bottomrule
 \end{tabular}
 \end{table}
