@@ -135,7 +135,7 @@
                 <mxCell id="v37" value="Residual fusion" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F5F3FF;strokeColor=#7C3AED;strokeWidth=2;fontFamily=Helvetica;fontSize=26;align=center;verticalAlign=middle;" parent="1" vertex="1">
                     <mxGeometry x="360" y="1200" width="570" height="95" as="geometry"/>
                 </mxCell>
-                <mxCell id="v40" value="mean over&lt;br&gt;branchs embeddings" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FEF3C7;strokeColor=#D97706;strokeWidth=2;fontFamily=Helvetica;fontSize=26;fontStyle=1;align=center;verticalAlign=middle;" parent="1" vertex="1">
+                <mxCell id="v40" value="mean over&lt;br&gt;branch embeddings" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FEF3C7;strokeColor=#D97706;strokeWidth=2;fontFamily=Helvetica;fontSize=26;fontStyle=1;align=center;verticalAlign=middle;" parent="1" vertex="1">
                     <mxGeometry x="510" y="1381" width="270" height="120" as="geometry"/>
                 </mxCell>
                 <mxCell id="e42" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#334155;strokeWidth=1.5;endArrow=classic;endFill=1;strokeColor=#1E293B;fontSize=26;" parent="1" source="v31" target="v37" edge="1">
@@ -383,7 +383,7 @@
                 <mxCell id="v148" value="dropout + Linear&lt;br&gt;class logits y" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FEF3C7;strokeColor=#D97706;strokeWidth=2;fontFamily=Helvetica;fontSize=26;fontStyle=1;align=center;verticalAlign=middle;" parent="v111" vertex="1">
                     <mxGeometry x="714.5535714285714" y="1121" width="255.53571428571433" height="120" as="geometry"/>
                 </mxCell>
-                <mxCell id="v147" value="mean over&lt;br&gt;&lt;span style=&quot;color: rgb(0, 0, 0);&quot;&gt;branchs&amp;nbsp;&amp;nbsp;&lt;/span&gt;embeddings" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FEF3C7;strokeColor=#D97706;strokeWidth=2;fontFamily=Helvetica;fontSize=26;fontStyle=1;align=center;verticalAlign=middle;" parent="v111" vertex="1">
+                <mxCell id="v147" value="mean over&lt;br&gt;&lt;span style=&quot;color: rgb(0, 0, 0);&quot;&gt;branch&amp;nbsp;&amp;nbsp;&lt;/span&gt;embeddings" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FEF3C7;strokeColor=#D97706;strokeWidth=2;fontFamily=Helvetica;fontSize=26;fontStyle=1;align=center;verticalAlign=middle;" parent="v111" vertex="1">
                     <mxGeometry x="388" y="1121" width="270" height="120" as="geometry"/>
                 </mxCell>
                 <mxCell id="e153" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#334155;strokeWidth=1.5;endArrow=classic;endFill=1;strokeColor=#1E293B;fontSize=26;" parent="v111" source="v146" target="v147" edge="1">
@@ -628,7 +628,7 @@
                 <mxCell id="v93" value="global_mean_pool&lt;br&gt;per branch" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FEF3C7;strokeColor=#D97706;strokeWidth=2;fontFamily=Helvetica;fontSize=26;fontStyle=1;align=center;verticalAlign=middle;" parent="1" vertex="1">
                     <mxGeometry x="1336.7857142857142" y="1381" width="255.53571428571433" height="120" as="geometry"/>
                 </mxCell>
-                <mxCell id="v94" value="mean over&lt;br&gt;&lt;span style=&quot;color: rgb(0, 0, 0);&quot;&gt;branchs&amp;nbsp;&lt;/span&gt;embeddings" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FEF3C7;strokeColor=#D97706;strokeWidth=2;fontFamily=Helvetica;fontSize=26;fontStyle=1;align=center;verticalAlign=middle;" parent="1" vertex="1">
+                <mxCell id="v94" value="mean over&lt;br&gt;&lt;span style=&quot;color: rgb(0, 0, 0);&quot;&gt;branch&amp;nbsp;&lt;/span&gt;embeddings" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FEF3C7;strokeColor=#D97706;strokeWidth=2;fontFamily=Helvetica;fontSize=26;fontStyle=1;align=center;verticalAlign=middle;" parent="1" vertex="1">
                     <mxGeometry x="1666" y="1381" width="270" height="120" as="geometry"/>
                 </mxCell>
                 <mxCell id="v95" value="dropout + Linear&lt;br&gt;class logits y" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FEF3C7;strokeColor=#D97706;strokeWidth=2;fontFamily=Helvetica;fontSize=26;fontStyle=1;align=center;verticalAlign=middle;" parent="1" vertex="1">

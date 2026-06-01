@@ -1,38 +1,43 @@
 # Matrix-ResGNN-GraphClassification
 
-This repository is the clean restart for a graph-classification paper centered on structured residual connectivity.
+This repository contains the implementation, frozen experiment records, manuscript sources, and submission artifacts for a graph-classification paper centered on structured residual connectivity.
 
-The paper will study a unified residual family on graph classification benchmarks:
+The paper studies a unified residual family on graph-classification benchmarks:
 
 - `Plain`
-- `Vertical-Res`
-- `Horizontal-Res`
-- `Matrix-Res`
-- `Matrix-Res (sparse/gated)`
+- `VerticalRes`
+- `HorizontalRes`
+- `MatrixRes`
+- `MatrixResGated`
 
-The core task remains graph classification. The initial benchmark package will reuse the current graph-classification setup from `cross_residual_gnn`, but the manuscript, naming, and method framing will be rebuilt around a two-axis residual-connectivity view rather than the previous cross-residual wording.
+The core task is graph classification. The manuscript frames residual routing as a two-axis `branch x layer` design problem and evaluates real-data and controlled synthetic multi-class benchmarks.
 
 ## Repository layout
 
-- `docs/`: planning, writing notes, and task tracking
-- `paper/`: new manuscript sources
+- `docs/`: consolidated project status, historical planning notes, and task records
+- `paper/`: manuscript sources and submission packages
 - `src/`: model and training code
 - `configs/`: experiment configuration files
 - `scripts/`: reusable entry scripts
 - `figures/`: generated figures for the paper
 - `records/`: outputs, summaries, and curated experiment results
 
-## Working assumptions
+## Current artifacts
 
-- Use the Conda environment `pyg` for Python execution.
-- Reuse code only when it supports the new matrix-residual framing cleanly.
-- Do not copy old paper text directly; the new paper should be written as an independent manuscript.
+- English manuscript: `paper/main.tex`, `paper/main.pdf`
+- Chinese confirmation manuscript: `paper/main_zh.tex`, `paper/main_zh.pdf`
+- Numbered PNG figure package: `paper/submission_figures_png/`
+- Numbered supporting-evidence CSV package: `paper/supporting_evidence_csv/`
 
-## Immediate next step
+## Environment
 
-See [docs/WORK_PLAN.md](/ds1/workspace/ai/Matrix-ResGNN-GraphClassification/docs/WORK_PLAN.md:1).
+Use the Conda environment `pyg` for Python execution.
 
-## format
+## Documentation
+
+See [docs/README.md](docs/README.md) for the current documentation entry point and the consolidated project timeline.
+
+## PeerJ references
 - https://peerj.com/articles/cs-3773/
 - https://peerj.com/articles/cs-3762/
 - https://www.overleaf.com/latex/templates/latex-template-for-peerj-journal-and-pre-print-submissions/ptdwfrqxqzbn

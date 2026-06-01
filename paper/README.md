@@ -1,21 +1,32 @@
 # Paper Directory
 
-This directory is reserved for the new matrix-residual graph-classification manuscript.
+This directory contains the current matrix-residual graph-classification manuscripts and submission artifacts.
 
-Planned paper focus:
+Paper focus:
 
 - graph classification
 - structured residual connectivity
 - `branch x layer` matrix view
 - comparison of vertical, horizontal, and matrix-style reuse
 
-Do not copy the old manuscript text here directly. Rebuild the paper around the new problem statement.
+Canonical manuscript assets:
 
-Current writing assets:
+- `main.tex`: English PeerJ manuscript source
+- `sections/`: English PeerJ manuscript sections
+- `main.pdf`: compiled English PDF
+- `main_zh.tex`: Chinese confirmation source
+- `main_zh.pdf`: compiled Chinese confirmation PDF
+- `references.bib`: bibliography used by both manuscripts
+- `submission_figures_png/`: numbered PNG figures prepared for submission
+- `submission_figures_png.zip`: archived numbered PNG package
+- `supporting_evidence_csv/`: numbered CSV tables prepared as supporting evidence
 
-- `MANUSCRIPT_DRAFT.md`: section-ready manuscript skeleton with abstract, introduction, method, results, discussion, and conclusion
-- `FIGURE_CAPTIONS.md`: main-text figure captions for the four planned experiment figures
-- `references.bib`: bibliography entries used by the manuscript draft
-- `METHOD_NOTE.md`: unified method framing and research questions
-- `RESULTS_DISCUSSION_DRAFT.md`: paper-facing English draft for the new results and discussion sections
-- `FIGURE_PLAN.md`: main-text and appendix figure allocation plan
+Historical writing notes retained for traceability:
+
+- `MANUSCRIPT_DRAFT.md`
+- `METHOD_NOTE.md`
+- `RESULTS_DISCUSSION_DRAFT.md`
+- `FIGURE_CAPTIONS.md`
+- `FIGURE_PLAN.md`
+
+Use [`../docs/PROJECT_STATUS_AND_TIMELINE.md`](../docs/PROJECT_STATUS_AND_TIMELINE.md) as the consolidated project entry point.
