@@ -12,6 +12,15 @@
 \usepackage[authoryear,round]{natbib}
 \usepackage{hyperref}
 \usepackage{graphicx}
+\usepackage{iftex}
+
+\ifPDFTeX
+\else
+  \usepackage{fontspec}
+  \setmainfont{TeX Gyre Termes}
+  \setsansfont{TeX Gyre Heros}
+  \setmonofont{Latin Modern Mono}
+\fi
 
 \let\cite\citep
 

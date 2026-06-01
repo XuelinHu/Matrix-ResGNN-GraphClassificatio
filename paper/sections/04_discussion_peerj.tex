@@ -32,7 +32,7 @@ The synthetic multi-class benchmark separates class granularity from real-datase
 
 The distribution-level synthetic results refine this conclusion. MatrixRes is strongest in the higher-class BA, ER, and regular-degree control settings, where class labels are tied to degree growth, edge probability, or degree-uniform structural changes. The advantage is weaker on SBM and absent on WS, where community structure and small-world rewiring create different inductive pressures. Therefore, the synthetic benchmark supports a conditional claim: matrix-style residual reuse is most useful when the task requires separating several related structural regimes, but it does not solve every graph distribution.
 
-\textbf{Answer:} The real-data and synthetic scaling experiments jointly show that MatrixRes and MatrixResGated are conditionally effective matrix-residual families rather than universal replacements. Sparse/gated reuse is useful for controlling excessive residual traffic, while matrix-style reuse becomes more favorable under finer structural discrimination, especially from four to eight classes. The effect is strongest on several controlled degree- and density-driven graph families, but it remains distribution-dependent.
+\textbf{Answer:} Taken together, the real-data and synthetic scaling experiments support MatrixRes and MatrixResGated as conditionally effective rather than universal residual families. Sparse/gated reuse is useful for controlling excessive residual traffic, while matrix-style reuse becomes more favorable under finer structural discrimination, especially from four to eight classes. The effect is strongest on several controlled degree- and density-driven graph families, but it remains distribution-dependent.
 
 \subsection{Limitations}
 
