@@ -33,6 +33,9 @@
 \textbf{结论：} 残差拓扑、分支数和残差过滤应联合选择。额外分支只有在产生有用功能多样性时才有帮助；否则，残差流量和分支冗余会抵消额外容量。矩阵式复用更适合被理解为一个可调残差族，而不是对简单纵向或横向残差路径的通用替代；其最清晰的优势出现在更细粒度的结构判别任务中。
 \end{abstract}
 
+\noindent\textbf{关键词：} 图分类；图神经网络；残差连接；多分支架构；矩阵残差复用；合成图 benchmark
+\par\medskip
+
 \section{引言}
 
 图神经网络（GNN）通过反复聚合局部邻域信息来学习图表示 \cite{gori2005new,kipf2017gcn}。这种消息传递视角已经成为图分类中的标准工具，因为它能够在一个可微模型中同时结合节点属性、局部连接和图级结构 \cite{gilmer2017neural,wu2020comprehensive}。在分子图和蛋白质相关 benchmark 中，图标签可能同时依赖局部 motif 和全局结构组织，因此有用的中间证据必须在图级池化之前被保留下来 \cite{duvenaud2015convolutional,ying2018hierarchical}。
