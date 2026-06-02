@@ -116,7 +116,7 @@ def plot_scaling_curves(class_summary: pd.DataFrame, out_dir: Path) -> None:
     fig.tight_layout(rect=[0, 0.12, 1, 1])
     out_dir.mkdir(parents=True, exist_ok=True)
     fig.savefig(out_dir / "fig_synthetic_multiclass_scaling.pdf")
-    fig.savefig(out_dir / "fig_synthetic_multiclass_scaling.png")
+    fig.savefig(out_dir / "fig_synthetic_multiclass_scaling.png", dpi=600)
     plt.close(fig)
 
 

@@ -1,6 +1,6 @@
 # Submission Figure List
 
-英文正式稿中的图片已按首次出现顺序编号。投稿图片统一由对应 PDF 源文件以 300 DPI 转换为 PNG 格式。
+英文正式稿中的图片已按首次出现顺序编号。投稿图片统一由对应 PDF 源文件以至少 300 DPI 转换为 PNG 格式，并确保宽度和高度均不低于 900 px。
 
 | No. | PNG file | English name | 中文名称 | Source |
 | --- | --- | --- | --- | --- |
