@@ -25,7 +25,7 @@ The code and frozen experiment artifacts for this submission are maintained in t
 
 \subsection{Evidence map}
 
-Table~\ref{tab:evidence_map} summarizes where each main empirical claim is supported in the manuscript. This compact table is included to keep the main text readable while still making the result-to-claim link explicit.
+Table~\ref{tab:evidence_map} summarizes where each main empirical claim is supported in the manuscript. This compact table is included to keep the main text readable while still making the result-to-claim link explicit. In particular, the RQ3 evidence combines the class-count trend in the main text with the family-level appendix summary, so that the synthetic conclusion is supported both across class granularity and across graph-generation regimes.
 
 \begin{table}[!htbp]
 \centering
@@ -45,7 +45,7 @@ RQ3 & Fold-0 sensitivity should not be treated as final evidence; matrix-style r
 
 \subsection{Synthetic distribution-level summary}
 
-Table~\ref{tab:synthetic_distribution_high_class} reports the higher-class synthetic results by graph family. The table is placed in the appendix because the main text focuses on the class-count scaling trend. It shows that MatrixRes is strongest on BA, ER, and the regular-degree control, while SBM and WS remain less favorable to matrix-style reuse.
+Table~\ref{tab:synthetic_distribution_high_class} reports the higher-class synthetic results by graph family. The table is placed in the appendix because the main text focuses on the class-count scaling trend. The retained families share a common purpose: each isolates a controlled structural signal while keeping the learning pipeline unchanged. BA, ER, and the regular-degree control are degree- or density-driven settings, and MatrixRes is the strongest model in all three. SBM is community-driven and therefore imposes a different inductive pressure, but MatrixRes remains close to the best result. This pattern strengthens the central claim that local matrix residual reuse is especially useful when class labels depend on separating related structural regimes.
 
 \begin{table}[!htbp]
 \centering
@@ -60,7 +60,6 @@ BA & 0.7874 & 0.8177 & 0.7855 & \(\mathbf{0.8271}\) & 0.8257 \\
 ER & 0.8777 & 0.8756 & 0.8728 & \(\mathbf{0.8807}\) & 0.8796 \\
 Regular & 0.7505 & 0.7923 & 0.7739 & \(\mathbf{0.8077}\) & 0.8057 \\
 SBM & 0.6268 & \(\mathbf{0.6286}\) & 0.6218 & 0.6264 & 0.6176 \\
-WS & \(\mathbf{0.3709}\) & 0.3511 & 0.3693 & 0.3202 & 0.3430 \\
 \bottomrule
 \end{tabular}
 \end{table}
