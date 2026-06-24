@@ -1,4 +1,4 @@
-\section{Results}
+\section{Results and Discussion}
 \label{sec:results}
 
 All results are reported as five-fold mean best test accuracy \(\pm\) fold-level standard deviation unless otherwise stated.
@@ -7,7 +7,7 @@ All results are reported as five-fold mean best test accuracy \(\pm\) fold-level
 
 The main benchmark asks whether residual topology has a stable winner across datasets and message-passing operators. It does not. Table~\ref{tab:operator_wins} summarizes the full benchmark: across the 24 dataset--operator combinations, MatrixRes is the most frequent winner, with 9 wins and the best mean rank (2.12). MatrixResGated and Plain each win 5 combinations, HorizontalRes wins 3, and VerticalRes wins 2. Thus, matrix-style reuse has the most favorable aggregate profile in this controlled benchmark, but every topology has a setting in which it is the strongest choice.
 
-\begin{table}[h]
+\begin{table}[!htbp]
 \centering
 \small
 \caption{Winner counts and mean ranks across the 24 dataset--operator combinations. Lower mean rank is better.}
@@ -25,7 +25,7 @@ MatrixResGated & 5 & 2.92 & Useful when sparse control helps residual traffic \\
 \end{tabular}
 \end{table}
 
-\begin{figure}[H]
+\begin{figure}[!htbp]
 \centering
 \includegraphics[width=0.82\linewidth]{figures/exp/fig_model_win_counts.pdf}
 \caption{Model-level winner counts across the 24 dataset--operator combinations.}
@@ -34,7 +34,7 @@ MatrixResGated & 5 & 2.92 & Useful when sparse control helps residual traffic \\
 
 Table~\ref{tab:winners_by_operator} gives the cell-level evidence behind the win counts in Table~\ref{tab:operator_wins}. The matrix family is most prominent on MUTAG, AIDS, and Mutagenicity, where MatrixRes or MatrixResGated wins most operator settings. The protein-oriented datasets are more mixed: PROTEINS alternates between Plain and HorizontalRes, while DD alternates among HorizontalRes, MatrixRes, and VerticalRes. ENZYMES remains difficult and does not produce a stable residual-topology preference.
 
-\begin{table}[h]
+\begin{table}[!htbp]
 \centering
 \scriptsize
 \caption{Winning model for each dataset and message-passing operator. Values in parentheses are mean best test accuracy.}
@@ -61,7 +61,7 @@ The ENZYMES outcomes should be interpreted cautiously because the absolute accur
 
 To further remove variation caused by message-passing operators and observe the effect of residual topology under a fixed backbone, we report the GCNConv slice separately. Table~\ref{tab:main_benchmark} gives the full slice at the default branch count \(B=3\). Plain is strongest on PROTEINS, HorizontalRes is strongest on DD, MatrixResGated is strongest on ENZYMES, and MatrixRes is strongest on MUTAG, AIDS, and Mutagenicity.
 
-\begin{table}[h]
+\begin{table}[!htbp]
 \centering
 \scriptsize
 \caption{GCNConv benchmark results with default branch count \(B=3\).}
@@ -80,7 +80,7 @@ Mutagenicity & \(0.7644\pm0.0188\) & \(0.7667\pm0.0212\) & \(0.7738\pm0.0134\) &
 \end{tabular}
 \end{table}
 
-\begin{figure}[H]
+\begin{figure}[!htbp]
 \centering
 \includegraphics[width=0.92\linewidth]{figures/exp/fig_main_benchmark_gcnconv.pdf}
 \caption{GCNConv benchmark at \(B=3\). Bars show five-fold mean best test accuracy with fold-level standard-deviation error bars.}
@@ -93,7 +93,7 @@ The GCNConv slice supports the same conclusion as the full benchmark: residual t
 
 The synthetic benchmark asks a different question from the real-data benchmark: does residual topology behave differently when the structural class granularity is increased under controlled graph-generation rules? Table~\ref{tab:synthetic_class_scaling} summarizes the class-count trend after averaging over the five synthetic graph families and four message-passing operators. The two- and three-class settings do not favor matrix-style reuse: Plain is best at \(C=2\), and HorizontalRes is best at \(C=3\). From \(C=4\) onward, matrix-style reuse becomes more competitive. MatrixResGated is the strongest mean-accuracy model at \(C=4\), \(C=5\), \(C=6\), and \(C=8\), while VerticalRes is strongest at \(C=7\).
 
-\begin{table}[h]
+\begin{table}[!htbp]
 \centering
 \scriptsize
 \caption{Synthetic multi-class scaling averaged over five graph families and four operators. NAcc denotes chance-normalized accuracy.}
@@ -113,7 +113,7 @@ Classes & Best model & Best Acc. & Plain Acc. & MatrixRes Acc. & MatrixResGated 
 \end{tabular}
 \end{table}
 
-\begin{figure}[H]
+\begin{figure}[!htbp]
 \centering
 \includegraphics[width=0.92\linewidth]{figures/exp/fig_synthetic_multiclass_scaling.pdf}
 \caption{Synthetic multi-class scaling from two to eight classes. Each point averages five synthetic graph families and four message-passing operators.}
@@ -122,7 +122,7 @@ Classes & Best model & Best Acc. & Plain Acc. & MatrixRes Acc. & MatrixResGated 
 
 Table~\ref{tab:synthetic_high_class} focuses on the higher-class regime \(C=4,\ldots,8\), where the task requires finer structural discrimination. MatrixResGated has the best mean accuracy and normalized accuracy in this regime, improving accuracy from 0.6827 for Plain to 0.6943. MatrixRes has the strongest macro-F1 among the compared models and is close to MatrixResGated in normalized accuracy. The class-scaling curve in Figure~\ref{fig:synthetic_multiclass_scaling} also shows a stability pattern: from \(C=2\) to \(C=8\), MatrixRes loses 0.3479 accuracy points, compared with 0.3720 for Plain. Thus, the synthetic benchmark supports a narrow but useful interpretation: matrix-style reuse is not necessary for easy low-class settings, but it becomes more favorable as the structural labels become more fine-grained.
 
-\begin{table}[h]
+\begin{table}[!htbp]
 \centering
 \small
 \caption{Synthetic high-class regime averaged over \(C=4,\ldots,8\), five graph families, and four operators.}
@@ -144,7 +144,7 @@ MatrixResGated & \(\mathbf{0.6943}\) & 0.6876 & \(\mathbf{0.6324}\) \\
 
 Branch count is not merely a capacity parameter: it also changes residual-path density, so it requires a separate ablation. Table~\ref{tab:branch_best} reports the best and worst branch counts for each topology. On PROTEINS, the useful region is moderate: HorizontalRes peaks at \(B=4\), MatrixRes peaks at \(B=6\), and MatrixResGated peaks at \(B=3\). On DD, the useful region is smaller: HorizontalRes and MatrixRes peak at \(B=2\), while MatrixResGated is strongest already at \(B=1\). Thus, PROTEINS benefits from moderate branch budgets, whereas DD favors smaller budgets. Branch expansion must be matched to task structure.
 
-\begin{table}[h]
+\begin{table}[!htbp]
 \centering
 \small
 \caption{Best and worst branch-count settings in the ablation.}
@@ -163,7 +163,7 @@ DD & MatrixResGated & \(\mathbf{1}\) & \(\mathbf{0.7283\pm0.0244}\) & 7 & \(0.70
 \end{tabular}
 \end{table}
 
-\begin{figure}[H]
+\begin{figure}[!htbp]
 \centering
 \includegraphics[width=0.92\linewidth]{figures/exp/fig_branch_count_ablation.pdf}
 \caption{Branch-count ablation for HorizontalRes, MatrixRes, and MatrixResGated on PROTEINS and DD under GCNConv. The curves are not monotonic: accuracy improves only within an effective operating region before saturating or declining.}
@@ -176,7 +176,7 @@ Table~\ref{tab:branch_best} and Figure~\ref{fig:branch_ablation} show that branc
 
 To explain why branch-count changes affect performance rather than merely report accuracy, we analyze branch diversity, branch cosine similarity, branch CKA similarity, representative gradient norms, residual-count totals, active ratios, and gate values. Table~\ref{tab:mechanism_snapshot} reports these mechanism metrics at the best branch count for each ablation target. Diversity measures how far apart branch representations are; branch cosine and branch CKA measure representational redundancy or alignment; gradient norm captures optimization signal; residual count and active ratio describe the amount of residual traffic injected into the model. These measurements are diagnostic correlations rather than causal interventions.
 
-\begin{table}[h]
+\begin{table}[!htbp]
 \centering
 \scriptsize
 \caption{Mechanism metrics at the best branch count for each ablation target.}
@@ -203,7 +203,7 @@ DD is more conservative. HorizontalRes reaches its best result at \(B=2\), where
 
 The sparse/gated model clarifies the role of residual control. MatrixResGated has an active ratio of 0.3121 at the best PROTEINS setting and 0.2352 at the best DD setting. These values are consistent with sparse filtering suppressing residual entries rather than behaving as a dense residual path. At the same time, MatrixResGated does not dominate MatrixRes overall, so sparse control should be treated as a useful traffic-control mechanism rather than as a universal improvement.
 
-\begin{figure}[H]
+\begin{figure}[!htbp]
 \centering
 \includegraphics[width=0.92\linewidth]{figures/exp/fig_mechanism_branch_dynamics.pdf}
 \caption{Mechanism summary linking branch-count accuracy to branch diversity, branch cosine similarity, branch CKA, and mean gradient norm.}
@@ -214,7 +214,7 @@ The sparse/gated model clarifies the role of residual control. MatrixResGated ha
 
 The fold-0 sensitivity scan identifies candidate operating regions for MatrixRes and MatrixResGated. These scans are used for diagnosis rather than final claims. On PROTEINS, MatrixRes does not improve over its fold-0 baseline in the tested sweep, while MatrixResGated has a fold-0 sparsity candidate: \(\lambda=0.02\) improves fold-0 accuracy from 0.6726 to 0.6951. Stronger sparsification is harmful. On DD, both MatrixRes and MatrixResGated prefer lighter hidden dimensions in the fold-0 scan: MatrixRes reaches 0.7595 with \(d=32\), and MatrixResGated reaches 0.7511 with \(d=32\). MatrixResGated also reaches 0.7511 with \(lr=0.001\) and \(gate\_init=0.2\).
 
-\begin{table}[h]
+\begin{table}[!htbp]
 \centering
 \small
 \caption{Best fold-0 sensitivity settings for MatrixRes and MatrixResGated.}
@@ -231,7 +231,7 @@ PROTEINS & MatrixResGated & 0.6726 & \(\lambda=0.02\) & 0.6951 \\
 \end{tabular}
 \end{table}
 
-\begin{figure}[H]
+\begin{figure}[!htbp]
 \centering
 \includegraphics[width=0.92\linewidth]{figures/exp/fig_matrixresgated_sensitivity.pdf}
 \caption{Fold-0 MatrixResGated sensitivity scan at \(B=3\). The scan identifies candidate operating regions but is not treated as final hyperparameter evidence.}
@@ -242,7 +242,7 @@ PROTEINS & MatrixResGated & 0.6726 & \(\lambda=0.02\) & 0.6951 \\
 
 Fold-0 scans are used only for candidate discovery and cannot establish stable performance by themselves. To obtain more reliable evidence, selected MatrixResGated settings were rerun across all five folds. Table~\ref{tab:tuned_candidates} reports these follow-up checks. On DD, the MatrixResGated candidate with hidden dimension 32 reduces parameters from 42,371 to 15,043 while remaining competitive, indicating better parameter efficiency. The lower learning rate is close to the default MatrixResGated benchmark, and the lower gate initialization is weaker. On PROTEINS, the candidate with sparsity strength \(\lambda=0.02\) does not consistently preserve its fold-0 advantage across all folds, so the sparsity gain should not be overstated.
 
-\begin{table}[h]
+\begin{table}[!htbp]
 \centering
 \small
 \caption{Five-fold checks of selected MatrixResGated candidates.}

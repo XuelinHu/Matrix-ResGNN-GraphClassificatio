@@ -34,7 +34,7 @@ The only term that changes across architectures is the residual neighborhood \(\
 
 After the final message-passing layer, each branch is pooled to a graph-level vector by global mean pooling and the branch vectors are combined before classification. We intentionally avoid architecture-specific pooling heads such as differentiable pooling or self-attention pooling \cite{ying2018hierarchical,lee2019self}, because the purpose is to isolate residual topology rather than to compare readout mechanisms. The classifier is trained with cross-entropy loss. Figure~\ref{fig:architecture} summarizes the shared pipeline and the residual routes compared in the study.
 
-\begin{figure}[H]
+\begin{figure}[!htbp]
 \centering
 \includegraphics[width=0.95\linewidth]{figures/cr_gnn_graph_architecture.pdf}
 \caption{Architecture overview of the compared residual neighborhoods on the branch-by-layer grid. The same message-passing backbone and graph-level readout are kept fixed while the residual routes are changed.}
@@ -77,10 +77,20 @@ This local stencil is intentionally not dense all-to-all mixing. It preserves an
 \end{equation}
 In the main benchmark, Plain, VerticalRes, HorizontalRes, and MatrixRes use identity residual filtering. MatrixResGated uses sparse residual filtering with \(\lambda=0.05\) and a learnable scalar gate initialized at 0.8. When \(B=1\), MatrixResGated still applies gated sparse filtering to the remaining matrix-residual paths. The implementation also supports top-\(k\) residual filtering and fixed gates, but these are not the default settings used for the main reported results.
 
-\subsection{Datasets and evaluation protocol}
+\subsection{Datasets and sources}
 \label{sec:datasets}
 
-The main benchmark uses six datasets from TUDataset \cite{morris2020tudataset}: PROTEINS, DD, ENZYMES, MUTAG, AIDS, and Mutagenicity. PROTEINS and DD are binary protein-structure graph classification benchmarks, ENZYMES is a six-class enzyme classification benchmark, and MUTAG, AIDS, and Mutagenicity provide supplementary molecular-graph robustness checks. All datasets are loaded through PyTorch Geometric \cite{fey2019fast}. All experiments use the raw benchmark features and graph structures without task-specific feature engineering, graph augmentation, or edge redesign.
+The main benchmark uses six third-party datasets from TUDataset \cite{morris2020tudataset}: PROTEINS, DD, ENZYMES, MUTAG, AIDS, and Mutagenicity. The TUDataset collection is available at \url{https://chrsmrrs.github.io/datasets/} and is accessed through PyTorch Geometric \cite{fey2019fast}. PROTEINS and DD are binary protein-structure graph classification benchmarks, ENZYMES is a six-class enzyme classification benchmark, and MUTAG, AIDS, and Mutagenicity provide supplementary molecular-graph robustness checks. All experiments use the raw benchmark features and graph structures without task-specific feature engineering, graph augmentation, or edge redesign.
+
+\subsection{Data preprocessing}
+
+The preprocessing pipeline is intentionally minimal to keep the comparison focused on residual topology. TUDataset graphs are loaded with their provided node features and graph labels. The code does not add handcrafted chemical or biological descriptors, does not perform graph augmentation, and does not rewire edges. Synthetic graphs are generated from controlled structural parameters, assigned generic eight-dimensional node features derived from normalized degree and random feature channels, and then passed to the same graph-classification pipeline. For every dataset, graph-level folds are fixed by the experiment scripts so that all compared residual topologies use matched train, validation, and test splits.
+
+\subsection{Technique selection}
+
+The implemented techniques were selected to isolate one architectural factor: residual information flow in a multi-branch GNN. GCNConv, GATConv, SAGEConv, and GINConv were chosen because they are canonical message-passing operators representing spectral-style convolution, attention-based aggregation, neighborhood sampling/aggregation, and injective multiset aggregation. Plain, VerticalRes, HorizontalRes, MatrixRes, and MatrixResGated were then compared under the same operators, pooling, classifier, and fold protocol. This selection makes the residual-topology question testable without mixing it with unrelated changes in readout design, feature engineering, or task-specific model tuning.
+
+\subsection{Evaluation protocol and metrics}
 
 All main results use graph-level five-fold evaluation. For fold \(k\), the test accuracy is
 \begin{equation}
@@ -94,6 +104,8 @@ Across folds, we report
 \overline{\mathrm{Acc}}=\frac{1}{5}\sum_{k=1}^{5}\mathrm{Acc}_{k},
 \end{equation}
 and the fold-level standard deviation.
+
+Accuracy is the primary metric because every benchmark is a graph-level classification task with discrete labels and because it is the standard summary reported for the selected TUDataset tasks. The fold-level standard deviation is reported to expose variability across train/test splits. For the synthetic multi-class benchmark, macro-F1 is added because it gives equal weight to each class, and chance-normalized accuracy is added because raw accuracy is not directly comparable when the number of classes changes from two to eight. Mechanism metrics such as branch diversity, cosine similarity, CKA, residual activity, and gradient norm are used as diagnostic measurements rather than as optimization targets.
 
 \subsection{Synthetic multi-class structural benchmark}
 \label{sec:synthetic}
@@ -112,7 +124,7 @@ This metric maps chance-level accuracy to 0 and perfect accuracy to 1, making th
 
 All main benchmark runs use the default branch count \(B=3\). The benchmark is repeated under four message-passing operators: GCNConv, GATConv, SAGEConv, and GINConv. The hidden dimension is 64 unless a sensitivity setting changes it. The default depth is \(L=4\) message-passing layers, except DD, where \(L=3\) is used for the main benchmark. All models use ReLU nonlinearities and the default PyTorch/PyTorch Geometric parameter initialization for the corresponding layers. Models are optimized with Adam \cite{kingma2014adam}; the checkpoint with the lowest validation loss is retained for test evaluation. Early stopping monitors validation loss, and all runs use ReduceLROnPlateau with factor 0.5, patience 15, and minimum learning rate \(10^{-5}\). Gradients are clipped at norm 2.0. The branch-count ablation evaluates \(B=1,\ldots,8\) for HorizontalRes, MatrixRes, and MatrixResGated on PROTEINS and DD under GCNConv. The sensitivity scan evaluates MatrixRes and MatrixResGated on fold 0 at \(B=3\), varying learning rate, dropout, hidden dimension, sparsity strength, and gate initialization. Selected MatrixResGated candidates are then rerun across all five folds.
 
-\begin{table}[h]
+\begin{table}[!htbp]
 \centering
 \small
 \caption{Key experimental settings shared by the main benchmark.}
@@ -138,6 +150,10 @@ Gradient clipping & Norm 2.0 \\
 \bottomrule
 \end{tabular}
 \end{table}
+
+\subsection{Computing infrastructure}
+
+The implementation uses Python 3.11.14, PyTorch 2.5.1, PyTorch Geometric 2.7.0, NumPy 2.0.1, pandas 2.3.3, scikit-learn 1.9.0, and Matplotlib 3.10.8 in the Conda environment \texttt{pyg}. The current repository verification and manuscript regeneration were performed on Microsoft Windows 10 64-bit with an Intel Core Ultra 9 285H processor, 16 physical/logical cores, approximately 32 GB system memory, and an Intel Arc 140T GPU. The repository stores the scripts, configuration files, frozen logs, generated figures, and supporting evidence needed to audit the reported experiments.
 
 \subsection{Mechanism metrics}
 
