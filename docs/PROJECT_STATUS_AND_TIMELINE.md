@@ -1,8 +1,16 @@
-# Matrix-ResGNN Project Status and Timeline
+# MatrixResGNNGraphClassification Project Status and Timeline
 
 Updated: `2026-06-01`
 
-This document is the consolidated reading entry point for the repository. It summarizes the current manuscript state, the experiment milestones, the submission package, and the retained historical documentation.
+This document is the consolidated reading entry point for the repository. It summarizes the current manuscript state, experiment milestones, submission package, repository identity, and reproducibility entry points.
+
+## 0. Repository identity
+
+The paper submission should refer to the local repository identity below:
+
+- Repository name: `MatrixResGNNGraphClassification`
+- Canonical local branch: `master`
+- Remote: `git@github.com:XuelinHu/MatrixResGNNGraphClassification.git`
 
 ## 1. Current paper scope
 
@@ -105,20 +113,13 @@ xelatex -interaction=nonstopmode main_zh.tex
 xelatex -interaction=nonstopmode main_zh.tex
 ```
 
-## 6. Documentation consolidation map
+## 6. Script entry points
 
-Use this document for the current project state. The following files remain available as archived sources:
+The script inventory is maintained in `scripts/README.md`. The main groups are:
 
-| File | Retained purpose |
-|---|---|
-| `WORK_PLAN.md` | Initial framing and directory plan |
-| `EXECUTION_MANUAL.md` | Original execution contract and artifact policy |
-| `EXPERIMENT_CHECKLIST.md` | Detailed experiment checklist |
-| `FULL_BENCHMARK_QUEUE.md` | Full real-data queue record |
-| `SYNTHETIC_DISTRIBUTION_BENCHMARK.md` | Synthetic benchmark design and launch record |
-| `RESULTS_SYNTHESIS.md` | Detailed quantitative synthesis |
-| `RESULT_INTERPRETATION.md` | Detailed mechanism interpretation |
-| `TODO_HANDOFF.md` | Historical handoff snapshot |
-| `REVIEW_AI.md` | Archived external review notes |
+- Experiment runners: `run_*.py` and `run_*.sh`
+- Summary generators: `summarize_*.py`
+- Figure generators: `generate_*.py`
+- Export and check utilities: `export_*.py`, `check_*.py`
 
-The archived files are intentionally retained for traceability. New readers should start here and open the archived notes only when they need implementation or analysis detail.
+The old planning, handoff, review, and draft-analysis documents have been removed from `docs/` so that this directory contains only current submission-facing documentation.

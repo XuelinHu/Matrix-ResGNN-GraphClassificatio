@@ -1,4 +1,4 @@
-# Matrix-ResGNN-GraphClassification
+# MatrixResGNNGraphClassification
 
 <p align="center">
   <img height="20" src="https://img.shields.io/badge/python-used-3776AB?logo=python&logoColor=white" />
@@ -12,6 +12,12 @@
 
 This repository contains the implementation, frozen experiment records, manuscript sources, and submission artifacts for a graph-classification paper centered on structured residual connectivity.
 
+Repository identity for the paper submission:
+
+- Repository name: `MatrixResGNNGraphClassification`
+- Canonical local branch: `master`
+- Remote: `git@github.com:XuelinHu/MatrixResGNNGraphClassification.git`
+
 The paper studies a unified residual family on graph-classification benchmarks:
 
 - `Plain`
@@ -24,11 +30,11 @@ The core task is graph classification. The manuscript frames residual routing as
 
 ## Repository layout
 
-- `docs/`: consolidated project status, historical planning notes, and task records
+- `docs/`: current project status and reproducibility notes
 - `paper/`: manuscript sources and submission packages
 - `src/`: model and training code
 - `configs/`: experiment configuration files
-- `scripts/`: reusable entry scripts
+- `scripts/`: runnable experiment, summary, figure, export, and check scripts
 - `figures/`: generated figures for the paper
 - `records/`: outputs, summaries, and curated experiment results
 
@@ -45,7 +51,7 @@ Use the Conda environment `pyg` for Python execution.
 
 ## Documentation
 
-See [docs/README.md](docs/README.md) for the current documentation entry point and the consolidated project timeline.
+See [docs/README.md](docs/README.md) for the current documentation entry point. See [scripts/README.md](scripts/README.md) for the script inventory.
 
 ## PeerJ references
 - https://peerj.com/articles/cs-3773/

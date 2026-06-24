@@ -2,6 +2,11 @@
 
 This directory contains the current matrix-residual graph-classification manuscripts and submission artifacts.
 
+Repository identity for the paper submission:
+
+- Repository name: `MatrixResGNNGraphClassification`
+- Canonical local branch: `master`
+
 Paper focus:
 
 - graph classification
@@ -20,13 +25,5 @@ Canonical manuscript assets:
 - `submission_figures_png/`: numbered PNG figures prepared for submission
 - `submission_figures_png.zip`: archived numbered PNG package
 - `supporting_evidence_csv/`: numbered CSV tables prepared as supporting evidence
-
-Historical writing notes retained for traceability:
-
-- `MANUSCRIPT_DRAFT.md`
-- `METHOD_NOTE.md`
-- `RESULTS_DISCUSSION_DRAFT.md`
-- `FIGURE_CAPTIONS.md`
-- `FIGURE_PLAN.md`
 
 Use [`../docs/PROJECT_STATUS_AND_TIMELINE.md`](../docs/PROJECT_STATUS_AND_TIMELINE.md) as the consolidated project entry point.
