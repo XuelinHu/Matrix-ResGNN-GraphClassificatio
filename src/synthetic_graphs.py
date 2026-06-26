@@ -418,3 +418,4 @@ class SyntheticGraphDataset:
         order = rng.permutation(len(self.graphs))
         clone.graphs = [self.graphs[int(index)] for index in order]
         return clone
+ 

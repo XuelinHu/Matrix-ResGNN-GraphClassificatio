@@ -71,3 +71,4 @@ def ensure_version_manifest(project_root: Path) -> Path:
     manifest.parent.mkdir(parents=True, exist_ok=True)
     manifest.write_text(json.dumps(manifest_payload(project_root), indent=2), encoding="utf-8")
     return manifest
+ 

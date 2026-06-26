@@ -10,4 +10,4 @@
   "seed": 20260527,
   "graph_distribution": "randomly permuted regular ring lattice",
   "label_rule": "class 0 uses lower fixed degree; class 1 uses higher fixed degree"
-}
+} 

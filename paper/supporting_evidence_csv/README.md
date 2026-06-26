@@ -12,3 +12,4 @@ The following Excel-compatible CSV tables are prepared for upload as supporting 
 | 06 | `06_synthetic_multiclass_benchmark_summary.csv` | Synthetic multi-class benchmark | 700 five-fold model-level aggregates spanning five graph families, two to eight structural classes, four message-passing operators, and five model families. Includes accuracy, macro-F1, chance-normalized accuracy, loss, runtime, parameter count, branch count, and residual mode. |
 
 These files correspond to the supporting-evidence list in Appendix A.1 of the manuscript.
+ 

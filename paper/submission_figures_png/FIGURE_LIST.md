@@ -27,3 +27,4 @@
 **Figure 6. Mechanism Summary.** Mechanism summary linking branch-count accuracy to branch diversity, branch cosine similarity, branch CKA, and mean gradient norm.
 
 **Figure 7. MatrixResGated Sensitivity.** Fold-0 MatrixResGated sensitivity scan at \(B=3\). The scan identifies candidate operating regions but is not treated as final hyperparameter evidence.
+ 

@@ -59,3 +59,4 @@ See [docs/README.md](docs/README.md) for the current documentation entry point. 
 - https://www.overleaf.com/latex/templates/latex-template-for-peerj-journal-and-pre-print-submissions/ptdwfrqxqzbn
 - https://peerj.com/about/policies-and-procedures/#discipline-standards
 - https://peerj.com/about/author-instructions/#reference-format
+ 

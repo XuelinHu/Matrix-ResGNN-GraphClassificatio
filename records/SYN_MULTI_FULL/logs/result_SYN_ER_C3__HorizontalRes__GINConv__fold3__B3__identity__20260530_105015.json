@@ -64,4 +64,4 @@
   "test_normalized_acc": 0.9875,
   "test_loss": 0.040051642805337906,
   "runtime_seconds": 40.75442695617676
-}
+} 

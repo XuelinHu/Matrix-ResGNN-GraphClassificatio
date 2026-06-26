@@ -16,3 +16,4 @@ echo "$PID" > "${QUEUE_DIR}/synthetic_smoke.pid"
 echo "Synthetic smoke benchmark started"
 echo "PID: $PID"
 echo "Log: $LOG_PATH"
+ 

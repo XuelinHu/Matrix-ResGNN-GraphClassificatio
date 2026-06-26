@@ -12,3 +12,4 @@ class MatrixResGatedGNN(BaseResidualGNN):
     def __init__(self, config: ResidualConfig, dataset: object):
         """初始化模块参数并调用父类构造逻辑。"""
         super().__init__(config=config, dataset=dataset)
+ 

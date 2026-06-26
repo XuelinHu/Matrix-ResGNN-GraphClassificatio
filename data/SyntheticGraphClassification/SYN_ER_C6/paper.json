@@ -11,4 +11,4 @@
   "seed": 20260527,
   "graph_distribution": "Erdos-Renyi G(n,p)",
   "label_rule": "6 classes use monotonically increasing Bernoulli edge probabilities"
-}
+} 

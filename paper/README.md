@@ -27,3 +27,4 @@ Canonical manuscript assets:
 - `supporting_evidence_csv/`: numbered CSV tables prepared as supporting evidence
 
 Use [`../docs/PROJECT_STATUS_AND_TIMELINE.md`](../docs/PROJECT_STATUS_AND_TIMELINE.md) as the consolidated project entry point.
+ 

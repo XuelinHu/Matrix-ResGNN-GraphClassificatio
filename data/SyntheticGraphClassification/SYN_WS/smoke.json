@@ -10,4 +10,4 @@
   "seed": 20260527,
   "graph_distribution": "Watts-Strogatz small-world graph",
   "label_rule": "class 0 has low rewiring; class 1 has high rewiring"
-}
+} 

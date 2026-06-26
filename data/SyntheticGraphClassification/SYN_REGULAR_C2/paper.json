@@ -11,4 +11,4 @@
   "seed": 20260527,
   "graph_distribution": "randomly permuted regular ring lattice",
   "label_rule": "2 classes use monotonically increasing fixed degrees"
-}
+} 

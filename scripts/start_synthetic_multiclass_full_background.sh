@@ -16,3 +16,4 @@ echo "$PID" > "${QUEUE_DIR}/synthetic_multiclass_full.pid"
 echo "Synthetic multi-class full benchmark started"
 echo "PID: $PID"
 echo "Log: $LOG_PATH"
+ 

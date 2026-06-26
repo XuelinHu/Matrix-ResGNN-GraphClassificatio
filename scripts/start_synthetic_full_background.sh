@@ -16,3 +16,4 @@ echo "$PID" > "${QUEUE_DIR}/synthetic_full.pid"
 echo "Synthetic full benchmark started"
 echo "PID: $PID"
 echo "Log: $LOG_PATH"
+ 

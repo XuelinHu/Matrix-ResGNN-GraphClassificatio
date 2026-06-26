@@ -10,4 +10,4 @@
   "seed": 20260527,
   "graph_distribution": "Barabasi-Albert scale-free graph",
   "label_rule": "class 0 uses smaller attachment count; class 1 uses larger attachment count"
-}
+} 

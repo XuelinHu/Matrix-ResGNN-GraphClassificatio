@@ -34,4 +34,4 @@
   "updated_at": "2026-05-27T22:26:01",
   "events_path": "records/SYN_SMOKE_DEBUG/queue/synthetic_smoke_5dist_gcn_fold0_events.jsonl",
   "plan_path": "records/SYN_SMOKE_DEBUG/queue/synthetic_smoke_5dist_gcn_fold0_plan.json"
-}
+} 
