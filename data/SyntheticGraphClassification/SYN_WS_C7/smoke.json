@@ -11,4 +11,4 @@
   "seed": 20260527,
   "graph_distribution": "Watts-Strogatz small-world graph",
   "label_rule": "7 classes use monotonically increasing rewiring probabilities"
-} 
+}

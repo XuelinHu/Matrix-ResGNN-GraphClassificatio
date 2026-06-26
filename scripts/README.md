@@ -51,4 +51,3 @@ Shell launchers:
 - `check_benchmark_completeness.py`: check expected benchmark completion.
 
 For submission-facing artifacts, prefer the frozen outputs under `paper/`, `figures/`, and `records/` rather than rerunning long experiments unless a new revision requires it.
- 

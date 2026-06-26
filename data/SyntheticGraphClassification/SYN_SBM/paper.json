@@ -10,4 +10,4 @@
   "seed": 20260527,
   "graph_distribution": "two-block stochastic block model",
   "label_rule": "class 0 has weak community separation; class 1 has strong community separation"
-} 
+}

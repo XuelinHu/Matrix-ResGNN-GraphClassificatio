@@ -60,4 +60,3 @@ MODELS=(Plain VerticalRes HorizontalRes MatrixRes MatrixResGated)
   --datasets "${DATASETS[@]}" \
   --models "${MODELS[@]}" \
   --operators GCNConv
- 

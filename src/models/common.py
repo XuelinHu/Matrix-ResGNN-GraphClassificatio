@@ -306,4 +306,3 @@ class BaseResidualGNN(nn.Module):
             "residual_stats": residual_stats,
             "final_branch_graph_embeddings": [embedding.detach().cpu() for embedding in graph_embeddings],
         }
- 

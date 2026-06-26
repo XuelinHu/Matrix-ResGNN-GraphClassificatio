@@ -11,4 +11,4 @@
   "seed": 20260527,
   "graph_distribution": "Barabasi-Albert scale-free graph",
   "label_rule": "4 classes use monotonically increasing attachment counts"
-} 
+}

@@ -42,4 +42,4 @@
   "finished_at": "2026-05-27T23:41:06",
   "events_path": "records/SYN_FULL/queue/synthetic_full_5dist_4ops_5folds_events.jsonl",
   "plan_path": "records/SYN_FULL/queue/synthetic_full_5dist_4ops_5folds_plan.json"
-} 
+}

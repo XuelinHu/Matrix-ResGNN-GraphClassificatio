@@ -37,4 +37,3 @@ Class labels were converted to integer values using this map:
 	1	nonmutagen
 
 
- 

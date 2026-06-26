@@ -69,4 +69,3 @@ Jun 2005.
 
 I. Schomburg, A. Chang, C. Ebeling, M. Gremse, C. Heldt, G. Huhn, and D. Schomburg. Brenda, 
 the enzyme database: updates and major new developments. Nucleic Acids Research, 32D:431–433, 2004.
- 

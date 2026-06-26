@@ -10,4 +10,4 @@
   "seed": 20260527,
   "graph_distribution": "Erdos-Renyi G(n,p)",
   "label_rule": "class 0 uses lower Bernoulli edge probability; class 1 uses higher edge probability"
-} 
+}

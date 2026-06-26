@@ -83,4 +83,3 @@ of the 29th International Conference on Machine Learning (ICML-2012) (2012).
 Debnath, A.K., Lopez de Compadre, R.L., Debnath, G., Shusterman, A.J., and Hansch, C.
 Structure-activity relationship of mutagenic aromatic and heteroaromatic nitro compounds.
 Correlation with molecular orbital energies and hydrophobicity. J. Med. Chem. 34(2):786-797 (1991).
- 

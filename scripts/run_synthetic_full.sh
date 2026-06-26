@@ -39,4 +39,3 @@ FOLDS=(0 1 2 3 4)
   --datasets "${DATASETS[@]}" \
   --models "${MODELS[@]}" \
   --operators "${OPERATORS[@]}"
- 

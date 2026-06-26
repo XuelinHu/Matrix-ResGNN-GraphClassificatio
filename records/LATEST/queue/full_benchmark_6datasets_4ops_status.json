@@ -43,4 +43,4 @@
   "finished_at": "2026-05-07T21:30:00",
   "events_path": "records/LATEST/queue/full_benchmark_6datasets_4ops_events.jsonl",
   "plan_path": "records/LATEST/queue/full_benchmark_6datasets_4ops_plan.json"
-} 
+}

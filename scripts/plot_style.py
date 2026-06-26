@@ -68,4 +68,3 @@ def style_axis(ax: plt.Axes, with_grid: bool = True, grid_axis: str = "y") -> No
     ax.set_axisbelow(True)
     for spine in ax.spines.values():
         spine.set_linewidth(0.9)
- 

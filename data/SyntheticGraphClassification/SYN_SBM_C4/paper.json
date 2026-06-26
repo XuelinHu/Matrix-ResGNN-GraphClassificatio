@@ -11,4 +11,4 @@
   "seed": 20260527,
   "graph_distribution": "two-block stochastic block model",
   "label_rule": "4 classes use monotonically increasing community separation"
-} 
+}

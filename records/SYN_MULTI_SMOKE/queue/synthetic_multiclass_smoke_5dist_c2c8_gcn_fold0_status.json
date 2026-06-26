@@ -65,4 +65,4 @@
   "finished_at": "2026-05-30T10:18:00",
   "events_path": "records/SYN_MULTI_SMOKE/queue/synthetic_multiclass_smoke_5dist_c2c8_gcn_fold0_events.jsonl",
   "plan_path": "records/SYN_MULTI_SMOKE/queue/synthetic_multiclass_smoke_5dist_c2c8_gcn_fold0_plan.json"
-} 
+}

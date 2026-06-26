@@ -123,4 +123,3 @@ The script inventory is maintained in `scripts/README.md`. The main groups are:
 - Export and check utilities: `export_*.py`, `check_*.py`
 
 The old planning, handoff, review, and draft-analysis documents have been removed from `docs/` so that this directory contains only current submission-facing documentation.
- 

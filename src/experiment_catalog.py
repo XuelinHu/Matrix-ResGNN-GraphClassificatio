@@ -140,4 +140,3 @@ def dataset_family(dataset_name: str) -> str:
     if dataset_name.startswith("ogbg-"):
         return "ogb_graphprop"
     return "tu"
- 
