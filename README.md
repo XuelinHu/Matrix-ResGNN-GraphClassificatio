@@ -59,3 +59,23 @@ See [docs/README.md](docs/README.md) for the current documentation entry point. 
 - https://www.overleaf.com/latex/templates/latex-template-for-peerj-journal-and-pre-print-submissions/ptdwfrqxqzbn
 - https://peerj.com/about/policies-and-procedures/#discipline-standards
 - https://peerj.com/about/author-instructions/#reference-format
+
+<!-- codex-runtime-notes:start -->
+
+## Runtime Ports And Database Configuration
+
+### Database
+- No application database is used. Experiments rely on local config, record, figure, and manuscript files.
+
+### Default Ports
+- No default web service or database port is defined.
+
+### Notes
+- Default Python environment recorded locally is `pyg` when available.
+
+### Source Files Checked
+- `README.md`
+- `src/`
+- `scripts/`
+
+<!-- codex-runtime-notes:end -->
